@@ -3,7 +3,6 @@ package me.hugo.thankmas.items
 import dev.kezz.miniphrase.MiniPhraseContext
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
