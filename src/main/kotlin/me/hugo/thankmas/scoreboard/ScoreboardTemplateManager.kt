@@ -1,21 +1,25 @@
 package me.hugo.thankmas.scoreboard
 
-import me.hugo.thankmas.lang.TranslatedComponent
+import me.hugo.thankmas.lang.Translated
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.tag.Tag
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import org.koin.core.annotation.Single
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
  * Registry of every [ScoreboardTemplate] used in the plugin.
  */
-@Single
-public open class ScoreboardTemplateManager : TranslatedComponent {
+public interface ScoreboardTemplateManager : Translated {
 
-    private val loadedTemplates: MutableMap<String, ScoreboardTemplate> = mutableMapOf()
-    public val tagResolvers: MutableMap<String, (player: Player) -> String> = mutableMapOf()
+    /** Templates that have been loaded and are ready to be used. */
+    public val loadedTemplates: MutableMap<String, ScoreboardTemplate>
 
+    /** Player-specific tag suppliers. */
+    public val tagResolvers: MutableMap<String, (player: Player) -> Tag>
+
+    /** Registers the tags and loads the templates. */
     public fun initialize() {
         registerTags()
         loadTemplates()
@@ -27,13 +31,13 @@ public open class ScoreboardTemplateManager : TranslatedComponent {
      *
      * Should run after registering the tags.
      */
-    protected open fun loadTemplates() {}
+    private fun loadTemplates() {}
 
     /**
      * Loads from translations and caches every tag location,
      * resolver and translation.
      */
-    protected fun loadTemplate(key: String) {
+    private fun loadTemplate(key: String) {
         loadedTemplates[key] = ScoreboardTemplate(key)
     }
 
@@ -41,13 +45,20 @@ public open class ScoreboardTemplateManager : TranslatedComponent {
      * Registers every tag usable in scoreboards and
      * what they should return.
      */
-    protected open fun registerTags() {
-        registerTag("date") { DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now()) }
-        registerTag("players") { Bukkit.getOnlinePlayers().size.toString() }
+    private fun registerTags() {
+        registerTag("date") {
+            Tag.selfClosingInserting {
+                Component.text(
+                    DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now())
+                )
+            }
+        }
+
+        registerTag("players") { Tag.selfClosingInserting { Component.text(Bukkit.getOnlinePlayers().size) } }
     }
 
     /** Registers [tag] which returns the result of running [resolver]. */
-    private fun registerTag(tag: String, resolver: (player: Player) -> String) {
+    private fun registerTag(tag: String, resolver: (player: Player) -> Tag) {
         tagResolvers[tag] = resolver
     }
 }

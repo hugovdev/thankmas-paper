@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BannerMeta
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.bukkit.persistence.PersistentDataType
+import java.util.Locale
 import java.util.function.Consumer
 
 public fun ItemStack.amount(amount: Int): ItemStack {
@@ -21,7 +22,7 @@ public fun ItemStack.amount(amount: Int): ItemStack {
 }
 
 context(MiniPhraseContext)
-public fun ItemStack.nameTranslatable(key: String, locale: String, tags: (TagResolverBuilder.() -> Unit)? = null): ItemStack {
+public fun ItemStack.nameTranslatable(key: String, locale: Locale, tags: (TagResolverBuilder.() -> Unit)? = null): ItemStack {
     val meta = itemMeta
     meta.displayName(miniPhrase.translate(key, locale, tags))
     itemMeta = meta
@@ -36,7 +37,7 @@ public fun ItemStack.customModelData(id: Int): ItemStack {
 }
 
 context(MiniPhraseContext)
-public fun ItemStack.loreTranslatable(key: String, locale: String, tags: (TagResolverBuilder.() -> Unit)? = null): ItemStack {
+public fun ItemStack.loreTranslatable(key: String, locale: Locale, tags: (TagResolverBuilder.() -> Unit)? = null): ItemStack {
     lore(miniPhrase.translateList(key, locale, tags))
     return this
 }
