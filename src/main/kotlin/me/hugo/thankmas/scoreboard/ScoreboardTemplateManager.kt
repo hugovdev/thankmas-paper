@@ -1,6 +1,8 @@
 package me.hugo.thankmas.scoreboard
 
 import me.hugo.thankmas.lang.Translated
+import me.hugo.thankmas.player.PlayerDataManager
+import me.hugo.thankmas.player.ScoreboardPlayerData
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.Tag
 import org.bukkit.Bukkit
@@ -11,13 +13,15 @@ import java.time.format.DateTimeFormatter
 /**
  * Registry of every [ScoreboardTemplate] used in the plugin.
  */
-public interface ScoreboardTemplateManager : Translated {
+public open class ScoreboardTemplateManager<T : ScoreboardPlayerData>(
+    public val playerManager: PlayerDataManager<T>
+) : Translated {
 
     /** Templates that have been loaded and are ready to be used. */
-    public val loadedTemplates: MutableMap<String, ScoreboardTemplate>
+    private val loadedTemplates: MutableMap<String, ScoreboardTemplate<T>> = mutableMapOf()
 
     /** Player-specific tag suppliers. */
-    public val tagResolvers: MutableMap<String, (player: Player) -> Tag>
+    public val tagResolvers: MutableMap<String, (player: Player) -> Tag> = mutableMapOf()
 
     /** Registers the tags and loads the templates. */
     public fun initialize() {
@@ -31,21 +35,34 @@ public interface ScoreboardTemplateManager : Translated {
      *
      * Should run after registering the tags.
      */
-    private fun loadTemplates() {}
+    protected open fun loadTemplates() {}
 
     /**
      * Loads from translations and caches every tag location,
      * resolver and translation.
      */
-    private fun loadTemplate(key: String) {
-        loadedTemplates[key] = ScoreboardTemplate(key)
+    protected fun loadTemplate(key: String, customKey: String = key) {
+        loadedTemplates[customKey] = ScoreboardTemplate(key, this)
+    }
+
+    /** @returns the scoreboard template for this key, can be null.  */
+    public fun getTemplateOrNull(key: String): ScoreboardTemplate<T>? {
+        return loadedTemplates[key]
+    }
+
+    /** @returns the scoreboard template for this key.  */
+    public fun getTemplate(key: String): ScoreboardTemplate<T> {
+        val template = getTemplateOrNull(key)
+        requireNotNull(template) { "Tried to fetch a null scoreboard template." }
+
+        return template
     }
 
     /**
      * Registers every tag usable in scoreboards and
      * what they should return.
      */
-    private fun registerTags() {
+    protected open fun registerTags() {
         registerTag("date") {
             Tag.selfClosingInserting {
                 Component.text(
@@ -58,7 +75,7 @@ public interface ScoreboardTemplateManager : Translated {
     }
 
     /** Registers [tag] which returns the result of running [resolver]. */
-    private fun registerTag(tag: String, resolver: (player: Player) -> Tag) {
+    protected fun registerTag(tag: String, resolver: (player: Player) -> Tag) {
         tagResolvers[tag] = resolver
     }
 }

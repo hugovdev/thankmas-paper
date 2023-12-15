@@ -1,20 +1,21 @@
 package me.hugo.thankmas.scoreboard
 
 import me.hugo.thankmas.lang.TranslatedComponent
+import me.hugo.thankmas.player.ScoreboardPlayerData
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.Tag
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.entity.Player
-import org.koin.core.component.inject
 import java.util.*
 
 /**
  * Representation of a scoreboard configured
  * in the language files.
  */
-public class ScoreboardTemplate(private val key: String) : TranslatedComponent {
-
-    private val scoreboardManager: ScoreboardTemplateManager by inject()
+public class ScoreboardTemplate<T : ScoreboardPlayerData>(
+    private val key: String,
+    private val scoreboardManager: ScoreboardTemplateManager<T>
+) : TranslatedComponent {
 
     /** Every line in the scoreboard for every language. */
     // lang -> [lines]
@@ -65,7 +66,7 @@ public class ScoreboardTemplate(private val key: String) : TranslatedComponent {
                 }
             }
 
-        // playerData.fastBoard?.updateLines(lines)
+        scoreboardManager.playerManager.getPlayerData(player.uniqueId).getBoard().updateLines(lines)
     }
 
     /** Updates every line that contains any of the [tags] for [player]. */
@@ -80,12 +81,14 @@ public class ScoreboardTemplate(private val key: String) : TranslatedComponent {
         val boardLines = boardLines[language]!!
 
         locations.toSet().forEach {
-            /*playerData.fastBoard?.updateLine(it, miniPhrase.format(boardLines[it]) {
-                inversedTagLocations[language]!![it]?.forEach { tag ->
-                    parsed(tag, usedResolvers[tag]?.invoke(player) ?: tag)
-                }
-            }
-            )*/
+            scoreboardManager.playerManager.getPlayerData(player.uniqueId).getBoard()
+                .updateLine(it, miniPhrase.format(boardLines[it]) {
+                    inversedTagLocations[language]!![it]?.forEach { tag ->
+                        TagResolver.resolver(
+                            tag,
+                            usedResolvers[tag]?.invoke(player) ?: Tag.inserting { Component.text(tag) })
+                    }
+                })
         }
     }
 }

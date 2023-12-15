@@ -13,7 +13,7 @@ public class Menu(
 ) : TranslatedComponent {
 
     /** Build and open this menu for [player]. */
-    private fun open(player: Player) {
+    public fun open(player: Player) {
         val inventory = Bukkit.createInventory(null, size, miniPhrase.translate(titleKey, player.locale()))
         icons.forEach { inventory.setItem(it.key, it.value.itemSupplier(player)) }
 
@@ -26,7 +26,7 @@ public class Menu(
      *
      * @returns whether the icon was added or not.
      */
-    private fun addIcon(icon: Icon, char: Char = 'X'): Boolean {
+    public fun addIcon(icon: Icon, char: Char = 'X'): Boolean {
         requireNotNull(menuFormat) { "Tried to addIcon to Menu without a page format." }
 
         val firstEmptySlot = menuFormat.getSlotsForChar(char).firstOrNull { icons[it] == null } ?: return false
@@ -38,17 +38,17 @@ public class Menu(
     /**
      * Add the icon [icon] to the slot [slot].
      */
-    private fun setIcon(slot: Int, icon: Icon) {
+    public fun setIcon(slot: Int, icon: Icon) {
         icons[slot] = icon
     }
 
     /**
      * Gets the icon in the slot [slot] if existent.
      */
-    private fun getIconOrNull(slot: Int): Icon? = icons[slot]
+    public fun getIconOrNull(slot: Int): Icon? = icons[slot]
 
     /** Returns whether this menu lacks space for more icons in the [char] slots. */
-    private fun isFull(char: Char): Boolean {
+    public fun isFull(char: Char): Boolean {
         requireNotNull(menuFormat) { "Tried to addIcon to Menu without a page format." }
 
         return menuFormat.getSlotsForChar(char).all { icons[it] != null }

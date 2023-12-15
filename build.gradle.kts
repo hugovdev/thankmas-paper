@@ -21,6 +21,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 
+    implementation("fr.mrmicky:fastboard:2.0.2")
     implementation(files("libs/Thankmas-1.0-SNAPSHOT-all.jar"))
 }
 
@@ -31,6 +32,10 @@ tasks.test {
 kotlin {
     jvmToolchain(17)
     explicitApi()
+}
+
+tasks.shadowJar {
+    relocate("fr.mrmicky.fastboard", "me.hugo.thankmas.fastboard")
 }
 
 tasks.compileKotlin {
