@@ -4,11 +4,13 @@ import dev.kezz.miniphrase.MiniPhraseContext
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.block.banner.Pattern
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
@@ -16,13 +18,21 @@ import org.bukkit.inventory.meta.BannerMeta
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
-import java.util.function.Consumer
+import kotlin.reflect.KClass
 
+/** Style reset for lore and names. (Removes italics and ugly lore color) */
+private val resetStyles = Style.style(NamedTextColor.WHITE, TextDecoration.ITALIC.withState(false))
+
+/** Changes the amount of this item stack to [amount]. */
 public fun ItemStack.amount(amount: Int): ItemStack {
     setAmount(amount)
     return this
 }
 
+/**
+ * Sets the name to the translation [key] in
+ * language [locale] and uses TagResolvers in [tags].
+ */
 context(MiniPhraseContext)
 public fun ItemStack.nameTranslatable(
     key: String,
@@ -30,15 +40,26 @@ public fun ItemStack.nameTranslatable(
     tags: (TagResolverBuilder.() -> Unit)? = null
 ): ItemStack {
     val meta = itemMeta
-    meta.displayName(
-        Component.text("", NamedTextColor.WHITE)
-            .decoration(TextDecoration.ITALIC, false)
-            .append(miniPhrase.translate(key, locale, tags))
-    )
+    meta.displayName(miniPhrase.translate(key, locale, tags).applyFallbackStyle(resetStyles))
     itemMeta = meta
     return this
 }
 
+/**
+ * Sets the lore to the translation [key] in
+ * language [locale] and uses TagResolvers in [tags].
+ */
+context(MiniPhraseContext)
+public fun ItemStack.loreTranslatable(
+    key: String,
+    locale: Locale,
+    tags: (TagResolverBuilder.() -> Unit)? = null
+): ItemStack {
+    lore(miniPhrase.translateList(key, locale, tags).map { it.applyFallbackStyle(resetStyles) })
+    return this
+}
+
+/** Sets the custom model data of this item stack. */
 public fun ItemStack.customModelData(id: Int): ItemStack {
     val meta = itemMeta
     meta.setCustomModelData(id)
@@ -46,24 +67,12 @@ public fun ItemStack.customModelData(id: Int): ItemStack {
     return this
 }
 
-context(MiniPhraseContext)
-public fun ItemStack.loreTranslatable(
-    key: String,
-    locale: Locale,
-    tags: (TagResolverBuilder.() -> Unit)? = null
-): ItemStack {
-    lore(miniPhrase.translateList(key, locale, tags).map {
-        Component.text("", NamedTextColor.WHITE)
-            .decoration(TextDecoration.ITALIC, false)
-            .append(it)
-    })
-    return this
-}
-
+/** Saves [value] of type [dataType] in the key [key] in this item stack. */
 public fun <T, V : Any> ItemStack.setKeyedData(key: String, dataType: PersistentDataType<T, V>, value: V): ItemStack {
-    return setKeyedData(NamespacedKey("stk", key), dataType, value)
+    return setKeyedData(NamespacedKey("thankmas", key), dataType, value)
 }
 
+/** Saves [value] of type [dataType] in the key [key] in this item stack. */
 public fun <T, V : Any> ItemStack.setKeyedData(
     key: NamespacedKey,
     dataType: PersistentDataType<T, V>,
@@ -75,9 +84,11 @@ public fun <T, V : Any> ItemStack.setKeyedData(
     return this
 }
 
+/** @returns whether this item has data saved in [key] of type [type]. */
 public fun <T, V : Any> ItemStack.hasKeyedData(key: String, type: PersistentDataType<T, V>): Boolean =
-    hasKeyedData(NamespacedKey("stk", key), type)
+    hasKeyedData(NamespacedKey("thankmas", key), type)
 
+/** @returns whether this item has data saved in [key] of type [type]. */
 public fun <T, V : Any> ItemStack.hasKeyedData(key: NamespacedKey, type: PersistentDataType<T, V>): Boolean =
     if (hasItemMeta()) {
         itemMeta?.persistentDataContainer?.has(key, type) ?: false
@@ -85,9 +96,11 @@ public fun <T, V : Any> ItemStack.hasKeyedData(key: NamespacedKey, type: Persist
         false
     }
 
+/** @returns the data of type [type] in the key [key], can be null. */
 public fun <T, V : Any> ItemStack.getKeyedData(key: String, type: PersistentDataType<T, V>): V? =
-    getKeyedData(NamespacedKey("stk", key), type)
+    getKeyedData(NamespacedKey("thankmas", key), type)
 
+/** @returns the data of type [type] in the key [key], can be null. */
 public fun <T, V : Any> ItemStack.getKeyedData(key: NamespacedKey, type: PersistentDataType<T, V>): V? =
     if (hasItemMeta()) {
         itemMeta?.persistentDataContainer?.get(key, type)
@@ -95,46 +108,53 @@ public fun <T, V : Any> ItemStack.getKeyedData(key: NamespacedKey, type: Persist
         null
     }
 
+/** Changes the display name of this item stack to [name]. */
 public fun ItemStack.name(name: Component): ItemStack {
     val meta = itemMeta
-    meta.displayName(name)
+    meta.displayName(name.applyFallbackStyle(resetStyles))
     itemMeta = meta
     return this
 }
 
+/** Changes this item's lore to [text]. */
 public fun ItemStack.putLore(text: List<Component>): ItemStack {
-    this.lore(text)
+    this.lore(text.map { it.applyFallbackStyle(resetStyles) })
     return this
 }
 
+/** Applies [patterns] to this Banner item stack. */
 public fun ItemStack.putPatterns(vararg patterns: Pattern): ItemStack {
-    val meta = itemMeta as BannerMeta
+    val meta = itemMeta as? BannerMeta ?: return this
     patterns.forEach { meta.addPattern(it) }
     itemMeta = meta
     return this
 }
 
-public fun ItemStack.enchantment(enchantment: Enchantment?, level: Int): ItemStack {
-    if (enchantment == null) return this
+/** Applies [enchantment] of level [level] to this item stack. */
+public fun ItemStack.enchantment(enchantment: Enchantment, level: Int): ItemStack {
     addUnsafeEnchantment(enchantment, level)
     return this
 }
 
+/** Applies [enchantment] of level 1 to this item stack. */
 public fun ItemStack.enchantment(enchantment: Enchantment): ItemStack {
     addUnsafeEnchantment(enchantment, 1)
     return this
 }
 
+/** Changes this item stack's material to [material]. */
 public fun ItemStack.type(material: Material): ItemStack {
     type = material
     return this
 }
 
+/** Clears the enchantments of this item stack. */
 public fun ItemStack.clearEnchantments(): ItemStack {
-    enchantments.keys.forEach(Consumer { this.removeEnchantment(it) })
+    enchantments.keys.forEach { this.removeEnchantment(it) }
     return this
 }
 
+/** Changes the color of this leather armor piece to [color]. */
 public fun ItemStack.color(color: Color): ItemStack {
     if (type == Material.LEATHER_BOOTS
         || type == Material.LEATHER_CHESTPLATE
@@ -151,9 +171,10 @@ public fun ItemStack.color(color: Color): ItemStack {
     }
 }
 
-public fun ItemStack.flag(vararg flag: ItemFlag): ItemStack {
+/**  Adds [flags] to this item. */
+public fun ItemStack.flags(vararg flags: ItemFlag): ItemStack {
     val meta = itemMeta
-    meta.addItemFlags(*flag)
+    meta.addItemFlags(*flags)
     itemMeta = meta
     return this
 }

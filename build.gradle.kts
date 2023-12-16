@@ -21,6 +21,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 
+    ksp("io.insert-koin:koin-ksp-compiler:1.3.0")
     implementation("fr.mrmicky:fastboard:2.0.2")
     implementation(files("libs/Thankmas-1.0-SNAPSHOT-all.jar"))
 }

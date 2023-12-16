@@ -1,6 +1,7 @@
 package me.hugo.thankmas.gui
 
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 
 /**
@@ -8,6 +9,14 @@ import org.bukkit.inventory.ItemStack
  * Display item is supplied through the [itemSupplier].
  */
 public class Icon(
-    public val actions: MutableList<(player: Player, clickedSlot: Int, clickedItem: ItemStack) -> Unit> = mutableListOf(),
+    public val actions: MutableList<(clickContext: ClickContext, menuView: MenuView) -> Unit> = mutableListOf(),
     public val itemSupplier: (player: Player) -> ItemStack
-)
+) {
+    /** Stores context to an inventory click. */
+    public data class ClickContext(
+        val clicker: Player,
+        val clickedSlot: Int,
+        val clickedItem: ItemStack?,
+        val clickType: ClickType
+    )
+}
