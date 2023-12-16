@@ -4,6 +4,7 @@ import me.hugo.thankmas.items.getKeyedData
 import me.hugo.thankmas.items.hasKeyedData
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.persistence.PersistentDataType
@@ -36,7 +37,7 @@ public class ClickableItemRegistry : Listener {
 
     @EventHandler
     private fun onItemClick(event: PlayerInteractEvent) {
-        if (!event.action.isRightClick) return
+        if (event.action == Action.PHYSICAL) return
         val item = event.item ?: return
 
         val clickableItemId =

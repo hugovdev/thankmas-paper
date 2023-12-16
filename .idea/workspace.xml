@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="" />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Make the clickable item decide whether the interact event gets cancelled." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -198,7 +198,23 @@
       <option name="project" value="LOCAL" />
       <updated>1702738285775</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Small tweaks to make the code and documentation even better. slay">
+      <option name="closed" value="true" />
+      <created>1702738936240</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1702738936240</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Make the clickable item decide whether the interact event gets cancelled.">
+      <option name="closed" value="true" />
+      <created>1702739231972</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1702739231972</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -210,6 +226,8 @@
     <MESSAGE value="Add clickable items, item sets, configurable menus and ThankmasPlugin!" />
     <MESSAGE value="Small tweaks" />
     <MESSAGE value="Separate clickable items and item sets as it's not the same thing." />
-    <option name="LAST_COMMIT_MESSAGE" value="Separate clickable items and item sets as it's not the same thing." />
+    <MESSAGE value="Small tweaks to make the code and documentation even better. slay" />
+    <MESSAGE value="Make the clickable item decide whether the interact event gets cancelled." />
+    <option name="LAST_COMMIT_MESSAGE" value="Make the clickable item decide whether the interact event gets cancelled." />
   </component>
 </project>
