@@ -41,11 +41,8 @@ public class ClickableItemRegistry : Listener {
 
         val clickableItemId =
             item.getKeyedData(ClickableItem.CLICKABLE_ITEM_ID, PersistentDataType.STRING) ?: return
-        val clickableItem = getItem(clickableItemId)
 
-        clickableItem.clickAction(event.player, event.action)
-
-        event.isCancelled = true
+        event.isCancelled = getItem(clickableItemId).clickAction(event.player, event.action)
     }
 
     @EventHandler

@@ -32,15 +32,22 @@ public class ClickableItem : TranslatedComponent {
     /** Default slot where this item gets given. */
     private val defaultSlot: Int?
 
-    /** Action that runs when the item is clicked. */
-    public val clickAction: (clicker: Player, action: Action) -> Unit
+    /**
+     * Action that runs when the item is clicked.
+     * @returns whether the interaction event is cancelled.
+     */
+    public val clickAction: (clicker: Player, action: Action) -> Boolean
 
     /** Constructor that loads the item and command to run on click. */
     public constructor(id: String, config: FileConfiguration, path: String) {
         this.id = id
 
         val command = config.getString("$path.command") ?: "help"
-        this.clickAction = { player, action -> if (action.isRightClick) player.chat("/$command") }
+        this.clickAction = { player, action ->
+            if (action.isRightClick) player.chat("/$command")
+            true
+        }
+
         this.defaultSlot = config.getInt("$path.slot")
 
         loadItemFromConfig(config, path)
@@ -51,7 +58,7 @@ public class ClickableItem : TranslatedComponent {
         id: String,
         config: FileConfiguration,
         path: String,
-        clickAction: (clicker: Player, action: Action) -> Unit
+        clickAction: (clicker: Player, action: Action) -> Boolean
     ) {
         this.id = id
         this.clickAction = clickAction
