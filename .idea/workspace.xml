@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Small tweaks" />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,6 +88,10 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\libs" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\kotlin\me\hugo\thankmas\items" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="me.hugo.thankmas.items.clickable" />
+      <recent name="me.hugo.thankmas.items" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="me.hugo.thankmas.di" />
@@ -186,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702728753107</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Separate clickable items and item sets as it's not the same thing.">
+      <option name="closed" value="true" />
+      <created>1702738285775</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1702738285775</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -197,6 +209,7 @@
     <MESSAGE value="Translatable scoreboards and menus" />
     <MESSAGE value="Add clickable items, item sets, configurable menus and ThankmasPlugin!" />
     <MESSAGE value="Small tweaks" />
-    <option name="LAST_COMMIT_MESSAGE" value="Small tweaks" />
+    <MESSAGE value="Separate clickable items and item sets as it's not the same thing." />
+    <option name="LAST_COMMIT_MESSAGE" value="Separate clickable items and item sets as it's not the same thing." />
   </component>
 </project>

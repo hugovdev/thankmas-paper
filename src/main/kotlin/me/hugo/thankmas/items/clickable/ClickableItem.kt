@@ -15,10 +15,11 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 
-/**  Item that can be clicked to run a command. */
+/** Item that can be clicked to run a command. */
 public class ClickableItem : TranslatedComponent {
 
     public companion object {
+        /** Key used to identify which items stacks are clickable and what action they should run. */
         public val CLICKABLE_ITEM_ID: NamespacedKey = NamespacedKey("thankmas", "clickable_item_id")
     }
 

@@ -4,7 +4,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 
-/** Specific menu view for [player]. */
+/** Specific menu view of [menu] for [player]. */
 public class MenuView(private val player: Player, public val menu: Menu) : InventoryHolder {
 
     private val inventory: Inventory = menu.buildInventory(player, this)

@@ -29,7 +29,7 @@ public class ClickableItemRegistry : Listener {
     /** @returns the clickable item for this [id]. */
     public fun getItem(id: String): ClickableItem {
         val item = getItemOrNull(id)
-        requireNotNull(item) { "Tried to fetch clickable item $id but it's null." }
+        requireNotNull(item) { "Tried to get clickable item with id \"$id\" but it's null." }
 
         return item
     }
@@ -41,7 +41,7 @@ public class ClickableItemRegistry : Listener {
 
         val clickableItemId =
             item.getKeyedData(ClickableItem.CLICKABLE_ITEM_ID, PersistentDataType.STRING) ?: return
-        val clickableItem = clickableItems[clickableItemId] ?: return
+        val clickableItem = getItem(clickableItemId)
 
         clickableItem.clickAction(event.player, event.action)
 

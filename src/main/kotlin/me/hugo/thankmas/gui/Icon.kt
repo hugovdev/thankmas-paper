@@ -5,7 +5,7 @@ import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 
 /**
- * Menu item that runs the actions in [actions] when clicked.
+ * Menu item that runs [actions] when clicked.
  * Display item is supplied through the [itemSupplier].
  */
 public class Icon(

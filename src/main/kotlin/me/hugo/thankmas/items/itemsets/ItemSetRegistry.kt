@@ -11,6 +11,9 @@ import org.koin.core.component.inject
 /**
  * Loads sets of clickable items from config and registers
  * them in the [ClickableItemRegistry].
+ *
+ * ItemSets are a list of clickable items that can be given in certain
+ * situations, for example, when joining a lobby, arena or area.
  */
 @Single
 public class ItemSetRegistry : KoinComponent {
