@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Translatable scoreboards and menus">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/MenuView.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/MenuListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/Thankmas-1.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/libs/Thankmas-1.0-SNAPSHOT-all.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Icon.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Icon.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Menu.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Menu.kt" afterDir="false" />
-    </list>
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Small tweaks" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -96,6 +89,9 @@
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\libs" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\kotlin\me\hugo\thankmas\items" />
     </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="me.hugo.thankmas.di" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="ThankmasPaper [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -174,7 +170,23 @@
       <option name="project" value="LOCAL" />
       <updated>1702683947593</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add clickable items, item sets, configurable menus and ThankmasPlugin!">
+      <option name="closed" value="true" />
+      <created>1702728579998</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1702728579998</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Small tweaks">
+      <option name="closed" value="true" />
+      <created>1702728753107</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1702728753107</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -183,6 +195,8 @@
     <MESSAGE value="Start work in scoreboard API" />
     <MESSAGE value="Some more fundation work" />
     <MESSAGE value="Translatable scoreboards and menus" />
-    <option name="LAST_COMMIT_MESSAGE" value="Translatable scoreboards and menus" />
+    <MESSAGE value="Add clickable items, item sets, configurable menus and ThankmasPlugin!" />
+    <MESSAGE value="Small tweaks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small tweaks" />
   </component>
 </project>

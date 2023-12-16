@@ -9,11 +9,11 @@ import org.bukkit.inventory.ItemStack
  * Display item is supplied through the [itemSupplier].
  */
 public class Icon(
-    public val actions: MutableList<(clickContext: ClickContext, menuView: MenuView) -> Unit> = mutableListOf(),
+    public val actions: MutableList<(iconClickContext: IconClickContext, menuView: MenuView) -> Unit> = mutableListOf(),
     public val itemSupplier: (player: Player) -> ItemStack
 ) {
     /** Stores context to an inventory click. */
-    public data class ClickContext(
+    public data class IconClickContext(
         val clicker: Player,
         val clickedSlot: Int,
         val clickedItem: ItemStack?,

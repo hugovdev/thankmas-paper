@@ -1,15 +1,21 @@
 package me.hugo.thankmas.player
 
+import dev.kezz.miniphrase.MiniPhraseContext
 import fr.mrmicky.fastboard.adventure.FastBoard
-import org.bukkit.entity.Player
-import java.util.UUID
+import java.util.*
 
-public open class ScoreboardPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
+public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playerUUID) {
 
     private var board: FastBoard? = null
 
-    public open fun initializeBoard(player: Player) {
-        board = FastBoard(player)
+    context(MiniPhraseContext)
+    public open fun initializeBoard(title: String? = null) {
+        val player = onlinePlayer
+
+        val board = FastBoard(player)
+        title?.let { board.updateTitle(miniPhrase.translate(title, player.locale())) }
+
+        this.board = board
     }
 
     /** @returns the player's FastBoard instance, can be null. */

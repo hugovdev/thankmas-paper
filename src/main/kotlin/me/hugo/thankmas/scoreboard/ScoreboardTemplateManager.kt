@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter
 
 /**
  * Registry of every [ScoreboardTemplate] used in the plugin.
+ * Needs a player registry to get a player's scoreboard.
  */
 public open class ScoreboardTemplateManager<T : ScoreboardPlayerData>(
     public val playerManager: PlayerDataManager<T>
@@ -66,7 +67,7 @@ public open class ScoreboardTemplateManager<T : ScoreboardPlayerData>(
         registerTag("date") {
             Tag.selfClosingInserting {
                 Component.text(
-                    DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now())
+                    DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.now())
                 )
             }
         }

@@ -7,6 +7,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 
+/**
+ * Enables menu icons by listening to the InventoryClickEvent
+ * and casting inventory holders to [MenuView].
+ */
 public class MenuListener : Listener {
 
     @EventHandler
@@ -21,7 +25,7 @@ public class MenuListener : Listener {
         val slot = event.slot
 
         menu.menu.getIconOrNull(slot)?.actions
-            ?.forEach { action -> action(Icon.ClickContext(player, slot, event.currentItem, event.click), menu) }
+            ?.forEach { action -> action(Icon.IconClickContext(player, slot, event.currentItem, event.click), menu) }
     }
 
 }
