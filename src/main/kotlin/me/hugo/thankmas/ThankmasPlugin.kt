@@ -11,7 +11,6 @@ public open class ThankmasPlugin : JavaPlugin() {
     protected val translations: DefaultTranslations = DefaultTranslations(File(dataFolder, "/lang/"))
 
     override fun onEnable() {
-        super.onEnable()
         startKoin { modules(ThankmasModules().module) }
     }
 

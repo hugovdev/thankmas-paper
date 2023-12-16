@@ -17,7 +17,7 @@ import org.koin.core.annotation.Single
  * items to make them clickable through listeners.
  */
 @Single
-public class ItemSetManager() : Listener {
+public class ItemSetManager : Listener {
 
     // ClickableItem id -> ClickableItem
     private val clickableItems: MutableMap<String, ClickableItem> = mutableMapOf()
