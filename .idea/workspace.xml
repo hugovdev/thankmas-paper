@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Make the clickable item decide whether the interact event gets cancelled." />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Accept every interaction except physical">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/database/ConfigurableDatasource.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/Thankmas-1.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/libs/Thankmas-1.0-SNAPSHOT-all.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -214,7 +219,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702739231972</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Accept every interaction except physical">
+      <option name="closed" value="true" />
+      <created>1702740183922</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1702740183922</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -228,6 +241,7 @@
     <MESSAGE value="Separate clickable items and item sets as it's not the same thing." />
     <MESSAGE value="Small tweaks to make the code and documentation even better. slay" />
     <MESSAGE value="Make the clickable item decide whether the interact event gets cancelled." />
-    <option name="LAST_COMMIT_MESSAGE" value="Make the clickable item decide whether the interact event gets cancelled." />
+    <MESSAGE value="Accept every interaction except physical" />
+    <option name="LAST_COMMIT_MESSAGE" value="Accept every interaction except physical" />
   </component>
 </project>
