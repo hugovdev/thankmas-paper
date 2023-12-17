@@ -88,6 +88,24 @@ public fun ItemStack.loreTranslatable(
     return this
 }
 
+/**
+ * Adds the translation [key] in language [locale]
+ * to the current lore and uses TagResolvers in [tags].
+ */
+context(MiniPhraseContext)
+public fun ItemStack.addLoreTranslatable(
+    key: String,
+    locale: Locale,
+    tags: (TagResolverBuilder.() -> Unit)? = null
+): ItemStack {
+    lore(
+        (lore() ?: mutableListOf()).plus(
+            miniPhrase.translateList(key, locale, tags).map { it.applyFallbackStyle(resetStyles) })
+    )
+    return this
+}
+
+
 /** Sets the custom model data of this item stack. */
 public fun ItemStack.customModelData(id: Int): ItemStack {
     if (id == -1) return this
