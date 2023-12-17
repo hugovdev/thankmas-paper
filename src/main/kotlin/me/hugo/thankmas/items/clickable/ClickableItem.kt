@@ -64,10 +64,12 @@ public class ClickableItem : TranslatedComponent {
 
     /** Loads an item stack from [config] at [path]. */
     private fun createItems(config: FileConfiguration, path: String) {
+        val translatableItem = TranslatableItem(config, path)
+
         miniPhrase.translationRegistry.getLocales().forEach {
             // Create the item from config specifications and set the
             // clickable item id on the PDC.
-            val item = ItemStack::class.load(config, path, it)
+            val item = translatableItem.buildItem(it)
                 .setKeyedData(CLICKABLE_ITEM_ID, PersistentDataType.STRING, id)
 
             // Cache the item stack in each language.

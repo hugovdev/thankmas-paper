@@ -28,26 +28,27 @@ public open class Menu(
     }
 
     /**
-     * Follows the [menuFormat] and adds an icon in the first empty
-     * slot that belongs to the character [char].
+     * Follows the [menuFormat] and adds an icon in the first
+     * empty slot that belongs to the character [char].
      *
      * @returns whether the icon was added or not.
      */
     public fun addIcon(icon: Icon, char: Char = 'X'): Boolean {
-        requireNotNull(menuFormat) { "Tried to addIcon to Menu without a page format." }
+        requireNotNull(menuFormat) { "Tried to add icon to menu $titleKey without a menu format." }
 
-        val firstEmptySlot = menuFormat.getSlotsForChar(char).firstOrNull { icons[it] == null } ?: return false
-        icons[firstEmptySlot] = icon
+        val firstEmptySlot = menuFormat.getSlotsForChar(char).firstOrNull { !icons.containsKey(it) } ?: return false
+        setIcon(firstEmptySlot, icon)
 
         return true
     }
 
     /**
      * Add the icon [icon] to the slot [slot].
+     *
+     * @returns last icon in [slot] before possibly
+     * getting overridden by [icon].
      */
-    public fun setIcon(slot: Int, icon: Icon) {
-        icons[slot] = icon
-    }
+    public fun setIcon(slot: Int, icon: Icon): Icon? = icons.put(slot, icon)
 
     /**
      * Gets the icon in the slot [slot] if existent.
@@ -69,32 +70,38 @@ public open class Menu(
         ONE_ROW(
             "---------"
                     + "-XXXXXXX-"
+                    + "---PIN---"
         ),
         ONE_TRIMMED(
             ("---------"
-                    + "--XXXXX--")
+                    + "--XXXXX--"
+                    + "---PIN---")
         ),
         TWO_ROWS(
             ("---------"
                     + "-XXXXXXX-"
-                    + "-XXXXXXX-")
+                    + "-XXXXXXX-"
+                    + "---PIN---")
         ),
         TWO_ROWS_TRIMMED(
             ("---------"
                     + "--XXXXX--"
-                    + "--XXXXX--")
+                    + "--XXXXX--"
+                    + "---PIN---")
         ),
         THREE_ROWS(
             ("---------"
                     + "-XXXXXXX-"
                     + "-XXXXXXX-"
-                    + "-XXXXXXX-")
+                    + "-XXXXXXX-"
+                    + "---PIN---")
         ),
         THREE_ROWS_TRIMMED(
             ("---------"
                     + "--XXXXX--"
                     + "--XXXXX--"
-                    + "--XXXXX--")
+                    + "--XXXXX--"
+                    + "---PIN---")
         );
 
         public fun getSlotsForChar(char: Char = 'X'): List<Int> =

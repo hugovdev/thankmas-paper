@@ -32,7 +32,7 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData>(
 
     init {
         miniPhrase.translationRegistry.getLocales().forEach { language ->
-            val lines = miniPhrase.translationRegistry.getList(key, language)
+            val lines = miniPhrase.translationRegistry.getList(key, language) ?: listOf(key)
             boardLines[language] = lines
 
             scoreboardManager.tagResolvers.forEach { (tag, resolver) ->
