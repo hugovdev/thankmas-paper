@@ -4,7 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Paginated menus, global languages, translatable items and more" />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Allow to specify paths in the config provider">
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/location/LocationExt.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/location/MapPoint.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/region/Region.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/region/RegionRegistry.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/region/triggering/ActionableRegion.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/region/triggering/RegionAction.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/region/triggering/TriggeringRegion.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/util/BiMap.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/config/ConfigurationProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/config/ConfigurationProvider.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/di/ThankmasModules.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/dependencyinjection/ThankmasModules.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PaperPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PaperPlayerData.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,6 +65,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Kotlin File" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -67,22 +84,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Gradle.ThankmasPaper [knows].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ThankmasPaper [shadowJar].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hugov/IdeaProjects/ThankmasPaper/libs&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Gradle.ThankmasPaper [knows].executor": "Run",
+    "Gradle.ThankmasPaper [shadowJar].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/hugov/IdeaProjects/ThankmasPaper/libs",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\libs" />
@@ -92,15 +110,19 @@
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\kotlin\me\hugo\thankmas\items" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\kotlin\me\hugo\thankmas\location" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\resources" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\libs" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\kotlin\me\hugo\thankmas\items" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="me.hugo.thankmas.region" />
+      <recent name="me.hugo.thankmas.region.triggering" />
       <recent name="me.hugo.thankmas.items.clickable" />
       <recent name="me.hugo.thankmas.items" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="me.hugo.thankmas.location" />
       <recent name="me.hugo.thankmas.di" />
     </key>
   </component>
@@ -284,7 +306,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702835748856</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Allow to specify paths in the config provider">
+      <option name="closed" value="true" />
+      <created>1702838367894</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1702838367895</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -303,6 +333,7 @@
     <MESSAGE value="Add ItemStack config loader" />
     <MESSAGE value="Add function to add translated lore lines to existing item." />
     <MESSAGE value="Paginated menus, global languages, translatable items and more" />
-    <option name="LAST_COMMIT_MESSAGE" value="Paginated menus, global languages, translatable items and more" />
+    <MESSAGE value="Allow to specify paths in the config provider" />
+    <option name="LAST_COMMIT_MESSAGE" value="Allow to specify paths in the config provider" />
   </component>
 </project>

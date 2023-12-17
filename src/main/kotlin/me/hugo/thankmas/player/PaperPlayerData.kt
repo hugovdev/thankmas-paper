@@ -1,5 +1,7 @@
 package me.hugo.thankmas.player
 
+import me.hugo.thankmas.region.Region
+import me.hugo.thankmas.region.triggering.TriggeringRegion
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
@@ -22,4 +24,24 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
 
             return player
         }
+
+    /** List of regions the player is in. */
+    private val regions: MutableList<Region> = mutableListOf()
+
+    /** Runs when a player enters [region] or actively is inside. */
+    public fun updateOnRegion(region: TriggeringRegion) {
+        val player = onlinePlayer
+
+        if (regions.contains(region)) region.onIdle?.invoke(player)
+        else {
+            region.onEnter?.invoke(player)
+            regions.add(region)
+        }
+    }
+
+    /** Runs when a player leaves [region]. */
+    public fun leaveRegion(region: TriggeringRegion) {
+        region.onLeave?.invoke(onlinePlayer)
+        regions.remove(region)
+    }
 }

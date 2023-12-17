@@ -2,7 +2,7 @@ package me.hugo.thankmas
 
 import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.i18n.PropertiesFileTranslationRegistry
-import me.hugo.thankmas.di.ThankmasModules
+import me.hugo.thankmas.dependencyinjection.ThankmasModules
 import me.hugo.thankmas.items.clickable.ClickableItemRegistry
 import me.hugo.thankmas.listener.MenuListener
 import org.bukkit.Bukkit

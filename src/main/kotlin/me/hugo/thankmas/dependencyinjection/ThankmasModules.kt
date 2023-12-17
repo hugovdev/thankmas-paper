@@ -1,4 +1,4 @@
-package me.hugo.thankmas.di
+package me.hugo.thankmas.dependencyinjection
 
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module

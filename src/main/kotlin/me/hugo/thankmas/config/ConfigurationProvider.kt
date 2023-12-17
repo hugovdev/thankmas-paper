@@ -1,6 +1,8 @@
 package me.hugo.thankmas.config
 
 import me.hugo.thankmas.ThankmasPlugin
+import me.hugo.thankmas.util.HashBiMap
+import me.hugo.thankmas.util.MutableBiMap
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import org.koin.core.annotation.Single
@@ -14,7 +16,21 @@ import java.nio.file.StandardCopyOption
 @Single
 public class ConfigurationProvider {
 
-    private val configs: MutableMap<String, FileConfiguration> = mutableMapOf()
+    /** Cached configuration files. */
+    private val configs = HashBiMap<String, FileConfiguration>()
+
+    /** File that belongs to each config name. */
+    private val files: MutableMap<String, File> = mutableMapOf()
+
+    /** @returns the file that contains this config. */
+    public fun getFile(config: String): File? {
+        return files[config]
+    }
+
+    /** @returns the config name by the config object. */
+    public fun getNameFromConfig(config: FileConfiguration): String? {
+        return configs.inverse[config]
+    }
 
     /** Gets a cached configuration file or loads and caches it. */
     public fun getOrLoad(config: String, path: String = ""): FileConfiguration {
@@ -30,9 +46,11 @@ public class ConfigurationProvider {
     }
 
     /** Loads a configuration file. */
-    public fun load(config: String, path: String = ""): FileConfiguration {
+    private fun load(config: String, path: String = ""): FileConfiguration {
         val fileName = "$config.yml"
-        val configFile = File(ThankmasPlugin.instance().dataFolder, path + fileName)
+        val configFile = files.computeIfAbsent(config) {
+            File(ThankmasPlugin.instance().dataFolder, path + fileName)
+        }
 
         if (!configFile.exists()) {
             configFile.parentFile.mkdirs()
@@ -41,7 +59,11 @@ public class ConfigurationProvider {
             val resourceStream = javaClass.getResourceAsStream("/$fileName")
 
             if (resourceStream != null) {
-                Files.copy(resourceStream, configFile.getAbsoluteFile().toPath(), StandardCopyOption.REPLACE_EXISTING)
+                Files.copy(
+                    resourceStream,
+                    configFile.getAbsoluteFile().toPath(),
+                    StandardCopyOption.REPLACE_EXISTING
+                )
             }
         }
 
