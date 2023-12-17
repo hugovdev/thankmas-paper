@@ -9,6 +9,7 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.Registry
 import org.bukkit.block.banner.Pattern
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.enchantments.Enchantment
@@ -22,6 +23,34 @@ import kotlin.reflect.KClass
 
 /** Style reset for lore and names. (Removes italics and ugly lore color) */
 private val resetStyles = Style.style(NamedTextColor.WHITE, TextDecoration.ITALIC.withState(false))
+
+/** Loads this item stack's data from a config file and path. */
+context(MiniPhraseContext)
+public fun KClass<ItemStack>.load(config: FileConfiguration, path: String, locale: Locale): ItemStack {
+    val material = Material.valueOf(config.getString("$path.material") ?: "BEDROCK")
+    val nameTranslation = config.getString("$path.name") ?: "$path.name"
+    val loreTranslation = config.getString("$path.lore") ?: "$path.lore"
+    val customModelData = config.getInt("$path.custom-model-data")
+
+    val item = ItemStack(material)
+        .nameTranslatable(nameTranslation, locale)
+        .loreTranslatable(loreTranslation, locale)
+        .customModelData(customModelData)
+        .flags(*config.getStringList("$path.flags").map { ItemFlag.valueOf(it.uppercase()) }.toTypedArray())
+
+    config.getStringList("enchantments").forEach {
+        val serializedParts = it.split(", ")
+        requireNotNull(serializedParts.size == 2) { "Tried to apply enchantment to item in $path but it doesn't follow the correct config format. (enchantment_name, level)" }
+
+        val enchantmentName = serializedParts[0]
+        val enchantment = Registry.ENCHANTMENT.get(NamespacedKey.minecraft(enchantmentName))
+        requireNotNull(enchantment) { "Could not find enchantment with name $enchantmentName." }
+
+        item.addEnchantment(enchantment, serializedParts[1].toInt())
+    }
+
+    return item
+}
 
 /** Changes the amount of this item stack to [amount]. */
 public fun ItemStack.amount(amount: Int): ItemStack {
@@ -61,6 +90,8 @@ public fun ItemStack.loreTranslatable(
 
 /** Sets the custom model data of this item stack. */
 public fun ItemStack.customModelData(id: Int): ItemStack {
+    if (id == -1) return this
+
     val meta = itemMeta
     meta.setCustomModelData(id)
     itemMeta = meta

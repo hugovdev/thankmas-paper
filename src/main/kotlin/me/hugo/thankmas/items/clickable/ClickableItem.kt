@@ -1,16 +1,11 @@
 package me.hugo.thankmas.items.clickable
 
-import me.hugo.thankmas.items.flags
-import me.hugo.thankmas.items.loreTranslatable
-import me.hugo.thankmas.items.nameTranslatable
-import me.hugo.thankmas.items.setKeyedData
+import me.hugo.thankmas.items.*
 import me.hugo.thankmas.lang.TranslatedComponent
-import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
@@ -50,7 +45,7 @@ public class ClickableItem : TranslatedComponent {
 
         this.defaultSlot = config.getInt("$path.slot")
 
-        loadItemFromConfig(config, path)
+        createItems(config, path)
     }
 
     /** Constructor that lets you define a custom click action for the item. */
@@ -64,28 +59,15 @@ public class ClickableItem : TranslatedComponent {
         this.clickAction = clickAction
         this.defaultSlot = config.getInt("$path.slot")
 
-        loadItemFromConfig(config, path)
+        createItems(config, path)
     }
 
     /** Loads an item stack from [config] at [path]. */
-    private fun loadItemFromConfig(config: FileConfiguration, path: String) {
-        val material = Material.valueOf(config.getString("$path.material") ?: "BEDROCK")
-        val nameTranslation = config.getString("$path.name") ?: "$path.name"
-        val loreTranslation = config.getString("$path.lore") ?: "$path.lore"
-
+    private fun createItems(config: FileConfiguration, path: String) {
         miniPhrase.translationRegistry.getLocales().forEach {
             // Create the item from config specifications and set the
             // clickable item id on the PDC.
-            val item = ItemStack(material)
-                .nameTranslatable(nameTranslation, it)
-                .loreTranslatable(loreTranslation, it)
-                .flags(
-                    ItemFlag.HIDE_ATTRIBUTES,
-                    ItemFlag.HIDE_ITEM_SPECIFICS,
-                    ItemFlag.HIDE_ENCHANTS,
-                    ItemFlag.HIDE_DYE,
-                    ItemFlag.HIDE_ARMOR_TRIM
-                )
+            val item = ItemStack::class.load(config, path, it)
                 .setKeyedData(CLICKABLE_ITEM_ID, PersistentDataType.STRING, id)
 
             // Cache the item stack in each language.
