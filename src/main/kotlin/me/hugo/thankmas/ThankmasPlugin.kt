@@ -28,7 +28,7 @@ public open class ThankmasPlugin : JavaPlugin(), KoinComponent {
 
     public val globalTranslations: MiniPhrase = MiniPhrase.configureAndBuild {
         miniMessage(translations.translations.miniMessage)
-        translationRegistry(PropertiesFileTranslationRegistry(File(dataFolder, "../global_lang/"), "global_", true))
+        translationRegistry(PropertiesFileTranslationRegistry(File(dataFolder, "../global/lang/"), "global_", true))
         defaultLocale(Locale.US)
     }
 

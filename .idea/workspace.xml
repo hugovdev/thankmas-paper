@@ -4,27 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Add function to add translated lore lines to existing item.">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/config/ConfigurationProvider.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/paginated/ConfigurablePaginatedMenu.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/paginated/PaginatedMenu.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/TranslatableItem.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PlayerExt.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/global/en_us.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/global/es_es.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/menu_icons.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/Thankmas-1.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/libs/Thankmas-1.0-SNAPSHOT-all.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/ConfiguredMenu.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/ConfiguredMenu.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Icon.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Icon.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Menu.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Menu.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/MenuView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/MenuView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/ItemStackExt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/ItemStackExt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/clickable/ClickableItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/clickable/ClickableItem.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/scoreboard/ScoreboardTemplate.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/scoreboard/ScoreboardTemplate.kt" afterDir="false" />
-    </list>
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Paginated menus, global languages, translatable items and more" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -97,7 +77,7 @@
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hugov/IdeaProjects/ThankmasPaper/src/main/resources/global&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/hugov/IdeaProjects/ThankmasPaper/libs&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
@@ -105,13 +85,14 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\resources\global" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\libs" />
+      <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\resources\global" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\kotlin\me\hugo\thankmas\player" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\build\libs" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\kotlin\me\hugo\thankmas\items" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\resources" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\libs" />
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\kotlin\me\hugo\thankmas\items" />
     </key>
@@ -295,7 +276,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702817648139</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Paginated menus, global languages, translatable items and more">
+      <option name="closed" value="true" />
+      <created>1702835748856</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1702835748856</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -313,6 +302,7 @@
     <MESSAGE value="Configurable data source and register clickable items and menus in every thankmas plugin" />
     <MESSAGE value="Add ItemStack config loader" />
     <MESSAGE value="Add function to add translated lore lines to existing item." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add function to add translated lore lines to existing item." />
+    <MESSAGE value="Paginated menus, global languages, translatable items and more" />
+    <option name="LAST_COMMIT_MESSAGE" value="Paginated menus, global languages, translatable items and more" />
   </component>
 </project>

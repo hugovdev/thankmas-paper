@@ -25,18 +25,18 @@ public open class PaginatedMenu(
         private val configProvider: ConfigurationProvider by inject()
 
         public val EXIT: TranslatableItem = TranslatableItem(
-            configProvider.getOrLoad("menu_icons"),
+            configProvider.getOrLoad("menu_icons", "../global/"),
             "exit",
             ThankmasPlugin.instance().globalTranslations
         )
         public val PREVIOUS_PAGE: TranslatableItem =
             TranslatableItem(
-                configProvider.getOrLoad("menu_icons"),
+                configProvider.getOrLoad("menu_icons", "../global/"),
                 "previous-page",
                 ThankmasPlugin.instance().globalTranslations
             )
         public val NEXT_PAGE: TranslatableItem = TranslatableItem(
-            configProvider.getOrLoad("menu_icons"),
+            configProvider.getOrLoad("menu_icons", "../global/"),
             "next-page",
             ThankmasPlugin.instance().globalTranslations
         )
