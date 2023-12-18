@@ -29,19 +29,24 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
     private val regions: MutableList<Region> = mutableListOf()
 
     /** Runs when a player enters [region] or actively is inside. */
-    public fun updateOnRegion(region: TriggeringRegion) {
+    public fun updateOnRegion(region: Region) {
         val player = onlinePlayer
 
-        if (regions.contains(region)) region.onIdle?.invoke(player)
+        val triggeringRegion = region as? TriggeringRegion?
+
+        if (regions.contains(region)) triggeringRegion?.onIdle?.invoke(player)
         else {
-            region.onEnter?.invoke(player)
+            triggeringRegion?.onEnter?.invoke(player)
             regions.add(region)
         }
     }
 
     /** Runs when a player leaves [region]. */
-    public fun leaveRegion(region: TriggeringRegion) {
-        region.onLeave?.invoke(onlinePlayer)
-        regions.remove(region)
+    public fun leaveRegion(region: Region) {
+        val triggeringRegion = region as? TriggeringRegion?
+
+        if (regions.remove(region)) {
+            triggeringRegion?.onLeave?.invoke(onlinePlayer)
+        }
     }
 }

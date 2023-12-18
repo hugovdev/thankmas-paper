@@ -1,7 +1,7 @@
 package me.hugo.thankmas.region
 
 import me.hugo.thankmas.config.ConfigurationProvider
-import me.hugo.thankmas.config.getStringNotNull
+import me.hugo.thankmas.config.string
 import me.hugo.thankmas.location.deserializeLocation
 import me.hugo.thankmas.location.serializeString
 import me.hugo.thankmas.region.triggering.TriggeringRegion
@@ -23,9 +23,9 @@ public open class Region(public val id: String, public val corner1: Location, pu
      * Loads a region from [config] in [path].
      */
     public constructor(config: FileConfiguration, path: String) : this(
-        config.getStringNotNull("$path.region-id"),
-        config.getStringNotNull("$path.corner1").deserializeLocation(),
-        config.getStringNotNull("$path.corner2").deserializeLocation()
+        config.string("$path.region-id"),
+        config.string("$path.corner1").deserializeLocation(),
+        config.string("$path.corner2").deserializeLocation()
     )
 
     protected val configProvider: ConfigurationProvider by inject()

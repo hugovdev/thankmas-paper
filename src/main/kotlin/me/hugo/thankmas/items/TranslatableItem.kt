@@ -4,7 +4,7 @@ import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.MiniPhraseContext
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import me.hugo.thankmas.DefaultTranslations
-import me.hugo.thankmas.config.getStringNotNull
+import me.hugo.thankmas.config.string
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Registry
@@ -23,15 +23,16 @@ public class TranslatableItem(
     override val miniPhrase: MiniPhrase = DefaultTranslations.instance.translations
 ) : MiniPhraseContext {
 
-    private val material = Material.valueOf(config.getStringNotNull("$path.material"))
+    private val material = Material.valueOf(config.string("$path.material"))
     private val customModelData = config.getInt("$path.custom-model-data")
 
     private val baseItem = ItemStack(material)
         .customModelData(customModelData)
+        .unbreakable(config.getBoolean("$path.unbreakable", false))
         .flags(*config.getStringList("$path.flags").map { ItemFlag.valueOf(it.uppercase()) }.toTypedArray())
 
-    public val name: String = config.getStringNotNull("$path.name")
-    public val lore: String = config.getStringNotNull("$path.lore")
+    public val name: String = config.string("$path.name")
+    public val lore: String = config.string("$path.lore")
 
     init {
         config.getStringList("enchantments").forEach {

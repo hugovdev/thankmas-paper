@@ -10,7 +10,7 @@ public fun Location.serializeString(): String {
 public fun String.deserializeLocation(): Location {
     val split = split(" , ")
 
-    requireNotNull(split.size == 6) { "Location \"$this\" doesn't follow the correct format." }
+    require(split.size == 6) { "Location \"$this\" doesn't follow the correct format." }
 
     return Location(
         Bukkit.getWorld(split[0]), split[1].toDouble(), split[2].toDouble(), split[3].toDouble(),

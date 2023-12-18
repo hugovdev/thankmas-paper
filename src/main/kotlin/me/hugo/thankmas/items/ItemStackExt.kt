@@ -86,6 +86,14 @@ public fun ItemStack.customModelData(id: Int): ItemStack {
     return this
 }
 
+/** Changes whether this item is unbreakable. */
+public fun ItemStack.unbreakable(unbreakable: Boolean): ItemStack {
+    val meta = itemMeta
+    meta.isUnbreakable = unbreakable
+    itemMeta = meta
+    return this
+}
+
 /** Saves [value] of type [dataType] in the key [key] in this item stack. */
 public fun <T, V : Any> ItemStack.setKeyedData(key: String, dataType: PersistentDataType<T, V>, value: V): ItemStack {
     return setKeyedData(NamespacedKey("thankmas", key), dataType, value)

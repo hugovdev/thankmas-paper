@@ -1,6 +1,6 @@
 package me.hugo.thankmas.items.clickable
 
-import me.hugo.thankmas.config.getStringNotNull
+import me.hugo.thankmas.config.string
 import me.hugo.thankmas.items.*
 import me.hugo.thankmas.lang.TranslatedComponent
 import org.bukkit.NamespacedKey
@@ -38,7 +38,7 @@ public class ClickableItem : TranslatedComponent {
     public constructor(id: String, config: FileConfiguration, path: String) {
         this.id = id
 
-        val command = config.getStringNotNull("$path.command")
+        val command = config.string("$path.command")
         this.clickAction = { player, action ->
             if (action.isRightClick) player.chat("/$command")
             true
