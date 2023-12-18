@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Change menu approach from InventoryHolders to a safer MapBasedRegistry">
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Make regions work and stuff">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/config/ConfigurationExt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/config/ConfigurationExt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/paginated/ConfigurablePaginatedMenu.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/paginated/ConfigurablePaginatedMenu.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/TranslatableItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/TranslatableItem.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/clickable/ClickableItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/clickable/ClickableItem.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/location/LocationExt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/location/LocationExt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PaperPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PaperPlayerData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/region/Region.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/region/Region.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/Thankmas-1.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/libs/Thankmas-1.0-SNAPSHOT-all.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Menu.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Menu.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/ScoreboardPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/ScoreboardPlayerData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/region/RegionRegistry.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/region/RegionRegistry.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/registry/MapBasedRegistry.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -332,7 +329,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702899290432</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Make regions work and stuff">
+      <option name="closed" value="true" />
+      <created>1702902996313</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1702902996313</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -355,6 +360,7 @@
     <MESSAGE value="A lot of region work" />
     <MESSAGE value="Registries, more config null safety yay!" />
     <MESSAGE value="Change menu approach from InventoryHolders to a safer MapBasedRegistry" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change menu approach from InventoryHolders to a safer MapBasedRegistry" />
+    <MESSAGE value="Make regions work and stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Make regions work and stuff" />
   </component>
 </project>

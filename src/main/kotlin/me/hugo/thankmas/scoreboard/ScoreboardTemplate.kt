@@ -32,7 +32,7 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData>(
 
     init {
         miniPhrase.translationRegistry.getLocales().forEach { language ->
-            val lines = miniPhrase.translationRegistry.getList(key, language) ?: listOf(key)
+            val lines = miniPhrase.translationRegistry.getList(key, language) ?: return@forEach
             boardLines[language] = lines
 
             scoreboardManager.tagResolvers.forEach { (tag, resolver) ->
@@ -53,8 +53,8 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData>(
     }
 
     /** Prints this scoreboard to [player]. */
-    public fun printBoard(player: Player) {
-        val language = player.locale()
+    public fun printBoard(player: Player, locale: Locale? = null) {
+        val language = getValidLanguage(player, locale)
 
         val translatedResolvers = usedResolvers
             .map { tagData -> TagResolver.resolver(tagData.key, tagData.value.invoke(player)) }.toTypedArray()
@@ -69,24 +69,50 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData>(
         scoreboardManager.playerManager.getPlayerData(player.uniqueId).getBoard().updateLines(lines)
     }
 
+    /**
+     * @returns [preferredLocale] if specified and valid, if not, it checks for the player
+     * locale, and if that one isn't valid either it uses the default one.
+     */
+    private fun getValidLanguage(player: Player, preferredLocale: Locale? = null): Locale {
+        val playerLocale = player.locale()
+
+        return if (preferredLocale != null && !boardLines[preferredLocale].isNullOrEmpty()) preferredLocale
+        else if (boardLines[playerLocale].isNullOrEmpty()) miniPhrase.defaultLocale
+        else playerLocale
+    }
+
+    /** @returns the locations of every tag in this language. */
+    private fun getTagLocations(locale: Locale): MutableMap<String, List<Int>> {
+        val locations = tagLocations[locale] ?: tagLocations[miniPhrase.defaultLocale]
+        requireNotNull(locations) { "Tag locations for language ${locale.toLanguageTag()} could not be found." }
+
+        return locations
+    }
+
     /** Updates every line that contains any of the [tags] for [player]. */
     public fun updateLinesForTag(player: Player, vararg tags: String) {
         val locations = mutableListOf<Int>()
-        val language = player.locale()
+        val language = getValidLanguage(player)
 
         tags.forEach {
-            tagLocations[language]!![it]?.let { newLocations -> locations.addAll(newLocations) }
+            getTagLocations(language)[it]?.let { newLocations -> locations.addAll(newLocations) }
         }
 
-        val boardLines = boardLines[language]!!
+        val boardLines = boardLines[language]
+        requireNotNull(boardLines) { "Board lines for $key are null for ${language.toLanguageTag()} and default lang!" }
 
         locations.toSet().forEach {
+            val inversedTags = inversedTagLocations[language] ?: inversedTagLocations[miniPhrase.defaultLocale]
+            requireNotNull(inversedTags) { "Could not find inversed scoreboard tag locations for ${language.toLanguageTag()}!" }
+
             scoreboardManager.playerManager.getPlayerData(player.uniqueId).getBoard()
                 .updateLine(it, miniPhrase.format(boardLines[it]) {
-                    inversedTagLocations[language]!![it]?.forEach { tag ->
-                        TagResolver.resolver(
-                            tag,
-                            usedResolvers[tag]?.invoke(player) ?: Tag.inserting { Component.text(tag) })
+
+                    inversedTags[it]?.forEach { tag ->
+                        val resolver = usedResolvers[tag]
+                        requireNotNull(resolver) { "Couldn't find resolver for scoreboard tag $tag!" }
+
+                        resolver(TagResolver.resolver(tag, resolver(player)))
                     }
                 })
         }

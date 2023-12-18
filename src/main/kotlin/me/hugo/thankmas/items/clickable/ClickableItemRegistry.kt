@@ -2,9 +2,13 @@ package me.hugo.thankmas.items.clickable
 
 import me.hugo.thankmas.items.getKeyedData
 import me.hugo.thankmas.items.hasKeyedData
+import me.hugo.thankmas.registry.MapBasedRegistry
+import org.bukkit.GameMode
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.persistence.PersistentDataType
@@ -12,27 +16,18 @@ import org.koin.core.annotation.Single
 
 /** Registers clickable items to make them clickable through listeners. */
 @Single
-public class ClickableItemRegistry : Listener {
+public class ClickableItemRegistry : MapBasedRegistry<String, ClickableItem>(), Listener {
 
-    // ClickableItem id -> ClickableItem
-    private val clickableItems: MutableMap<String, ClickableItem> = mutableMapOf()
+    @EventHandler
+    private fun onItemClickInventory(event: InventoryClickEvent) {
+        if (event.whoClicked.gameMode == GameMode.CREATIVE) return
+        val item = event.currentItem ?: return
 
-    /** Registers [item] to make it clickable. */
-    public fun registerItem(item: ClickableItem) {
-        clickableItems[item.id] = item
-    }
+        val clickableItemId =
+            item.getKeyedData(ClickableItem.CLICKABLE_ITEM_ID, PersistentDataType.STRING) ?: return
 
-    /** @returns the clickable item for this [id], can be null. */
-    public fun getItemOrNull(id: String): ClickableItem? {
-        return clickableItems[id]
-    }
-
-    /** @returns the clickable item for this [id]. */
-    public fun getItem(id: String): ClickableItem {
-        val item = getItemOrNull(id)
-        requireNotNull(item) { "Tried to get clickable item with id \"$id\" but it's null." }
-
-        return item
+        event.isCancelled = true
+        get(clickableItemId).clickAction(event.whoClicked as Player, Action.RIGHT_CLICK_AIR)
     }
 
     @EventHandler
@@ -43,7 +38,7 @@ public class ClickableItemRegistry : Listener {
         val clickableItemId =
             item.getKeyedData(ClickableItem.CLICKABLE_ITEM_ID, PersistentDataType.STRING) ?: return
 
-        event.isCancelled = getItem(clickableItemId).clickAction(event.player, event.action)
+        event.isCancelled = get(clickableItemId).clickAction(event.player, event.action)
     }
 
     @EventHandler
@@ -55,4 +50,5 @@ public class ClickableItemRegistry : Listener {
             return
         }
     }
+
 }

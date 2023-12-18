@@ -79,10 +79,10 @@ public class ClickableItem : TranslatedComponent {
     }
 
     /** Give to [player] this item. */
-    public fun give(player: Player, slot: Int? = this.defaultSlot) {
+    public fun give(player: Player, locale: Locale? = null, slot: Int? = this.defaultSlot) {
         requireNotNull(slot) { "Tried to give clickable item $id but default slot is null and there was no slot specified." }
 
-        val item = items[player.locale()] ?: return
+        val item = items[locale ?: player.locale()] ?: return
         player.inventory.setItem(slot, item)
     }
 

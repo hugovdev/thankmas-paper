@@ -8,7 +8,6 @@ import me.hugo.thankmas.region.triggering.ActionableRegion
 import me.hugo.thankmas.region.triggering.RegionAction
 import me.hugo.thankmas.registry.MapBasedRegistry
 import org.bukkit.Bukkit
-import org.bukkit.configuration.file.FileConfiguration
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

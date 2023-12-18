@@ -13,7 +13,7 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
         val player = onlinePlayer
 
         val board = FastBoard(player)
-        title?.let { board.updateTitle(miniPhrase.translate(title, player.locale())) }
+        title?.let { board.updateTitle(player.translate(title)) }
 
         this.board = board
     }

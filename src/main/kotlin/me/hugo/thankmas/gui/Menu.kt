@@ -2,6 +2,7 @@ package me.hugo.thankmas.gui
 
 import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.listener.MenuManager
+import me.hugo.thankmas.player.translate
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -29,7 +30,7 @@ public open class Menu(
 
     /** Build this menu for [player]. */
     public fun buildInventory(player: Player): Inventory {
-        val inventory = Bukkit.createInventory(null, size, miniPhrase.translate(titleKey, player.locale()))
+        val inventory = Bukkit.createInventory(null, size, player.translate(titleKey))
         icons.forEach { inventory.setItem(it.key, it.value.itemSupplier(player)) }
 
         return inventory
