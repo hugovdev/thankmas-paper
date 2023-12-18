@@ -71,13 +71,15 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData>(
 
     /**
      * @returns [preferredLocale] if specified and valid, if not, it checks for the player
-     * locale, and if that one isn't valid either it uses the default one.
+     * locale, and if that one isn't valid, it uses the default one.
      */
     private fun getValidLanguage(player: Player, preferredLocale: Locale? = null): Locale {
         val playerLocale = player.locale()
 
-        return if (preferredLocale != null && !boardLines[preferredLocale].isNullOrEmpty()) preferredLocale
-        else if (boardLines[playerLocale].isNullOrEmpty()) miniPhrase.defaultLocale
+        return if (preferredLocale != null) {
+            if (!boardLines[preferredLocale].isNullOrEmpty()) preferredLocale
+            else miniPhrase.defaultLocale
+        } else if (boardLines[playerLocale].isNullOrEmpty()) miniPhrase.defaultLocale
         else playerLocale
     }
 

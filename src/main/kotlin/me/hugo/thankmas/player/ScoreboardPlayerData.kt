@@ -9,11 +9,11 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
     private var board: FastBoard? = null
 
     context(MiniPhraseContext)
-    public open fun initializeBoard(title: String? = null) {
+    public open fun initializeBoard(title: String? = null, locale: Locale? = null) {
         val player = onlinePlayer
 
         val board = FastBoard(player)
-        title?.let { board.updateTitle(player.translate(title)) }
+        title?.let { board.updateTitle(miniPhrase.translate(title, locale ?: player.locale())) }
 
         this.board = board
     }

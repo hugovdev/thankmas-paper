@@ -47,6 +47,11 @@ public class TranslatableItem(
         }
     }
 
+    /** Lets other classes edit details from this translatable item. */
+    public fun editBaseItem(editor: (item: ItemStack) -> ItemStack) {
+        editor(baseItem)
+    }
+
     /** @returns a supplier to build this item for [viewer]. */
     public fun supplier(viewer: Player, tags: TagResolverBuilder.() -> Unit): (player: Player) -> ItemStack =
         { buildItem(viewer.locale(), tags) }

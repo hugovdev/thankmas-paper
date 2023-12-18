@@ -22,8 +22,8 @@ public class ClickableItem : TranslatedComponent {
     /** This clickable item's id. */
     public val id: String
 
-    /** Cached item stacks for each language. */
-    private val items: MutableMap<Locale, ItemStack> = mutableMapOf()
+    /** Item to be given! */
+    private val translatableItem: TranslatableItem
 
     /** Default slot where this item gets given. */
     private val defaultSlot: Int?
@@ -46,7 +46,8 @@ public class ClickableItem : TranslatedComponent {
 
         this.defaultSlot = config.getInt("$path.slot")
 
-        createItems(config, path)
+        this.translatableItem = TranslatableItem(config, path)
+        this.translatableItem.editBaseItem { it.setKeyedData(CLICKABLE_ITEM_ID, PersistentDataType.STRING, id) }
     }
 
     /** Constructor that lets you define a custom click action for the item. */
@@ -60,30 +61,15 @@ public class ClickableItem : TranslatedComponent {
         this.clickAction = clickAction
         this.defaultSlot = config.getInt("$path.slot")
 
-        createItems(config, path)
-    }
-
-    /** Loads an item stack from [config] at [path]. */
-    private fun createItems(config: FileConfiguration, path: String) {
-        val translatableItem = TranslatableItem(config, path)
-
-        miniPhrase.translationRegistry.getLocales().forEach {
-            // Create the item from config specifications and set the
-            // clickable item id on the PDC.
-            val item = translatableItem.buildItem(it)
-                .setKeyedData(CLICKABLE_ITEM_ID, PersistentDataType.STRING, id)
-
-            // Cache the item stack in each language.
-            this.items[it] = item
-        }
+        this.translatableItem = TranslatableItem(config, path)
+        this.translatableItem.editBaseItem { it.setKeyedData(CLICKABLE_ITEM_ID, PersistentDataType.STRING, id) }
     }
 
     /** Give to [player] this item. */
     public fun give(player: Player, locale: Locale? = null, slot: Int? = this.defaultSlot) {
         requireNotNull(slot) { "Tried to give clickable item $id but default slot is null and there was no slot specified." }
 
-        val item = items[locale ?: player.locale()] ?: return
-        player.inventory.setItem(slot, item)
+        player.inventory.setItem(slot, translatableItem.buildItem(locale ?: player.locale()))
     }
 
 }

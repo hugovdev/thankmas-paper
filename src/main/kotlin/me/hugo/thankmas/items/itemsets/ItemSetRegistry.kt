@@ -18,12 +18,15 @@ import java.util.Locale
  * situations, for example, when joining a lobby, arena or area.
  */
 @Single
-public class ItemSetRegistry(config: FileConfiguration) : MapBasedRegistry<String, List<ClickableItem>>(),
+public class ItemSetRegistry(private val config: FileConfiguration) : MapBasedRegistry<String, List<ClickableItem>>(),
     KoinComponent {
 
     private val itemRegistry: ClickableItemRegistry by inject()
 
-    init {
+    init { loadItems() }
+
+    /** Loads item sets from config. */
+    public fun loadItems() {
         config.getConfigurationSection("item-sets")?.getKeys(false)?.forEach { setId ->
             config.getConfigurationSection("item-sets.$setId")?.getKeys(false)
                 ?.map {
