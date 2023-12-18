@@ -2,13 +2,12 @@ package me.hugo.thankmas.gui
 
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.InventoryHolder
+import org.koin.core.component.KoinComponent
 
 /** Specific menu view of [menu] for [player]. */
-public class MenuView(private val player: Player, public val menu: Menu) :
-    InventoryHolder {
+public class MenuView(private val player: Player, public val menu: Menu) : KoinComponent {
 
-    private val inventory: Inventory = menu.buildInventory(player, this)
+    public val inventory: Inventory = menu.buildInventory(player)
 
     /** Rebuilds the icon in slot [slot] for this menu view. */
     public fun rebuildIcon(slot: Int) {
@@ -17,6 +16,4 @@ public class MenuView(private val player: Player, public val menu: Menu) :
 
         inventory.setItem(slot, icon.itemSupplier(player))
     }
-
-    override fun getInventory(): Inventory = inventory
 }

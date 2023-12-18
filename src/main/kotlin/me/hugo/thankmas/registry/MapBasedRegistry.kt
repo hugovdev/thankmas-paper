@@ -32,6 +32,11 @@ public open class MapBasedRegistry<K, V> {
         return value
     }
 
+    /** Removes register with key [key] from the registry. */
+    public fun remove(key: K) {
+        registry.remove(key)
+    }
+
     /** @returns all the registered keys. */
     public fun getKeys(): Collection<K> {
         return registry.keys

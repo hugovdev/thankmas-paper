@@ -1,9 +1,11 @@
 package me.hugo.thankmas.gui
 
 import me.hugo.thankmas.lang.TranslatedComponent
+import me.hugo.thankmas.listener.MenuManager
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
+import org.koin.core.component.inject
 
 /** Translatable menu with clickable icons and a default format. */
 public open class Menu(
@@ -16,12 +18,18 @@ public open class Menu(
     /** Creates an inventory view for [player] and opens it. */
     public fun open(player: Player) {
         val menuView = MenuView(player, this)
-        player.openInventory(menuView.inventory)
+
+        val inventory = menuView.inventory
+
+        val menuManager: MenuManager by inject()
+        menuManager.register(inventory, menuView)
+
+        player.openInventory(inventory)
     }
 
     /** Build this menu for [player]. */
-    public fun buildInventory(player: Player, menuView: MenuView): Inventory {
-        val inventory = Bukkit.createInventory(menuView, size, miniPhrase.translate(titleKey, player.locale()))
+    public fun buildInventory(player: Player): Inventory {
+        val inventory = Bukkit.createInventory(null, size, miniPhrase.translate(titleKey, player.locale()))
         icons.forEach { inventory.setItem(it.key, it.value.itemSupplier(player)) }
 
         return inventory

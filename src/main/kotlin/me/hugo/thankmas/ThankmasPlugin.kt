@@ -4,10 +4,8 @@ import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.i18n.PropertiesFileTranslationRegistry
 import me.hugo.thankmas.dependencyinjection.ThankmasModules
 import me.hugo.thankmas.items.clickable.ClickableItemRegistry
-import me.hugo.thankmas.listener.MenuListener
+import me.hugo.thankmas.listener.MenuManager
 import org.bukkit.Bukkit
-import org.bukkit.configuration.file.FileConfiguration
-import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -32,8 +30,6 @@ public open class ThankmasPlugin : JavaPlugin(), KoinComponent {
         defaultLocale(Locale.US)
     }
 
-    private val itemRegistry: ClickableItemRegistry by inject()
-
     public companion object {
         private var instance: ThankmasPlugin? = null
 
@@ -53,8 +49,11 @@ public open class ThankmasPlugin : JavaPlugin(), KoinComponent {
 
         val pluginManager = Bukkit.getPluginManager()
 
+        val itemRegistry: ClickableItemRegistry by inject()
         pluginManager.registerEvents(itemRegistry, this)
-        pluginManager.registerEvents(MenuListener(), this)
+
+        val menuManager: MenuManager by inject()
+        pluginManager.registerEvents(menuManager, this)
     }
 
 }
