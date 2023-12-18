@@ -18,7 +18,8 @@ public open class PaginatedMenu(
     private val titleKey: String,
     private val size: Int,
     private val menuFormat: Menu.MenuFormat,
-    private val representativeIcon: TranslatableItem? = null
+    private val representativeIcon: TranslatableItem? = null,
+    private val lastMenu: Menu? = null,
 ) {
 
     public companion object : KoinComponent {
@@ -29,6 +30,12 @@ public open class PaginatedMenu(
             "exit",
             ThankmasPlugin.instance().globalTranslations
         )
+        public val PREVIOUS_MENU: TranslatableItem =
+            TranslatableItem(
+                configProvider.getOrLoad("menu_icons", "../global/"),
+                "previous-menu",
+                ThankmasPlugin.instance().globalTranslations
+            )
         public val PREVIOUS_PAGE: TranslatableItem =
             TranslatableItem(
                 configProvider.getOrLoad("menu_icons", "../global/"),
@@ -52,6 +59,16 @@ public open class PaginatedMenu(
     /** Opens this paginated menu to [player]. */
     public fun open(player: Player) {
         pages.first().open(player)
+    }
+
+    /**
+     * Sets the icon in [slot] in page [page].
+     */
+    public fun setIcon(slot: Int, page: Int, icon: Icon) {
+        val menu = pages.getOrNull(page)
+        requireNotNull(menu) { "Cannot change icon in non-existent page $page." }
+
+        menu.setIcon(slot, icon)
     }
 
     /**
@@ -114,15 +131,28 @@ public open class PaginatedMenu(
                     }
                 })
         } else {
-            newPage.setIcon(menuFormat.getSlotForChar('P'), Icon({ context, _ ->
-                val clicker = context.clicker
+            if (lastMenu == null) {
+                newPage.setIcon(menuFormat.getSlotForChar('P'), Icon({ context, _ ->
+                    val clicker = context.clicker
 
-                clicker.closeInventory()
-                clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
-            }) { EXIT.buildItem(it.locale()) })
+                    clicker.closeInventory()
+                    clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
+                }) { EXIT.buildItem(it.locale()) })
+            } else {
+                newPage.setIcon(menuFormat.getSlotForChar('P'), Icon({ context, _ ->
+                    val clicker = context.clicker
+
+                    lastMenu.open(clicker)
+                    clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
+                }) { PREVIOUS_MENU.buildItem(it.locale()) })
+            }
         }
     }
 
+    /** @returns the first page. */
+    public fun firstPage(): Menu {
+        return pages.first()
+    }
 
     /** @returns the last page. */
     private fun lastPage(): Menu {

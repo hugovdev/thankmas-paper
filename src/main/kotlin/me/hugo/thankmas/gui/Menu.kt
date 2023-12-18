@@ -10,7 +10,7 @@ import org.koin.core.component.inject
 
 /** Translatable menu with clickable icons and a default format. */
 public open class Menu(
-    private val titleKey: String,
+    public val titleKey: String,
     private val size: Int,
     private val icons: MutableMap<Int, Icon> = mutableMapOf(),
     private val menuFormat: MenuFormat? = null

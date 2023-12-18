@@ -2,6 +2,10 @@ exit:
   material: "SPRUCE_DOOR"
   name: "item.exit.name"
   lore: "item.exit.lore"
+previous-menu:
+  material: "ARROW"
+  name: "item.previous_menu.name"
+  lore: "item.previous_menu.lore"
 previous-page:
   material: "ARROW"
   name: "item.previous_page.name"
