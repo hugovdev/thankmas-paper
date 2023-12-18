@@ -1,6 +1,8 @@
 package me.hugo.thankmas.region
 
 import me.hugo.thankmas.config.ConfigurationProvider
+import me.hugo.thankmas.config.getStringNotNull
+import me.hugo.thankmas.location.deserializeLocation
 import me.hugo.thankmas.location.serializeString
 import me.hugo.thankmas.region.triggering.TriggeringRegion
 import org.bukkit.Location
@@ -16,6 +18,15 @@ import kotlin.math.min
  */
 public open class Region(public val id: String, public val corner1: Location, public val corner2: Location) :
     KoinComponent {
+
+    /**
+     * Loads a region from [config] in [path].
+     */
+    public constructor(config: FileConfiguration, path: String) : this(
+        config.getStringNotNull("$path.region-id"),
+        config.getStringNotNull("$path.corner1").deserializeLocation(),
+        config.getStringNotNull("$path.corner2").deserializeLocation()
+    )
 
     protected val configProvider: ConfigurationProvider by inject()
 
@@ -39,14 +50,14 @@ public open class Region(public val id: String, public val corner1: Location, pu
      * custom runnables.
      */
     public fun toTriggering(
-        onEnter: ((player: Player) -> Unit)?,
-        onIdle: ((player: Player) -> Unit)?,
-        onLeave: ((player: Player) -> Unit)?
+        onEnter: ((player: Player) -> Unit)? = null,
+        onIdle: ((player: Player) -> Unit)? = null,
+        onLeave: ((player: Player) -> Unit)? = null
     ): TriggeringRegion {
         val registry: RegionRegistry by inject()
         val triggeringRegion = TriggeringRegion(this, onEnter, onIdle, onLeave)
 
-        registry.register(triggeringRegion)
+        registry.register(this.id, triggeringRegion)
 
         return triggeringRegion
     }
