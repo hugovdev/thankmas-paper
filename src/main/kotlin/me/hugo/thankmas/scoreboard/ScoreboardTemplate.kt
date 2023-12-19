@@ -24,7 +24,7 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData>(
     /** Which lines contain certain tag in each language. */
     // langKey -> [tag -> lines that contain the tag]
     private val tagLocations: MutableMap<Locale, MutableMap<String, List<Int>>> = mutableMapOf()
-    private val usedResolvers: MutableMap<String, (player: Player) -> Tag> = mutableMapOf()
+    private val usedResolvers: MutableMap<String, (player: Player, preferredLocale: Locale?) -> Tag> = mutableMapOf()
 
     /** Which tags are used in each line in each language. */
     // langKey [line -> tags]
@@ -57,7 +57,7 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData>(
         val language = getValidLanguage(player, locale)
 
         val translatedResolvers = usedResolvers
-            .map { tagData -> TagResolver.resolver(tagData.key, tagData.value.invoke(player)) }.toTypedArray()
+            .map { tagData -> TagResolver.resolver(tagData.key, tagData.value.invoke(player, language)) }.toTypedArray()
 
         val lines = boardLines[language]!!
             .map { line ->
@@ -114,7 +114,7 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData>(
                         val resolver = usedResolvers[tag]
                         requireNotNull(resolver) { "Couldn't find resolver for scoreboard tag $tag!" }
 
-                        resolver(TagResolver.resolver(tag, resolver(player)))
+                        resolver(TagResolver.resolver(tag, resolver(player, language)))
                     }
                 })
         }

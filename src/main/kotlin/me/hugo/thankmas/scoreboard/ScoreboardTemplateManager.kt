@@ -9,6 +9,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 /**
  * Registry of every [ScoreboardTemplate] used in the plugin.
@@ -22,7 +23,7 @@ public open class ScoreboardTemplateManager<T : ScoreboardPlayerData>(
     private val loadedTemplates: MutableMap<String, ScoreboardTemplate<T>> = mutableMapOf()
 
     /** Player-specific tag suppliers. */
-    public val tagResolvers: MutableMap<String, (player: Player) -> Tag> = mutableMapOf()
+    public val tagResolvers: MutableMap<String, (player: Player, preferredLocale: Locale?) -> Tag> = mutableMapOf()
 
     /** Registers the tags and loads the templates. */
     public fun initialize() {
@@ -64,7 +65,7 @@ public open class ScoreboardTemplateManager<T : ScoreboardPlayerData>(
      * what they should return.
      */
     protected open fun registerTags() {
-        registerTag("date") {
+        registerTag("date") { _, _ ->
             Tag.selfClosingInserting {
                 Component.text(
                     DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.now())
@@ -72,11 +73,11 @@ public open class ScoreboardTemplateManager<T : ScoreboardPlayerData>(
             }
         }
 
-        registerTag("players") { Tag.selfClosingInserting { Component.text(Bukkit.getOnlinePlayers().size) } }
+        registerTag("players") { _, _ -> Tag.selfClosingInserting { Component.text(Bukkit.getOnlinePlayers().size) } }
     }
 
     /** Registers [tag] which returns the result of running [resolver]. */
-    protected fun registerTag(tag: String, resolver: (player: Player) -> Tag) {
+    protected fun registerTag(tag: String, resolver: (player: Player, preferredLocale: Locale?) -> Tag) {
         tagResolvers[tag] = resolver
     }
 }

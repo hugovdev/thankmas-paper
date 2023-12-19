@@ -13,15 +13,22 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
-public fun UUID.player(): Player? = Bukkit.getPlayer(this)
+public fun UUID.player(): Player? = Bukkit.getPlayer(this)?.takeIf { it.isOnline }
 
 context(MiniPhraseContext)
-public fun Player.translate(key: String, tags: (TagResolverBuilder.() -> Unit)? = null): Component =
-    miniPhrase.translate(key, this.locale(), tags)
+public fun Player.translate(
+    key: String,
+    locale: Locale? = null,
+    tags: (TagResolverBuilder.() -> Unit)? = null
+): Component =
+    miniPhrase.translate(key, locale ?: this.locale(), tags)
 
 context(MiniPhraseContext)
-public fun Player.translateList(key: String, tags: (TagResolverBuilder.() -> Unit)? = null): List<Component> =
-    miniPhrase.translateList(key, this.locale(), tags)
+public fun Player.translateList(
+    key: String,
+    locale: Locale? = null, tags: (TagResolverBuilder.() -> Unit)? = null
+): List<Component> =
+    miniPhrase.translateList(key, locale ?: this.locale(), tags)
 
 public fun Inventory.firstIf(predicate: (ItemStack) -> Boolean): Pair<Int, ItemStack>? {
     for (slot in 0 until size) {
@@ -33,7 +40,7 @@ public fun Inventory.firstIf(predicate: (ItemStack) -> Boolean): Pair<Int, ItemS
 }
 
 context(MiniPhraseContext)
-public fun Player.showTitle(key: String, times: Title.Times,tags: (TagResolverBuilder.() -> Unit)? = null) {
+public fun Player.showTitle(key: String, times: Title.Times, tags: (TagResolverBuilder.() -> Unit)? = null) {
     val titles = miniPhrase.translateList(key, this.locale(), tags)
 
     if (titles.size > 1) {

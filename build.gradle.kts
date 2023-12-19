@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    compileOnly("net.luckperms:api:5.4")
 
     ksp("io.insert-koin:koin-ksp-compiler:1.3.0")
     implementation("fr.mrmicky:fastboard:2.0.2")
