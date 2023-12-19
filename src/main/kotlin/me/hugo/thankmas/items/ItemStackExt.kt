@@ -75,6 +75,25 @@ public fun ItemStack.addLoreTranslatable(
     return this
 }
 
+/**
+ * Adds the translation [key] in language [locale]
+ * to the current lore and uses TagResolvers in [tags].
+ */
+context(MiniPhraseContext)
+public fun ItemStack.addLoreTranslatableIf(
+    key: String,
+    locale: Locale,
+    tags: (TagResolverBuilder.() -> Unit)? = null,
+    predicate: () -> Boolean,
+): ItemStack {
+    if (!predicate.invoke()) return this
+
+    lore(
+        (lore() ?: mutableListOf()).plus(
+            miniPhrase.translateList(key, locale, tags).map { it.applyFallbackStyle(resetStyles) })
+    )
+    return this
+}
 
 /** Sets the custom model data of this item stack. */
 public fun ItemStack.customModelData(id: Int): ItemStack {
@@ -155,6 +174,14 @@ public fun ItemStack.putPatterns(vararg patterns: Pattern): ItemStack {
     patterns.forEach { meta.addPattern(it) }
     itemMeta = meta
     return this
+}
+
+/** Adds enchantment glint effect if [selected] is true. */
+public fun ItemStack.selectedEffect(selected: Boolean): ItemStack {
+    return if (selected) {
+        enchantment(Enchantment.LUCK)
+        flags(ItemFlag.HIDE_ENCHANTS)
+    } else this
 }
 
 /** Applies [enchantment] of level [level] to this item stack. */

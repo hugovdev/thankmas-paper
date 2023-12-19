@@ -58,7 +58,7 @@ public class TranslatableItem(
 
     /** Builds this item in [locale]. */
     public fun buildItem(locale: Locale, tags: (TagResolverBuilder.() -> Unit)? = null): ItemStack =
-        baseItem.nameTranslatable(name, locale, tags).loreTranslatable(lore, locale, tags)
+        ItemStack(baseItem).nameTranslatable(name, locale, tags).loreTranslatable(lore, locale, tags)
 
     /** @returns a copy of the base item. */
     public fun getBaseItem(): ItemStack = ItemStack(baseItem)
