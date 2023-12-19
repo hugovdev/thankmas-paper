@@ -1,7 +1,7 @@
 package me.hugo.thankmas.listener
 
 import me.hugo.thankmas.gui.Icon
-import me.hugo.thankmas.gui.MenuView
+import me.hugo.thankmas.gui.view.MenuView
 import me.hugo.thankmas.registry.MapBasedRegistry
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -36,6 +36,8 @@ public class MenuManager : MapBasedRegistry<Inventory, MenuView>(), Listener {
     @EventHandler
     private fun onInventoryClose(event: InventoryCloseEvent) {
         val menu = getOrNull(event.inventory) ?: return
+
+        menu.onClose()
         remove(menu.inventory)
     }
 

@@ -4,20 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Bug fixing and some more utility">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/PlayerNameTagUpdater.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/PlayerGroupChange.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/RankedPlayerData.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/scoreboard/ScoreboardExt.kt" afterDir="false" />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Add Nametags, LuckPerms hook and more!">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/icon/StatefulIcon.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/Thankmas-1.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/libs/Thankmas-1.0-SNAPSHOT-all.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PlayerExt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PlayerExt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/ScoreboardPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/ScoreboardPlayerData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/scoreboard/ScoreboardTemplate.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/scoreboard/ScoreboardTemplate.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/scoreboard/ScoreboardTemplateManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/scoreboard/ScoreboardTemplateManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/global_en_us.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/global_en_us.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/global_es_es.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/global_es_es.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Icon.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/icon/Icon.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Menu.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Menu.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/MenuView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/view/MenuView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/paginated/PaginatedMenu.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/paginated/PaginatedMenu.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/MenuManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/MenuManager.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,11 +111,11 @@
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\kotlin\me\hugo\thankmas\items" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="me.hugo.thankmas.gui.view" />
+      <recent name="me.hugo.thankmas.gui.icon" />
       <recent name="me.hugo.thankmas.player.rank" />
       <recent name="me.hugo.thankmas.player" />
       <recent name="me.hugo.thankmas.region" />
-      <recent name="me.hugo.thankmas.region.triggering" />
-      <recent name="me.hugo.thankmas.items.clickable" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="me.hugo.thankmas.location" />
@@ -387,7 +382,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702991551288</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Add Nametags, LuckPerms hook and more!">
+      <option name="closed" value="true" />
+      <created>1703009132482</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1703009132482</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -416,6 +419,7 @@
     <MESSAGE value="Last menu for paginated menus, allowing for better locale handling when players join" />
     <MESSAGE value="Add encodings" />
     <MESSAGE value="Bug fixing and some more utility" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bug fixing and some more utility" />
+    <MESSAGE value="Add Nametags, LuckPerms hook and more!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Nametags, LuckPerms hook and more!" />
   </component>
 </project>

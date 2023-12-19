@@ -21,7 +21,7 @@ dependencies {
 
     ksp("io.insert-koin:koin-ksp-compiler:1.3.0")
     implementation("fr.mrmicky:fastboard:2.0.2")
-    implementation(files("libs/Thankmas-1.0-SNAPSHOT-all.jar"))
+    implementation(files("C:/Users/hugov/IdeaProjects/TranslationsTest/build/libs/Thankmas-1.0-SNAPSHOT-all.jar"))
 
     implementation("com.github.Revxrsal.Lamp:common:3.1.8")
     implementation("com.github.Revxrsal.Lamp:bukkit:3.1.8")

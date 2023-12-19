@@ -1,5 +1,6 @@
 package me.hugo.thankmas.gui
 
+import me.hugo.thankmas.gui.view.MenuView
 import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.listener.MenuManager
 import me.hugo.thankmas.player.translate
@@ -69,6 +70,11 @@ public open class Menu(
         requireNotNull(menuFormat) { "Tried to addIcon to Menu without a page format." }
 
         return menuFormat.getSlotsForChar(char).all { icons[it] != null }
+    }
+
+    /** @returns all the icons in this menu. */
+    public fun getIcons(): List<Pair<Int, Icon>> {
+        return icons.toList()
     }
 
     /**
