@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Stateful icons">
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Stateful icons, suffix suplier for RankedPlayerData.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Menu.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/Menu.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/view/MenuView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/gui/view/MenuView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/MenuManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/MenuManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/ScoreboardPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/ScoreboardPlayerData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/PlayerGroupChange.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/PlayerGroupChange.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/RankedPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/RankedPlayerData.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -394,12 +394,19 @@
       <option name="project" value="LOCAL" />
       <updated>1703019276518</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Stateful icons, suffix suplier for RankedPlayerData.">
+      <option name="closed" value="true" />
+      <created>1703031153084</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1703031153084</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Start work in scoreboard API" />
     <MESSAGE value="Some more fundation work" />
     <MESSAGE value="Translatable scoreboards and menus" />
     <MESSAGE value="Add clickable items, item sets, configurable menus and ThankmasPlugin!" />
@@ -424,6 +431,7 @@
     <MESSAGE value="Bug fixing and some more utility" />
     <MESSAGE value="Add Nametags, LuckPerms hook and more!" />
     <MESSAGE value="Stateful icons" />
-    <option name="LAST_COMMIT_MESSAGE" value="Stateful icons" />
+    <MESSAGE value="Stateful icons, suffix suplier for RankedPlayerData." />
+    <option name="LAST_COMMIT_MESSAGE" value="Stateful icons, suffix suplier for RankedPlayerData." />
   </component>
 </project>

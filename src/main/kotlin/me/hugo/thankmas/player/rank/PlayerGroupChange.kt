@@ -24,7 +24,7 @@ public class PlayerGroupChange<P : RankedPlayerData>(
             val userId = (event.target as? User?)?.uniqueId ?: return@subscribe
             val onlinePlayer = userId.player() ?: return@subscribe
 
-            playerManager.getPlayerData(userId).playerNameTag?.updateForAll()
+            playerManager.getPlayerData(userId).playerNameTag?.updateTeamId()
             extraActions(onlinePlayer)
         }
     }

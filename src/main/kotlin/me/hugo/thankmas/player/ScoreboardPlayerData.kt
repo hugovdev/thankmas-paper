@@ -52,20 +52,21 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
 
     public class PlayerNameTag(
         private val owner: UUID,
+        private val teamIdSupplier: () -> String,
         private val namedTextColor: ((viewer: Player, preferredLocale: Locale?) -> NamedTextColor)? = null,
         private val prefixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
         private val suffixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
         private val belowNameSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null
     ) {
 
-        /**
-         * Adds this player name tag to [viewer]'s scoreboard.
-         */
+        /** Identification of the team that will be used for this name tag. */
+        private var teamId = teamIdSupplier()
+
+        /** Adds this player name tag to [viewer]'s scoreboard. */
         public fun apply(viewer: Player, preferredLocale: Locale? = null) {
             val playerOwner = owner.player() ?: return
 
-            val id = owner.toString()
-            val team = viewer.scoreboard.getOrCreateTeam(id)
+            val team = viewer.scoreboard.getOrCreateTeam(teamId)
 
             team.prefix(prefixSupplier?.let { it(viewer, preferredLocale) })
             team.suffix(suffixSupplier?.let { it(viewer, preferredLocale) })
@@ -77,20 +78,24 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
             if (belowNameSupplier == null) return
         }
 
-        /**
-         * Updates the player name tag for everyone.
-         */
+        /** Uses the [teamIdSupplier] to revalidate the team id. */
+        public fun updateTeamId(updateTagGlobally: Boolean = true) {
+            Bukkit.getOnlinePlayers().forEach {
+                it.scoreboard.getTeam(teamId)?.unregister()
+                teamId = teamIdSupplier()
+
+                if (updateTagGlobally) apply(it)
+            }
+        }
+
+        /** Updates the player name tag for everyone. */
         public fun updateForAll() {
             Bukkit.getOnlinePlayers().forEach { apply(it) }
         }
 
-        /**
-         * Removes this player name tag from [scoreboard].
-         */
+        /** Removes this player name tag from [scoreboard]. */
         public fun remove(scoreboard: Scoreboard) {
-            val id = owner.toString()
-
-            scoreboard.getTeam(id)?.unregister()
+            scoreboard.getTeam(teamId)?.unregister()
             // scoreboard.getObjective(id)?.unregister()
         }
 
