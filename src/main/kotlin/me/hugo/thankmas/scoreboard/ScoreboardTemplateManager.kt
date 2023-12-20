@@ -9,7 +9,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.util.*
 
 /**
  * Registry of every [ScoreboardTemplate] used in the plugin.
@@ -44,7 +44,7 @@ public open class ScoreboardTemplateManager<T : ScoreboardPlayerData>(
      * resolver and translation.
      */
     protected fun loadTemplate(key: String, customKey: String = key) {
-        loadedTemplates[customKey] = ScoreboardTemplate(key, this)
+        loadedTemplates[customKey] = ScoreboardTemplate(key, customKey, this)
     }
 
     /** @returns the scoreboard template for this key, can be null.  */

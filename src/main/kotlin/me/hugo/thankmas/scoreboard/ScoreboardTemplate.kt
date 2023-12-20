@@ -14,6 +14,7 @@ import java.util.*
  */
 public class ScoreboardTemplate<T : ScoreboardPlayerData>(
     private val key: String,
+    private val templateId: String,
     private val scoreboardManager: ScoreboardTemplateManager<T>
 ) : TranslatedComponent {
 
@@ -66,7 +67,10 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData>(
                 }
             }
 
-        scoreboardManager.playerManager.getPlayerData(player.uniqueId).getBoard().updateLines(lines)
+        val playerData = scoreboardManager.playerManager.getPlayerData(player.uniqueId)
+
+        playerData.lastBoardId = templateId
+        playerData.getBoard().updateLines(lines)
     }
 
     /**

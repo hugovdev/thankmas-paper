@@ -12,7 +12,10 @@ import java.util.*
 /**
  * Version of [ScoreboardPlayerData] that automatically adds rank prefixes.
  */
-public open class RankedPlayerData(playerUUID: UUID) : ScoreboardPlayerData(playerUUID) {
+public open class RankedPlayerData(
+    playerUUID: UUID,
+    private val suffixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null
+) : ScoreboardPlayerData(playerUUID) {
 
     context(MiniPhraseContext)
     override fun initializeBoard(title: String?, locale: Locale?, player: Player?): Player {
@@ -36,12 +39,14 @@ public open class RankedPlayerData(playerUUID: UUID) : ScoreboardPlayerData(play
                     preferredLocale ?: viewer.locale()
                 )
                     .append(Component.space())
-            }
+            },
+            suffixSupplier
         )
 
         return finalPlayer
     }
 
+    /** @returns the primary LuckPerms group for [player]. */
     private fun getPrimaryGroup(player: Player): String {
         val api = LuckPermsProvider.get()
         val user = api.getPlayerAdapter(Player::class.java).getUser(player)

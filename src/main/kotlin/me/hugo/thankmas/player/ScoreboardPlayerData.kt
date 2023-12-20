@@ -13,6 +13,8 @@ import java.util.*
 public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playerUUID) {
 
     private var board: FastBoard? = null
+    public var lastBoardId: String? = null
+
     public var playerNameTag: PlayerNameTag? = null
         set(tag) {
             field = tag

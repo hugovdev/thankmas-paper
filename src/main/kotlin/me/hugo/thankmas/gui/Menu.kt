@@ -30,9 +30,15 @@ public open class Menu(
     }
 
     /** Build this menu for [player]. */
-    public fun buildInventory(player: Player): Inventory {
+    public fun buildInventory(player: Player, view: MenuView): Inventory {
         val inventory = Bukkit.createInventory(null, size, player.translate(titleKey))
-        icons.forEach { inventory.setItem(it.key, it.value.itemSupplier(player)) }
+
+        icons.forEach {
+            val icon = it.value
+
+            inventory.setItem(it.key, icon.itemSupplier(player))
+            if (icon is StatefulIcon<*>) view.subscribeRebuild(it.key, icon)
+        }
 
         return inventory
     }

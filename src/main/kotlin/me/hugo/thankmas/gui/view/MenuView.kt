@@ -8,23 +8,19 @@ import org.bukkit.inventory.Inventory
 import org.koin.core.component.KoinComponent
 
 /** Specific menu view of [menu] for [player]. */
-public open class MenuView(private val player: Player, public val menu: Menu) : KoinComponent {
+public class MenuView(private val player: Player, public val menu: Menu) : KoinComponent {
 
-    public val inventory: Inventory = menu.buildInventory(player)
     private val callbacks: MutableMap<StatefulIcon<*>, (old: Any?, new: Any?, value: StatefulValue<out Any?>) -> Unit> =
         mutableMapOf()
 
-    init {
-        menu.getIcons().forEach {
-            val icon = it.second
-            if (icon is StatefulIcon<*>) {
-                val callback: (old: Any?, new: Any?, value: StatefulValue<out Any?>) -> Unit =
-                    { _, _, _ -> rebuildIcon(it.first) }
+    public val inventory: Inventory = menu.buildInventory(player, this)
 
-                callbacks[icon] = callback
-                icon.value.subscribe(callback)
-            }
-        }
+    public fun subscribeRebuild(slot: Int, icon: StatefulIcon<*>) {
+        val callback: (old: Any?, new: Any?, value: StatefulValue<out Any?>) -> Unit =
+            { _, _, _ -> rebuildIcon(slot) }
+
+        callbacks[icon] = callback
+        icon.value.subscribe(callback)
     }
 
     /** Rebuilds the icon in slot [slot] for this menu view. */
