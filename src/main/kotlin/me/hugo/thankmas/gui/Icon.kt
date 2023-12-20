@@ -37,7 +37,7 @@ public open class Icon {
     }
 
     /** Transforms this icon into a Stateful Icon. */
-    public fun <T> listen(value: StatefulValue<T>): StatefulIcon<T> {
+    public fun <T> listen(value: (player: Player) -> StatefulValue<T>): StatefulIcon<T> {
         return StatefulIcon(value, actions, itemSupplier)
     }
 

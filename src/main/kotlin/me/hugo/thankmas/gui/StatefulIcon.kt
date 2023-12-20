@@ -8,11 +8,11 @@ import org.bukkit.inventory.ItemStack
 public class StatefulIcon<T> : Icon {
 
     /** Value that this icon listens to. */
-    public val value: StatefulValue<T>
+    public val value: (player: Player) -> StatefulValue<T>
 
     /** Constructor that allows for multiple action input. */
     public constructor(
-        value: StatefulValue<T>,
+        value: (player: Player) -> StatefulValue<T>,
         actions: MutableList<(iconClickContext: IconClickContext, menuView: MenuView) -> Unit> = mutableListOf(),
         itemSupplier: (player: Player) -> ItemStack?
     ) : super(actions, itemSupplier) {
@@ -21,7 +21,7 @@ public class StatefulIcon<T> : Icon {
 
     /** Constructor with a single click action. */
     public constructor(
-        value: StatefulValue<T>,
+        value: (player: Player) -> StatefulValue<T>,
         action: (iconClickContext: IconClickContext, menuView: MenuView) -> Unit,
         itemSupplier: (player: Player) -> ItemStack?
     ) : super(action, itemSupplier) {

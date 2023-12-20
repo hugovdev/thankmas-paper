@@ -10,7 +10,7 @@ import org.koin.core.component.KoinComponent
 /** Specific menu view of [menu] for [player]. */
 public class MenuView(private val player: Player, public val menu: Menu) : KoinComponent {
 
-    private val callbacks: MutableMap<StatefulIcon<*>, (old: Any?, new: Any?, value: StatefulValue<out Any?>) -> Unit> =
+    private val callbacks: MutableMap<StatefulValue<*>, (old: Any?, new: Any?, value: StatefulValue<out Any?>) -> Unit> =
         mutableMapOf()
 
     public val inventory: Inventory = menu.buildInventory(player, this)
@@ -19,8 +19,10 @@ public class MenuView(private val player: Player, public val menu: Menu) : KoinC
         val callback: (old: Any?, new: Any?, value: StatefulValue<out Any?>) -> Unit =
             { _, _, _ -> rebuildIcon(slot) }
 
-        callbacks[icon] = callback
-        icon.value.subscribe(callback)
+        val valueToListen = icon.value(player)
+
+        callbacks[valueToListen] = callback
+        valueToListen.subscribe(callback)
     }
 
     /** Rebuilds the icon in slot [slot] for this menu view. */
@@ -33,6 +35,6 @@ public class MenuView(private val player: Player, public val menu: Menu) : KoinC
 
     /** Runs when this menu view is closed. */
     public fun onClose() {
-        callbacks.forEach { it.key.value.unsubscribe(it.value) }
+        callbacks.forEach { it.key.unsubscribe(it.value) }
     }
 }

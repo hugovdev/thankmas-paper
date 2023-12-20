@@ -6,10 +6,10 @@ import org.bukkit.configuration.file.FileConfiguration
  * Datasource connector that fetches the data source
  * properties from a configuration file.
  */
-public class ConfigurableDatasource(config: FileConfiguration, path: String) : DatasourceConnector(
-    config.getString("$path.ip", "")!!,
-    config.getString("$path.port", "3306")!!,
-    config.getString("$path.schema", "thankmas_data")!!,
-    config.getString("$path.user", "user")!!,
-    config.getString("$path.password", "")!!
+public open class ConfigurableDatasource(config: FileConfiguration, path: String? = null) : DatasourceConnector(
+    config.getString(path?.let { "$it.ip" } ?: "ip", "")!!,
+    config.getString(path?.let { "$it.port" } ?: "port", "3306")!!,
+    config.getString(path?.let { "$it.schema" } ?: "schema", "thankmas_data")!!,
+    config.getString(path?.let { "$it.user" } ?: ".user", "user")!!,
+    config.getString(path?.let { "$it.password" } ?: "password", "")!!
 )
