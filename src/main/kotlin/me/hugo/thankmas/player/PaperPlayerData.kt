@@ -5,6 +5,7 @@ import me.hugo.thankmas.region.Region
 import me.hugo.thankmas.region.triggering.TriggeringRegion
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.entity.TextDisplay
 import java.util.*
 
 /**
@@ -30,21 +31,31 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
     private val regions: MutableList<Region> = mutableListOf()
 
     /** Map of hologram entity ids that this players can see. */
-    private val spawnedHolograms: MutableMap<Hologram, Int> = mutableMapOf()
+    private val spawnedHolograms: MutableMap<Hologram<*>, TextDisplay> = mutableMapOf()
 
     /** @returns the entity id for this hologram. */
-    public fun getHologramIdOrNull(hologram: Hologram): Int? {
+    public fun getDisplayForHologramOrNull(hologram: Hologram<*>): TextDisplay? {
         return spawnedHolograms[hologram]
     }
 
     /** Adds this hologram and entity ids to the [spawnedHolograms] map. */
-    public fun addHologram(hologram: Hologram, entityId: Int) {
-        spawnedHolograms[hologram] = entityId
+    public fun addHologram(hologram: Hologram<*>, display: TextDisplay) {
+        spawnedHolograms[hologram] = display
     }
 
     /** Removes [hologram] from the [spawnedHolograms] map. */
-    public fun removeHologram(hologram: Hologram) {
+    public fun removeHologram(hologram: Hologram<*>) {
         spawnedHolograms.remove(hologram)
+    }
+
+    /** Removes every text display and hologram for this player. */
+    public fun removeAllHolograms() {
+        spawnedHolograms.keys.forEach { spawnedHolograms.remove(it)?.remove() }
+    }
+
+    /** Update every spawn hologram for [player]. */
+    public fun updateHolograms(locale: Locale? = null) {
+        spawnedHolograms.keys.forEach { it.spawnOrUpdate(onlinePlayer, locale) }
     }
 
     /** Runs when a player enters [region] or actively is inside. */

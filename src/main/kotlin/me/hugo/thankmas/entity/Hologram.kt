@@ -1,51 +1,76 @@
 package me.hugo.thankmas.entity
 
-import io.papermc.paper.adventure.PaperAdventure
+import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.player.PaperPlayerData
 import me.hugo.thankmas.player.PlayerDataManager
 import net.kyori.adventure.text.Component
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket
-import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket
-import net.minecraft.world.entity.Display.TextDisplay
-import net.minecraft.world.entity.EntityType
 import org.bukkit.Location
-import org.bukkit.craftbukkit.v1_20_R2.CraftWorld
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer
+import org.bukkit.entity.Display
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import org.bukkit.entity.TextDisplay
+import org.bukkit.entity.TextDisplay.TextAlignment
+import org.bukkit.event.entity.CreatureSpawnEvent
+import java.util.Locale
 
 /** TextDisplay that shows different text per player. */
-public class Hologram(
+public class Hologram<P : PaperPlayerData>(
     private val location: Location,
-    private val textSupplier: (viewer: Player) -> Component,
-    private val playerManager: PlayerDataManager<PaperPlayerData>
+    private val propertiesSupplier: (viewer: Player, preferredLocale: Locale?) -> HologramProperties,
+    private val textSupplier: (viewer: Player, preferredLocale: Locale?) -> Component,
+    private val playerManager: PlayerDataManager<P>
 ) {
 
-    private val craftWorld = location.world as CraftWorld
-    private val level = craftWorld.handle
-
     /** Spawns this hologram to [player]. */
-    public fun spawnOrRespawn(player: Player) {
+    public fun spawnOrUpdate(player: Player, locale: Locale? = null) {
         val playerData = playerManager.getPlayerData(player.uniqueId)
 
         // If the hologram has already spawned for [player], we de-spawn it before spawning it again.
-        if (playerData.getHologramIdOrNull(this) != null) remove(player)
+        val originalDisplay = playerData.getDisplayForHologramOrNull(this)
 
-        val holographicText = TextDisplay(EntityType.TEXT_DISPLAY, level)
-        holographicText.text = PaperAdventure.asVanilla(textSupplier(player))
+        if (originalDisplay != null) {
+            originalDisplay.text(textSupplier(player, locale))
+            propertiesSupplier(player, locale).apply(originalDisplay)
+            return
+        }
 
-        // TODO: Custom hologram properties.
+        val textDisplay =
+            location.world.spawnEntity(location, EntityType.TEXT_DISPLAY, CreatureSpawnEvent.SpawnReason.CUSTOM) {
+                it as TextDisplay
+                it.isVisibleByDefault = false
 
-        (player as CraftPlayer).handle.connection.send(ClientboundAddEntityPacket(holographicText))
-        playerData.addHologram(this, holographicText.id)
+                it.text(textSupplier(player, locale))
+                propertiesSupplier(player, locale).apply(it)
+            } as TextDisplay
+
+        player.showEntity(ThankmasPlugin.instance(), textDisplay)
+        playerData.addHologram(this, textDisplay)
     }
 
     /** Removes this hologram from the [player]'s client. */
     public fun remove(player: Player) {
         val playerData = playerManager.getPlayerData(player.uniqueId)
-        val entityId = playerData.getHologramIdOrNull(this)
-        requireNotNull(entityId) { "Tried to despawn a hologram from ${player.name}, who wasn't a viewer! " }
+        val textDisplay = playerData.getDisplayForHologramOrNull(this)
+        requireNotNull(textDisplay) { "Tried to despawn a hologram from ${player.name}, who wasn't a viewer! " }
 
-        ClientboundRemoveEntitiesPacket(entityId)
+        textDisplay.remove()
     }
 
+    public data class HologramProperties(
+        private val billboardRotation: Display.Billboard,
+        private val brightness: Display.Brightness,
+        private val textAlignment: TextAlignment,
+        private val textSeeThrough: Boolean = false,
+        private val textShadow: Boolean = false,
+    ) {
+
+        public fun apply(display: TextDisplay) {
+            display.billboard = billboardRotation
+            display.brightness = brightness
+            display.alignment = textAlignment
+            display.isSeeThrough = textSeeThrough
+            display.isShadowed = textShadow
+        }
+
+    }
 }
