@@ -1,5 +1,6 @@
 package me.hugo.thankmas.player
 
+import me.hugo.thankmas.entity.Hologram
 import me.hugo.thankmas.region.Region
 import me.hugo.thankmas.region.triggering.TriggeringRegion
 import org.bukkit.Bukkit
@@ -27,6 +28,24 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
 
     /** List of regions the player is in. */
     private val regions: MutableList<Region> = mutableListOf()
+
+    /** Map of hologram entity ids that this players can see. */
+    private val spawnedHolograms: MutableMap<Hologram, Int> = mutableMapOf()
+
+    /** @returns the entity id for this hologram. */
+    public fun getHologramIdOrNull(hologram: Hologram): Int? {
+        return spawnedHolograms[hologram]
+    }
+
+    /** Adds this hologram and entity ids to the [spawnedHolograms] map. */
+    public fun addHologram(hologram: Hologram, entityId: Int) {
+        spawnedHolograms[hologram] = entityId
+    }
+
+    /** Removes [hologram] from the [spawnedHolograms] map. */
+    public fun removeHologram(hologram: Hologram) {
+        spawnedHolograms.remove(hologram)
+    }
 
     /** Runs when a player enters [region] or actively is inside. */
     public fun updateOnRegion(region: Region) {

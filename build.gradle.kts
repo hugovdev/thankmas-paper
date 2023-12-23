@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.21"
+    id("io.papermc.paperweight.userdev") version "1.5.11"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("com.google.devtools.ksp") version "1.9.21-1.0.15"
 }
@@ -16,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.20.2-R0.1-SNAPSHOT")
     compileOnly("net.luckperms:api:5.4")
 
     ksp("io.insert-koin:koin-ksp-compiler:1.3.0")
