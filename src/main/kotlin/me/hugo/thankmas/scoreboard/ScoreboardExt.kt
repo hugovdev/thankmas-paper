@@ -15,7 +15,7 @@ public fun Scoreboard.getOrCreateTeam(name: String): Team {
 public fun Scoreboard.getOrCreateObjective(
     name: String,
     criteria: Criteria,
-    component: Component,
+    component: Component?,
     onCreate: (objective: Objective) -> Unit
 ): Objective {
     return this.getObjective(name) ?: this.registerNewObjective(name, criteria, component).also(onCreate)

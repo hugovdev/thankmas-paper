@@ -62,6 +62,11 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
         private val belowNameSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null
     ) {
 
+        public companion object {
+            /** Identification for the objective displayed below the player's name. */
+            public const val BELOW_NAME_OBJECTIVE: String = "below_name"
+        }
+
         /** Identification of the team that will be used for this name tag. */
         private var teamId = teamIdSupplier()
 
@@ -80,7 +85,7 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
 
             val belowNameSupplier = belowNameSupplier ?: return
 
-            val belowName = viewer.scoreboard.getOrCreateObjective(teamId, Criteria.DUMMY, Component.text("below_name")) {
+            val belowName = viewer.scoreboard.getOrCreateObjective(BELOW_NAME_OBJECTIVE, Criteria.DUMMY, null) {
                 it.displaySlot = DisplaySlot.BELOW_NAME
                 it.displayName(null)
                 // TODO: Set the default number format to blank.
