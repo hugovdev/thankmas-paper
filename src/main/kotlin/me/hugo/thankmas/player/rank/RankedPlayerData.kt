@@ -15,7 +15,8 @@ import java.util.*
  */
 public open class RankedPlayerData(
     playerUUID: UUID,
-    private val suffixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null
+    private val suffixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
+    private val belowNameSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
 ) : ScoreboardPlayerData(playerUUID) {
 
     context(MiniPhraseContext)
@@ -45,7 +46,8 @@ public open class RankedPlayerData(
                 )
                     .append(Component.space())
             },
-            suffixSupplier
+            suffixSupplier,
+            belowNameSupplier
         )
 
         return finalPlayer

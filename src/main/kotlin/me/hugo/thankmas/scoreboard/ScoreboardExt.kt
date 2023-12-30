@@ -12,6 +12,11 @@ public fun Scoreboard.getOrCreateTeam(name: String): Team {
 }
 
 /** @returns this scoreboard's objective with name [name] if exists, if not it creates it. */
-public fun Scoreboard.getOrCreateObjective(name: String, criteria: Criteria, component: Component): Objective {
-    return this.getObjective(name) ?: this.registerNewObjective(name, criteria, component)
+public fun Scoreboard.getOrCreateObjective(
+    name: String,
+    criteria: Criteria,
+    component: Component,
+    onCreate: (objective: Objective) -> Unit
+): Objective {
+    return this.getObjective(name) ?: this.registerNewObjective(name, criteria, component).also(onCreate)
 }
