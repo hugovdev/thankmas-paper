@@ -22,7 +22,7 @@ import java.util.*
 public open class ThankmasPlugin : JavaPlugin(), KoinComponent {
 
     /** Default plugin translations in: "plugins/plugin_name/lang" */
-    protected val translations: DefaultTranslations = DefaultTranslations(File(dataFolder, "/lang/"))
+    public val translations: DefaultTranslations = DefaultTranslations(File(dataFolder, "/lang/"))
 
     public val globalTranslations: MiniPhrase = MiniPhrase.configureAndBuild {
         miniMessage(translations.translations.miniMessage)

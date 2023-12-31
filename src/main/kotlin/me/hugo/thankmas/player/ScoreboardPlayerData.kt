@@ -91,6 +91,9 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
                 // TODO: Set the default number format to blank.
             }
 
+            // temporary
+            belowName.displayName(belowNameSupplier(viewer, preferredLocale))
+
             // TODO: Custom text will be set as score with "fixed" number format per player.
             // belowName.getScore(playerOwner.name)
             // TODO: Set Number Format to fixed whenever its API-ready.

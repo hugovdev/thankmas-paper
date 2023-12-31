@@ -54,7 +54,7 @@ public open class RankedPlayerData(
     }
 
     /** @returns the primary LuckPerms group for [player]. */
-    private fun getPrimaryGroupName(player: Player): String {
+    public fun getPrimaryGroupName(player: Player): String {
         val api = LuckPermsProvider.get()
         val user = api.getPlayerAdapter(Player::class.java).getUser(player)
 
@@ -66,6 +66,26 @@ public open class RankedPlayerData(
         val api = LuckPermsProvider.get()
 
         return api.groupManager.getGroup(getPrimaryGroupName(player))
+    }
+
+    /** @returns the full player name tag with their rank prefix. */
+    public fun getNameTag(): Component {
+        val finalPlayer = onlinePlayer
+        val translations = ThankmasPlugin.instance().globalTranslations
+        val locale = finalPlayer.locale()
+
+        val primaryGroup = getPrimaryGroupName(finalPlayer)
+
+        return translations.translate("rank.${primaryGroup}.prefix", locale).append(Component.space()).append(
+            Component.text(finalPlayer.name).color(
+                NamedTextColor.nearestTo(
+                    translations.translate(
+                        "rank.${primaryGroup}.color",
+                        locale
+                    ).color() ?: NamedTextColor.BLACK
+                )
+            )
+        )
     }
 
 }

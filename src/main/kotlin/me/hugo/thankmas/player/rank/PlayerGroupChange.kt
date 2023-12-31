@@ -13,6 +13,9 @@ import org.bukkit.entity.Player
  */
 public class PlayerGroupChange<P : RankedPlayerData>(
     private val playerManager: PlayerDataManager<P>,
+    /** Predicate that checks if [player] should get their tag updated right now. */
+    shouldUpdate: (player: Player) -> Boolean = { true },
+    /** Extra actions that run when [player]'s permissions profile changes. */
     extraActions: (player: Player) -> Unit
 ) {
 
@@ -21,8 +24,12 @@ public class PlayerGroupChange<P : RankedPlayerData>(
 
         // Player rank changes so we update their name tags!
         luckPerms.eventBus.subscribe(NodeMutateEvent::class.java) { event ->
-            val userId = (event.target as? User?)?.uniqueId ?: return@subscribe
+            if (!event.isUser) return@subscribe
+
+            val userId = (event.target as User).uniqueId
             val onlinePlayer = userId.player() ?: return@subscribe
+
+            if (!shouldUpdate(onlinePlayer)) return@subscribe
 
             playerManager.getPlayerData(userId).playerNameTag?.updateTeamId()
             extraActions(onlinePlayer)

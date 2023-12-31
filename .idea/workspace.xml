@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Prepare below name for the upcoming paper API changes." />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Don't be dumb.">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/commands/TranslationsCommands.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/PlayerLocaleChange.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/RankedPlayerChat.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PaperPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PaperPlayerData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/ScoreboardPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/ScoreboardPlayerData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/PlayerGroupChange.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/PlayerGroupChange.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/RankedPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/RankedPlayerData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/global_en_us.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/global_en_us.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/global_es_es.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/global_es_es.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,6 +123,7 @@
       <recent name="me.hugo.thankmas.player" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="me.hugo.thankmas.listener" />
       <recent name="me.hugo.thankmas.location" />
       <recent name="me.hugo.thankmas.di" />
     </key>
@@ -461,12 +475,19 @@
       <option name="project" value="LOCAL" />
       <updated>1703947766877</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Don't be dumb.">
+      <option name="closed" value="true" />
+      <created>1703948352306</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1703948352306</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Small tweaks to make the code and documentation even better. slay" />
     <MESSAGE value="Make the clickable item decide whether the interact event gets cancelled." />
     <MESSAGE value="Accept every interaction except physical" />
     <MESSAGE value="Configurable data source and register clickable items and menus in every thankmas plugin" />
@@ -491,6 +512,7 @@
     <MESSAGE value="Start work on individual holograms." />
     <MESSAGE value="Use paper's API instead of NMS for individual holograms (slay)" />
     <MESSAGE value="Prepare below name for the upcoming paper API changes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Prepare below name for the upcoming paper API changes." />
+    <MESSAGE value="Don't be dumb." />
+    <option name="LAST_COMMIT_MESSAGE" value="Don't be dumb." />
   </component>
 </project>

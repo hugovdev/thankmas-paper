@@ -79,4 +79,7 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
             triggeringRegion?.onLeave?.invoke(onlinePlayer)
         }
     }
+
+    /** Runs whenever the player changes translations. */
+    public open fun setTranslation(newLocale: Locale) {}
 }
