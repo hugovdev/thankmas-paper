@@ -16,7 +16,8 @@ public fun Scoreboard.getOrCreateObjective(
     name: String,
     criteria: Criteria,
     component: Component?,
-    onCreate: (objective: Objective) -> Unit
+    onCreate: (objective: Objective) -> Unit,
+    onFinish: (objective: Objective) -> Unit
 ): Objective {
-    return this.getObjective(name) ?: this.registerNewObjective(name, criteria, component).also(onCreate)
+    return (this.getObjective(name) ?: this.registerNewObjective(name, criteria, component).also(onCreate)).also(onFinish)
 }

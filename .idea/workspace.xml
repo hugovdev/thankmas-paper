@@ -4,19 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Don't be dumb.">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/commands/TranslationsCommands.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/PlayerLocaleChange.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/RankedPlayerChat.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Globalize locale changes, player chat format, translation reload command, etc.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PaperPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PaperPlayerData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/ScoreboardPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/ScoreboardPlayerData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/PlayerGroupChange.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/PlayerGroupChange.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/RankedPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/rank/RankedPlayerData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/global_en_us.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/global_en_us.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/global_es_es.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/global_es_es.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/scoreboard/ScoreboardExt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/scoreboard/ScoreboardExt.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,26 +74,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Gradle.ThankmasPaper [knows].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ThankmasPaper [reobfJar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ThankmasPaper [shadowJar].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hugov/IdeaProjects/ThankmasPaper/libs&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Gradle.ThankmasPaper [cleanCache].executor": "Run",
+    "Gradle.ThankmasPaper [knows].executor": "Run",
+    "Gradle.ThankmasPaper [reobfJar].executor": "Run",
+    "Gradle.ThankmasPaper [shadowJar].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/hugov/IdeaProjects/ThankmasPaper/libs",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "File.Encoding"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\libs" />
@@ -129,6 +123,28 @@
     </key>
   </component>
   <component name="RunManager" selected="Gradle.ThankmasPaper [reobfJar]">
+    <configuration name="ThankmasPaper [cleanCache]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="cleanCache" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="ThankmasPaper [knows]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -198,6 +214,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.ThankmasPaper [reobfJar]" />
+        <item itemvalue="Gradle.ThankmasPaper [cleanCache]" />
         <item itemvalue="Gradle.ThankmasPaper [shadowJar]" />
         <item itemvalue="Gradle.ThankmasPaper [knows]" />
       </list>
@@ -483,12 +500,19 @@
       <option name="project" value="LOCAL" />
       <updated>1703948352306</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Globalize locale changes, player chat format, translation reload command, etc.">
+      <option name="closed" value="true" />
+      <created>1704041981862</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1704041981862</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Make the clickable item decide whether the interact event gets cancelled." />
     <MESSAGE value="Accept every interaction except physical" />
     <MESSAGE value="Configurable data source and register clickable items and menus in every thankmas plugin" />
     <MESSAGE value="Add ItemStack config loader" />
@@ -513,6 +537,7 @@
     <MESSAGE value="Use paper's API instead of NMS for individual holograms (slay)" />
     <MESSAGE value="Prepare below name for the upcoming paper API changes." />
     <MESSAGE value="Don't be dumb." />
-    <option name="LAST_COMMIT_MESSAGE" value="Don't be dumb." />
+    <MESSAGE value="Globalize locale changes, player chat format, translation reload command, etc." />
+    <option name="LAST_COMMIT_MESSAGE" value="Globalize locale changes, player chat format, translation reload command, etc." />
   </component>
 </project>

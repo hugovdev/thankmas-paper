@@ -2,6 +2,7 @@ package me.hugo.thankmas.player
 
 import dev.kezz.miniphrase.MiniPhraseContext
 import fr.mrmicky.fastboard.adventure.FastBoard
+import io.papermc.paper.scoreboard.numbers.NumberFormat
 import me.hugo.thankmas.scoreboard.getOrCreateObjective
 import me.hugo.thankmas.scoreboard.getOrCreateTeam
 import net.kyori.adventure.text.Component
@@ -85,18 +86,12 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
 
             val belowNameSupplier = belowNameSupplier ?: return
 
-            val belowName = viewer.scoreboard.getOrCreateObjective(BELOW_NAME_OBJECTIVE, Criteria.DUMMY, null) {
-                it.displaySlot = DisplaySlot.BELOW_NAME
+            viewer.scoreboard.getOrCreateObjective(owner.toString(), Criteria.DUMMY, null, {
                 it.displayName(null)
-                // TODO: Set the default number format to blank.
+                it.displaySlot = DisplaySlot.BELOW_NAME
+            }) {
+                it.numberFormat(NumberFormat.fixed(belowNameSupplier(viewer, preferredLocale)))
             }
-
-            // temporary
-            belowName.displayName(belowNameSupplier(viewer, preferredLocale))
-
-            // TODO: Custom text will be set as score with "fixed" number format per player.
-            // belowName.getScore(playerOwner.name)
-            // TODO: Set Number Format to fixed whenever its API-ready.
         }
 
         /** Uses the [teamIdSupplier] to revalidate the team id. */
@@ -117,7 +112,7 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
         /** Removes this player name tag from [scoreboard]. */
         public fun remove(scoreboard: Scoreboard) {
             scoreboard.getTeam(teamId)?.unregister()
-            scoreboard.getObjective(teamId)?.unregister()
+            scoreboard.getObjective(owner.toString())?.unregister()
         }
 
     }
