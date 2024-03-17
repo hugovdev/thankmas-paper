@@ -11,7 +11,7 @@ import org.bukkit.entity.Player
 import org.bukkit.entity.TextDisplay
 import org.bukkit.entity.TextDisplay.TextAlignment
 import org.bukkit.event.entity.CreatureSpawnEvent
-import java.util.Locale
+import java.util.*
 
 /** TextDisplay that shows different text per player. */
 public class Hologram<P : PaperPlayerData>(
@@ -25,7 +25,7 @@ public class Hologram<P : PaperPlayerData>(
     public fun spawnOrUpdate(player: Player, locale: Locale? = null) {
         val playerData = playerManager.getPlayerData(player.uniqueId)
 
-        // If the hologram has already spawned for [player], we de-spawn it before spawning it again.
+        // If the hologram has already spawned for [player], we just change the text and properties.
         val originalDisplay = playerData.getDisplayForHologramOrNull(this)
 
         if (originalDisplay != null) {

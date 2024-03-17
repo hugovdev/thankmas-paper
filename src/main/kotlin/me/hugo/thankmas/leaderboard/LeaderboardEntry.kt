@@ -1,7 +1,7 @@
 package me.hugo.thankmas.leaderboard
 
 import com.destroystokyo.paper.profile.ProfileProperty
-import java.util.UUID
+import java.util.*
 
 public data class LeaderboardEntry<T>(
     private val uuid: UUID,

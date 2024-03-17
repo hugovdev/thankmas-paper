@@ -2,7 +2,6 @@ package me.hugo.thankmas.config
 
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.util.HashBiMap
-import me.hugo.thankmas.util.MutableBiMap
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import org.koin.core.annotation.Single

@@ -1,13 +1,13 @@
 package me.hugo.thankmas.items.clickable
 
 import me.hugo.thankmas.config.string
-import me.hugo.thankmas.items.*
+import me.hugo.thankmas.items.TranslatableItem
+import me.hugo.thankmas.items.setKeyedData
 import me.hugo.thankmas.lang.TranslatedComponent
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
-import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 

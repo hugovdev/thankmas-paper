@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.Locale
+import java.util.*
 
 /**
  * Loads sets of clickable items from config and registers
