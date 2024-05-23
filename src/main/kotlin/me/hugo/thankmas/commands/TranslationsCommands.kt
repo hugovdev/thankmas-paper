@@ -65,7 +65,7 @@ public class TranslationsCommands<T : PaperPlayerData>(
         val instance = ThankmasPlugin.instance()
 
         instance.miniMessage = instance.miniMessage.editTags { tagResolver ->
-            val stylesConfig = configProvider.reload("custom_styles", "../global/")
+            val stylesConfig = configProvider.reload("global/custom_styles.yml")
 
             stylesConfig.getConfigurationSection("custom_styles")?.getKeys(false)?.forEach {
                 val style =

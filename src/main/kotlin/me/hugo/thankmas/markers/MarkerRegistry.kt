@@ -90,13 +90,12 @@ public class MarkerRegistry {
 
     /** Returns every registered marker of [markerId] type for [world]. */
     public fun getMarkerForType(markerId: String, world: String = "world"): Set<Marker> {
-        return requireNotNull(loadedMarkers[world]) { "No markers have been loaded for world $world!" }
-            .get(markerId)
+        return getMarkers(world).get(markerId)
     }
 
     /** Returns every registered marker for [world]. */
     public fun getMarkers(world: String = "world"): HashMultimap<String, Marker> {
-        return requireNotNull(loadedMarkers[world]) { "No markers have been loaded for world $world!" }
+        return loadedMarkers[world] ?: HashMultimap.create(0, 0)
     }
 
 }

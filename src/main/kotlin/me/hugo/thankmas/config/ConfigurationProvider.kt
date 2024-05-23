@@ -1,7 +1,7 @@
 package me.hugo.thankmas.config
 
-import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.util.HashBiMap
+import org.bukkit.Bukkit
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import org.koin.core.annotation.Single
@@ -32,30 +32,43 @@ public class ConfigurationProvider {
     }
 
     /** Gets a cached configuration file or loads and caches it. */
-    public fun getOrLoad(config: String, path: String = ""): FileConfiguration {
-        return configs.computeIfAbsent(config) { load(config, path) }
+    public fun getOrLoad(path: String): FileConfiguration {
+        return configs.computeIfAbsent(path) { load(path) }
+    }
+
+    /** Gets a cached configuration file or loads and caches it. */
+    public fun getOrResources(file: String, path: String = ""): FileConfiguration {
+        return configs.computeIfAbsent(file) { loadOrResources(file, path) }
     }
 
     /** Reloads a configuration file and saves in cache the new version. */
-    public fun reload(config: String, path: String = ""): FileConfiguration {
-        val reloadedConfig = load(config, path)
+    public fun reload(config: String): FileConfiguration {
+        val reloadedConfig = load(config)
         configs[config] = reloadedConfig
 
         return reloadedConfig
     }
 
     /** Loads a configuration file. */
-    private fun load(config: String, path: String = ""): FileConfiguration {
-        val fileName = "$config.yml"
-        val configFile = files.computeIfAbsent(config) {
-            File(ThankmasPlugin.instance().dataFolder, path + fileName)
+    private fun load(path: String): FileConfiguration {
+        val configFile = files.computeIfAbsent(path) {
+            File(Bukkit.getPluginsFolder(), path)
+        }
+
+        return YamlConfiguration.loadConfiguration(configFile)
+    }
+
+    /** Loads a configuration file. */
+    private fun loadOrResources(file: String, path: String = ""): FileConfiguration {
+        val configFile = files.computeIfAbsent(file) {
+            File(Bukkit.getPluginsFolder(), "$path/$file")
         }
 
         if (!configFile.exists()) {
             configFile.parentFile.mkdirs()
 
             configFile.createNewFile()
-            val resourceStream = javaClass.getResourceAsStream("/$fileName")
+            val resourceStream = javaClass.getResourceAsStream("/$file")
 
             if (resourceStream != null) {
                 Files.copy(
