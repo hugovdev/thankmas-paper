@@ -73,14 +73,15 @@ public open class ThankmasPlugin(
 
         val gitConfig = configProvider.getOrResources("git.yml", "base")
         val accessToken = gitConfig.getString("access-token")
+        val githubUrl = gitConfig.getString("github-api-url")
 
-        if (accessToken == null) {
+        if (githubUrl == null || accessToken == null) {
             logger.warning("No GitHub access token provided, shutting down server.")
             Bukkit.shutdown()
             return
         }
 
-        downloadConfigFiles(accessToken)
+        downloadConfigFiles(accessToken, githubUrl)
     }
 
     override fun onEnable() {
@@ -115,13 +116,13 @@ public open class ThankmasPlugin(
     }
 
     /** Downloads all the config files from GitHub. */
-    private fun downloadConfigFiles(accessToken: String) {
+    private fun downloadConfigFiles(accessToken: String, githubUrl: String) {
         logger.info("Starting scope download...")
 
         val pluginsFolder = Bukkit.getPluginsFolder()
 
         fun fetchScope(scope: String): JsonArray {
-            val scopeUrl = URL("https://api.github.com/repos/hugovdev/ThankmasScopes/contents/scopes/$scope")
+            val scopeUrl = URL("$githubUrl/$scope")
             val openedConnection = scopeUrl.openConnection() as HttpURLConnection
             openedConnection.setRequestProperty("Authorization", "Bearer $accessToken")
             openedConnection.requestMethod = "GET"
