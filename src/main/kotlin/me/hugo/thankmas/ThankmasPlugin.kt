@@ -1,11 +1,10 @@
 package me.hugo.thankmas
 
-import com.google.gson.JsonArray
-import com.google.gson.JsonParser
 import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.i18n.PropertiesFileTranslationRegistry
 import me.hugo.thankmas.config.ConfigurationProvider
 import me.hugo.thankmas.dependencyinjection.ThankmasModules
+import me.hugo.thankmas.git.GitHubHelper
 import me.hugo.thankmas.items.clickable.ClickableItemRegistry
 import me.hugo.thankmas.listener.MenuManager
 import net.kyori.adventure.text.format.TextColor
@@ -18,11 +17,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
-import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
@@ -44,6 +40,7 @@ public open class ThankmasPlugin(
     JavaPlugin(), KoinComponent {
 
     private val configProvider: ConfigurationProvider by inject()
+    private val gitHubHelper: GitHubHelper by inject()
 
     /** Global minimessage instance with all custom tags and styling. */
     public lateinit var miniMessage: MiniMessage.Builder
@@ -121,19 +118,6 @@ public open class ThankmasPlugin(
 
         val pluginsFolder = Bukkit.getPluginsFolder()
 
-        fun fetchScope(scope: String): JsonArray {
-            val scopeUrl = URL("$githubUrl/$scope")
-            val openedConnection = scopeUrl.openConnection() as HttpURLConnection
-            openedConnection.setRequestProperty("Authorization", "Bearer $accessToken")
-            openedConnection.requestMethod = "GET"
-
-            val reader = BufferedReader(InputStreamReader(openedConnection.inputStream))
-
-            val response = reader.readText()
-
-            return JsonParser.parseString(response).asJsonArray
-        }
-
         fun downloadFileIn(fileName: String, url: String, path: File) {
             if (fileName.startsWith(".")) {
                 logger.info("Omitted $fileName from the download.")
@@ -155,13 +139,12 @@ public open class ThankmasPlugin(
         fun downloadScope(scope: String, path: File) {
             logger.info("Downloading scope $scope...")
 
-            fetchScope(scope).forEach { file ->
+            gitHubHelper.fetchScope(scope).forEach { file ->
                 val jsonFile = file.asJsonObject
 
-                val downloadUrl = jsonFile.get("download_url")
                 val downloadName = jsonFile.get("name").asString
 
-                if (downloadUrl.isJsonNull) {
+                if (jsonFile.get("type").asString == "dir") {
                     val subfolder = jsonFile.get("path").asString
                     val scopePath = subfolder.removePrefix("scopes/")
 
@@ -174,7 +157,7 @@ public open class ThankmasPlugin(
                     return@forEach
                 }
 
-                downloadFileIn(downloadName, downloadUrl.asString, path.also { it.mkdir() })
+                downloadFileIn(downloadName, jsonFile.get("download_url").asString, path.also { it.mkdir() })
             }
 
             logger.info("Done downloading scope $scope!")

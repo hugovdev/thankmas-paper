@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Git config and world downloading!" />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Customize where scopes come from.">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/git/GitHubHelper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -560,12 +564,19 @@
       <option name="project" value="LOCAL" />
       <updated>1716489741327</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Customize where scopes come from.">
+      <option name="closed" value="true" />
+      <created>1716493169027</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1716493169027</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="A lot of region work" />
     <MESSAGE value="Registries, more config null safety yay!" />
     <MESSAGE value="Change menu approach from InventoryHolders to a safer MapBasedRegistry" />
     <MESSAGE value="Make regions work and stuff" />
@@ -590,6 +601,7 @@
     <MESSAGE value="Ignore git credentials yml" />
     <MESSAGE value="git yml" />
     <MESSAGE value="Git config and world downloading!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Git config and world downloading!" />
+    <MESSAGE value="Customize where scopes come from." />
+    <option name="LAST_COMMIT_MESSAGE" value="Customize where scopes come from." />
   </component>
 </project>
