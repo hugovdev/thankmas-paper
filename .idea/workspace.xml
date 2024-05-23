@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Custom styles!">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/markers/Marker.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/markers/MarkerLoader.kt" afterDir="false" />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Super sick marker system!!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -525,12 +522,19 @@
       <option name="project" value="LOCAL" />
       <updated>1710692088330</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Super sick marker system!!">
+      <option name="closed" value="true" />
+      <created>1716470394238</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1716470394238</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Add ItemStack config loader" />
     <MESSAGE value="Add function to add translated lore lines to existing item." />
     <MESSAGE value="Paginated menus, global languages, translatable items and more" />
     <MESSAGE value="Allow to specify paths in the config provider" />
@@ -555,6 +559,7 @@
     <MESSAGE value="Globalize locale changes, player chat format, translation reload command, etc." />
     <MESSAGE value="Finally using the new number format paper API for belowname." />
     <MESSAGE value="Custom styles!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Custom styles!" />
+    <MESSAGE value="Super sick marker system!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Super sick marker system!!" />
   </component>
 </project>
