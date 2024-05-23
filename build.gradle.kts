@@ -20,12 +20,13 @@ dependencies {
     paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
     compileOnly("net.luckperms:api:5.4")
 
-    ksp("io.insert-koin:koin-ksp-compiler:1.3.0")
-    implementation("fr.mrmicky:fastboard:2.0.2")
+    ksp("io.insert-koin:koin-ksp-compiler:1.3.1")
+    implementation("fr.mrmicky:fastboard:2.1.2")
     implementation(files("C:/Users/hugov/IdeaProjects/TranslationsTest/build/libs/Thankmas-1.0-SNAPSHOT-all.jar"))
 
     implementation("com.github.Revxrsal.Lamp:common:3.1.9")
     implementation("com.github.Revxrsal.Lamp:bukkit:3.1.9")
+    implementation("io.github.jglrxavpok.hephaistos:common:2.6.1")
 }
 
 tasks.test {

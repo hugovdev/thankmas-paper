@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Finally using the new number format paper API for belowname.">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/math/LongExt.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/custom_styles.yml" afterDir="false" />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Custom styles!">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/markers/Marker.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/markers/MarkerLoader.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/commands/TranslationsCommands.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/commands/TranslationsCommands.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/entity/Hologram.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/entity/Hologram.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/global_en_us.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/global_en_us.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,17 +33,6 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="ThankmasPaper" type="f1a62948:ProjectNode" />
               </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ThankmasPaper" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ThankmasPaper" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="paperweight" type="c8890929:TasksNode$1" />
-              </path>
             </expand>
             <select />
           </tree_state>
@@ -65,6 +51,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;hugovdev&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/hugovdev/ThankmasPaper.git&quot;,
+    &quot;accountId&quot;: &quot;a9f2a6f6-2aaf-412b-865c-a0dd0e9fd68a&quot;
+  }
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
@@ -98,6 +96,11 @@
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;kotlin-gradle-user-dirs&quot;: [
+      &quot;C:\\Users\\hugov\\.gradle&quot;
+    ]
   }
 }</component>
   <component name="RecentsManager">
@@ -224,13 +227,6 @@
         <item itemvalue="Gradle.ThankmasPaper [knows]" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-18.0.2-corretto-18.0.2-8336523bb0d9-8518695b" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -521,12 +517,19 @@
       <option name="project" value="LOCAL" />
       <updated>1708514569517</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Custom styles!">
+      <option name="closed" value="true" />
+      <created>1710692088330</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1710692088330</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Configurable data source and register clickable items and menus in every thankmas plugin" />
     <MESSAGE value="Add ItemStack config loader" />
     <MESSAGE value="Add function to add translated lore lines to existing item." />
     <MESSAGE value="Paginated menus, global languages, translatable items and more" />
@@ -551,6 +554,7 @@
     <MESSAGE value="Don't be dumb." />
     <MESSAGE value="Globalize locale changes, player chat format, translation reload command, etc." />
     <MESSAGE value="Finally using the new number format paper API for belowname." />
-    <option name="LAST_COMMIT_MESSAGE" value="Finally using the new number format paper API for belowname." />
+    <MESSAGE value="Custom styles!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Custom styles!" />
   </component>
 </project>

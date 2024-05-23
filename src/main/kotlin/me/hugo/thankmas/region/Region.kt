@@ -39,7 +39,7 @@ public open class Region(public val id: String, public val corner1: Location, pu
         Location(corner1.world, max(corner1.x, corner2.x), max(corner1.y, corner2.y), max(corner1.z, corner2.z))
 
     /** @returns whether a location is inside this region. */
-    public fun contains(location: Location): Boolean {
+    public operator fun contains(location: Location): Boolean {
         return location.x() >= minCorner.x() && location.x() <= maxCorner.x() &&
                 location.z() >= minCorner.z() && location.z() <= maxCorner.z() &&
                 location.y() >= minCorner.y() && location.y() <= maxCorner.y()
