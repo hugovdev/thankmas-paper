@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Super sick marker system!!">
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="git yml">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/git.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/git.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -530,13 +532,27 @@
       <option name="project" value="LOCAL" />
       <updated>1716470394238</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Ignore git credentials yml">
+      <option name="closed" value="true" />
+      <created>1716475952293</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1716475952293</updated>
+    </task>
+    <task id="LOCAL-00039" summary="git yml">
+      <option name="closed" value="true" />
+      <created>1716475972846</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1716475972846</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Add function to add translated lore lines to existing item." />
-    <MESSAGE value="Paginated menus, global languages, translatable items and more" />
     <MESSAGE value="Allow to specify paths in the config provider" />
     <MESSAGE value="A lot of region work" />
     <MESSAGE value="Registries, more config null safety yay!" />
@@ -560,6 +576,8 @@
     <MESSAGE value="Finally using the new number format paper API for belowname." />
     <MESSAGE value="Custom styles!" />
     <MESSAGE value="Super sick marker system!!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Super sick marker system!!" />
+    <MESSAGE value="Ignore git credentials yml" />
+    <MESSAGE value="git yml" />
+    <option name="LAST_COMMIT_MESSAGE" value="git yml" />
   </component>
 </project>
