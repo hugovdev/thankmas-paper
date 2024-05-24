@@ -3,7 +3,7 @@ package me.hugo.thankmas.listener
 import me.hugo.thankmas.entity.Hologram
 import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.markers.Marker
-import me.hugo.thankmas.markers.MarkerRegistry
+import me.hugo.thankmas.markers.registry.MarkerRegistry
 import me.hugo.thankmas.player.PaperPlayerData
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.registry.MapBasedRegistry

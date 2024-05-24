@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Slightly better code">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/HologramMarkerRegistry.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/entity/Hologram.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/entity/Hologram.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/git/GitHubHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/git/GitHubHelper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/markers/Marker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/markers/Marker.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/markers/MarkerRegistry.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/markers/MarkerRegistry.kt" afterDir="false" />
-    </list>
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Marker holograms, and more github helper functions." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -584,12 +576,19 @@
       <option name="project" value="LOCAL" />
       <updated>1716502348267</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Marker holograms, and more github helper functions.">
+      <option name="closed" value="true" />
+      <created>1716554876681</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1716554876681</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Change menu approach from InventoryHolders to a safer MapBasedRegistry" />
     <MESSAGE value="Make regions work and stuff" />
     <MESSAGE value="more changes" />
     <MESSAGE value="Even more changes very fancy" />
@@ -614,6 +613,7 @@
     <MESSAGE value="Git config and world downloading!" />
     <MESSAGE value="Customize where scopes come from." />
     <MESSAGE value="Slightly better code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Slightly better code" />
+    <MESSAGE value="Marker holograms, and more github helper functions." />
+    <option name="LAST_COMMIT_MESSAGE" value="Marker holograms, and more github helper functions." />
   </component>
 </project>

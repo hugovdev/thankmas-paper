@@ -3,6 +3,7 @@ package me.hugo.thankmas.entity
 import dev.kezz.miniphrase.MiniPhraseContext
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.markers.Marker
+import me.hugo.thankmas.markers.VanillaMarker
 import me.hugo.thankmas.player.PaperPlayerData
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.translate
@@ -32,14 +33,14 @@ public class Hologram<P : PaperPlayerData>(
             playerDataManager: PlayerDataManager<P>
         ): Hologram<P> {
             val properties = HologramProperties(
-                Display.Billboard.valueOf(marker.data.getString("billboard")?.uppercase() ?: "FIXED"),
-                marker.data.getList<NBTInt>("brightness")?.let {
+                Display.Billboard.valueOf(marker.getString("billboard")?.uppercase() ?: "FIXED"),
+                (marker as VanillaMarker).data.getList<NBTInt>("brightness")?.let {
                     Display.Brightness(it[0].value, it[1].value)
                 } ?: Display.Brightness(15, 15),
-                TextAlignment.valueOf(marker.data.getString("text_alignment") ?: "LEFT"),
-                marker.data.getInt("line_width") ?: 200,
-                marker.data.getBoolean("see_through") ?: false,
-                marker.data.getBoolean("text_shadow") ?: false,
+                TextAlignment.valueOf(marker.getString("text_alignment") ?: "LEFT"),
+                marker.getInt("line_width") ?: 200,
+                marker.getBoolean("see_through") ?: false,
+                marker.getBoolean("text_shadow") ?: false,
             )
 
             return Hologram(

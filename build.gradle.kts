@@ -14,6 +14,8 @@ repositories {
     maven(url = "https://jitpack.io")
     maven(url = "https://repo.papermc.io/repository/maven-public/")
     maven(url = "https://nexus.leonardbausenwein.de/repository/maven-public/")
+    maven(url = "https://repo.infernalsuite.com/repository/maven-snapshots/")
+    maven(url = "https://repo.rapture.pw/repository/maven-releases/")
 }
 
 dependencies {
@@ -27,6 +29,7 @@ dependencies {
     implementation("com.github.Revxrsal.Lamp:common:3.1.9")
     implementation("com.github.Revxrsal.Lamp:bukkit:3.1.9")
     implementation("io.github.jglrxavpok.hephaistos:common:2.6.1")
+    compileOnly("com.infernalsuite.aswm:api:1.20.4-R0.1-SNAPSHOT")
 }
 
 tasks.test {
