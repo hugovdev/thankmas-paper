@@ -2,12 +2,17 @@ package me.hugo.thankmas.markers
 
 import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.region.Region
+import org.bukkit.Bukkit
 import org.bukkit.World
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import org.jglrxavpok.hephaistos.nbt.NBTDouble
 
 /** Marker entity with nbt data placed in the map. */
-public data class Marker(val location: MapPoint, val data: NBTCompound) {
+public data class Marker(val location: MapPoint, val worldName: String, val data: NBTCompound) {
+
+    public val world: World
+        get() = requireNotNull(Bukkit.getWorld(worldName))
+        { "Tried to use marker's world object but it's not loaded!" }
 
     /**
      * Returns the name or id of this marker.

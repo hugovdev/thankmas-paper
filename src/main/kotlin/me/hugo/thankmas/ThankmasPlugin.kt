@@ -18,10 +18,6 @@ import org.koin.core.component.inject
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 import java.io.File
-import java.io.IOException
-import java.net.URL
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
 import java.util.*
 
 
@@ -39,8 +35,8 @@ public open class ThankmasPlugin(
 ) :
     JavaPlugin(), KoinComponent {
 
-    private val configProvider: ConfigurationProvider by inject()
-    private val gitHubHelper: GitHubHelper by inject()
+    protected val configProvider: ConfigurationProvider by inject()
+    protected val gitHubHelper: GitHubHelper by inject()
 
     /** Global minimessage instance with all custom tags and styling. */
     public lateinit var miniMessage: MiniMessage.Builder
@@ -67,18 +63,7 @@ public open class ThankmasPlugin(
 
         // Register the dependency injection modules.
         startKoin { modules(ThankmasModules().module) }
-
-        val gitConfig = configProvider.getOrResources("git.yml", "base")
-        val accessToken = gitConfig.getString("access-token")
-        val githubUrl = gitConfig.getString("github-api-url")
-
-        if (githubUrl == null || accessToken == null) {
-            logger.warning("No GitHub access token provided, shutting down server.")
-            Bukkit.shutdown()
-            return
-        }
-
-        downloadConfigFiles(accessToken, githubUrl)
+        downloadConfigFiles()
     }
 
     override fun onEnable() {
@@ -113,58 +98,12 @@ public open class ThankmasPlugin(
     }
 
     /** Downloads all the config files from GitHub. */
-    private fun downloadConfigFiles(accessToken: String, githubUrl: String) {
+    private fun downloadConfigFiles() {
         logger.info("Starting scope download...")
 
         val pluginsFolder = Bukkit.getPluginsFolder()
 
-        fun downloadFileIn(fileName: String, url: String, path: File) {
-            if (fileName.startsWith(".")) {
-                logger.info("Omitted $fileName from the download.")
-                return
-            }
-
-            try {
-                URL(url).openStream().use { input ->
-                    if (path.exists() && !path.isDirectory) path.deleteRecursively()
-
-                    path.mkdirs()
-                    Files.copy(input, path.resolve(fileName).toPath(), StandardCopyOption.REPLACE_EXISTING)
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-
-        fun downloadScope(scope: String, path: File) {
-            logger.info("Downloading scope $scope...")
-
-            gitHubHelper.fetchScope(scope).forEach { file ->
-                val jsonFile = file.asJsonObject
-
-                val downloadName = jsonFile.get("name").asString
-
-                if (jsonFile.get("type").asString == "dir") {
-                    val subfolder = jsonFile.get("path").asString
-                    val scopePath = subfolder.removePrefix("scopes/")
-
-                    if (downloadName.startsWith(".")) {
-                        logger.info("Omitted download of scope $scopePath.")
-                        return@forEach
-                    }
-
-                    downloadScope(scopePath, pluginsFolder.resolve(scopePath))
-                    return@forEach
-                }
-
-                downloadFileIn(downloadName, jsonFile.get("download_url").asString, path.also { it.mkdir() })
-            }
-
-            logger.info("Done downloading scope $scope!")
-        }
-
-        if (downloadGlobalScope) downloadScope("global", pluginsFolder.resolve("global"))
-        configScopes.forEach { downloadScope(it, pluginsFolder.resolve(it).also { it.mkdirs() }) }
+        if (downloadGlobalScope) gitHubHelper.downloadScope("global", pluginsFolder.resolve("global"))
+        configScopes.forEach { gitHubHelper.downloadScope(it, pluginsFolder.resolve(it).also { it.mkdirs() }) }
     }
-
 }

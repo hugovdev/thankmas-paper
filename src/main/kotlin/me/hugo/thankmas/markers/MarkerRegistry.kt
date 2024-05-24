@@ -75,6 +75,7 @@ public class MarkerRegistry {
                                         markerData.getFloat("yaw") ?: 0.0f,
                                         markerData.getFloat("pitch") ?: 0.0f
                                     ),
+                                    worldName,
                                     markerData
                                 )
                             )
