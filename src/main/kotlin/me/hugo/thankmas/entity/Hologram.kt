@@ -3,7 +3,6 @@ package me.hugo.thankmas.entity
 import dev.kezz.miniphrase.MiniPhraseContext
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.markers.Marker
-import me.hugo.thankmas.markers.VanillaMarker
 import me.hugo.thankmas.player.PaperPlayerData
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.translate
@@ -15,7 +14,6 @@ import org.bukkit.entity.Player
 import org.bukkit.entity.TextDisplay
 import org.bukkit.entity.TextDisplay.TextAlignment
 import org.bukkit.event.entity.CreatureSpawnEvent
-import org.jglrxavpok.hephaistos.nbt.NBTInt
 import java.util.*
 
 /** TextDisplay that shows different text per player. */
@@ -34,8 +32,8 @@ public class Hologram<P : PaperPlayerData>(
         ): Hologram<P> {
             val properties = HologramProperties(
                 Display.Billboard.valueOf(marker.getString("billboard")?.uppercase() ?: "FIXED"),
-                (marker as VanillaMarker).data.getList<NBTInt>("brightness")?.let {
-                    Display.Brightness(it[0].value, it[1].value)
+                marker.getIntList("brightness")?.let {
+                    Display.Brightness(it[0], it[1])
                 } ?: Display.Brightness(15, 15),
                 TextAlignment.valueOf(marker.getString("text_alignment") ?: "LEFT"),
                 marker.getInt("line_width") ?: 200,
@@ -47,7 +45,7 @@ public class Hologram<P : PaperPlayerData>(
                 marker.location.toLocation(marker.world),
                 propertiesSupplier = { _, _ -> properties },
                 textSupplier = { player, locale ->
-                    player.translate(marker.data.getString("text") ?: "hologram.error", locale)
+                    player.translate(marker.getString("text") ?: "hologram.error", locale)
                 },
                 playerDataManager
             )
