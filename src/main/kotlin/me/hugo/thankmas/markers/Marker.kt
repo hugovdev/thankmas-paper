@@ -30,6 +30,18 @@ public abstract class Marker(public val location: MapPoint, public val worldName
     /** Gets a double from a key. */
     public abstract fun getFloat(key: String): Float?
 
+    /** Gets a list of strings from a key. */
+    public abstract fun getStringList(key: String): List<String>?
+
+    /** Gets a list of integers from a key. */
+    public abstract fun getIntList(key: String): List<Int>?
+
+    /** Gets a list of floats from a key. */
+    public abstract fun getFloatList(key: String): List<Float>?
+
+    /** Gets a list of doubles from a key. */
+    public abstract fun getDoubleList(key: String): List<Double>?
+
     /** Returns a region out of the Axiom box data fields. */
     public abstract fun toRegion(world: World): Region
 

@@ -15,18 +15,25 @@ public class SlimeMarker(location: MapPoint, worldName: String, public val data:
 
     override fun getString(key: String): String? = data.getStringValue(key).getOrNull()
 
-    override fun getBoolean(key: String): Boolean? {
-        val value = data.getByteValue(key).getOrNull()
-
-        return if (value == null) null
-        else value != 0.toByte()
-    }
+    override fun getBoolean(key: String): Boolean? = data.getByteValue(key).getOrNull()?.let { it != 0.toByte() }
 
     override fun getInt(key: String): Int? = data.getIntValue(key).getOrNull()
 
     override fun getDouble(key: String): Double? = data.getDoubleValue(key).getOrNull()
 
     override fun getFloat(key: String): Float? = data.getFloatValue(key).getOrNull()
+
+    override fun getStringList(key: String): List<String>? =
+        data.getAsListTag(key)?.getOrNull()?.asStringTagList?.getOrNull()?.value?.map { it.value }
+
+    override fun getIntList(key: String): List<Int>? =
+        data.getAsListTag(key)?.getOrNull()?.asIntTagList?.getOrNull()?.value?.map { it.value }
+
+    override fun getFloatList(key: String): List<Float>? =
+        data.getAsListTag(key)?.getOrNull()?.asFloatTagList?.getOrNull()?.value?.map { it.value }
+
+    override fun getDoubleList(key: String): List<Double>? =
+        data.getAsListTag(key)?.getOrNull()?.asDoubleTagList?.getOrNull()?.value?.map { it.value }
 
     public override fun toRegion(world: World): Region {
         return Region(getMarkerId(), getMapPoint("min").toLocation(world), getMapPoint("max").toLocation(world))

@@ -3,8 +3,7 @@ package me.hugo.thankmas.markers
 import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.region.Region
 import org.bukkit.World
-import org.jglrxavpok.hephaistos.nbt.NBTCompound
-import org.jglrxavpok.hephaistos.nbt.NBTDouble
+import org.jglrxavpok.hephaistos.nbt.*
 
 public class VanillaMarker(location: MapPoint, worldName: String, public val data: NBTCompound) :
     Marker(location, worldName) {
@@ -22,6 +21,14 @@ public class VanillaMarker(location: MapPoint, worldName: String, public val dat
     override fun getDouble(key: String): Double? = data.getDouble(key)
 
     override fun getFloat(key: String): Float? = data.getFloat(key)
+
+    override fun getStringList(key: String): List<String>? = data.getList<NBTString>(key)?.value?.map { it.value }
+
+    override fun getIntList(key: String): List<Int>? = data.getList<NBTInt>(key)?.value?.map { it.value }
+
+    override fun getFloatList(key: String): List<Float>? = data.getList<NBTFloat>(key)?.value?.map { it.value }
+
+    override fun getDoubleList(key: String): List<Double>? = data.getList<NBTDouble>(key)?.value?.map { it.value }
 
     public override fun toRegion(world: World): Region {
         return Region(getMarkerId(), getMapPoint("min").toLocation(world), getMapPoint("max").toLocation(world))
