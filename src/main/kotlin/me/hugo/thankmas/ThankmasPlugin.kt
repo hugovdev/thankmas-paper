@@ -27,9 +27,9 @@ import java.util.*
  * APIs utility classes.
  */
 public open class ThankmasPlugin(
-    private val configScopes: List<String> = listOf(),
-    private val localTranslationDirectory: String =
-        if (configScopes.isNotEmpty()) "${configScopes.first()}/lang/"
+    public val configScopes: List<String> = listOf(),
+    public val localTranslationDirectory: String =
+        if (configScopes.isNotEmpty()) "${configScopes.first()}/lang"
         else "local",
     private val downloadGlobalScope: Boolean = true
 ) :
@@ -80,7 +80,7 @@ public open class ThankmasPlugin(
             resolver(TagResolver.standard())
         }.build())
 
-        translations = DefaultTranslations(File(Bukkit.getPluginsFolder(), localTranslationDirectory), miniMessage)
+        translations = DefaultTranslations(File(Bukkit.getPluginsFolder(), "$localTranslationDirectory/"), miniMessage)
 
         globalTranslations = MiniPhrase.configureAndBuild {
             miniMessage(translations.translations.miniMessage)

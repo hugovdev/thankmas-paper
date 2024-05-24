@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Marker holograms, and more github helper functions." />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Update hologram to use new APIs." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -113,11 +113,11 @@
       <recent name="C:\Users\hugov\IdeaProjects\ThankmasPaper\src\main\kotlin\me\hugo\thankmas\items" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="me.hugo.thankmas.markers.registry" />
       <recent name="me.hugo.thankmas.gui" />
       <recent name="me.hugo.thankmas.gui.view" />
       <recent name="me.hugo.thankmas.gui.icon" />
       <recent name="me.hugo.thankmas.player.rank" />
-      <recent name="me.hugo.thankmas.player" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="me.hugo.thankmas.listener" />
@@ -584,14 +584,35 @@
       <option name="project" value="LOCAL" />
       <updated>1716554876681</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Support for slime world markers!">
+      <option name="closed" value="true" />
+      <created>1716560821862</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1716560821862</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Add marker getter implementations for some primitive list types.">
+      <option name="closed" value="true" />
+      <created>1716561815194</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1716561815194</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Update hologram to use new APIs.">
+      <option name="closed" value="true" />
+      <created>1716561988470</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1716561988470</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Make regions work and stuff" />
-    <MESSAGE value="more changes" />
-    <MESSAGE value="Even more changes very fancy" />
     <MESSAGE value="Last menu for paginated menus, allowing for better locale handling when players join" />
     <MESSAGE value="Add encodings" />
     <MESSAGE value="Bug fixing and some more utility" />
@@ -614,6 +635,9 @@
     <MESSAGE value="Customize where scopes come from." />
     <MESSAGE value="Slightly better code" />
     <MESSAGE value="Marker holograms, and more github helper functions." />
-    <option name="LAST_COMMIT_MESSAGE" value="Marker holograms, and more github helper functions." />
+    <MESSAGE value="Support for slime world markers!" />
+    <MESSAGE value="Add marker getter implementations for some primitive list types." />
+    <MESSAGE value="Update hologram to use new APIs." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update hologram to use new APIs." />
   </component>
 </project>

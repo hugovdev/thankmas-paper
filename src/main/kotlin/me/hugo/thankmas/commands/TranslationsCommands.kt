@@ -2,6 +2,7 @@ package me.hugo.thankmas.commands
 
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.config.ConfigurationProvider
+import me.hugo.thankmas.git.GitHubHelper
 import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.player.PaperPlayerData
 import me.hugo.thankmas.player.PlayerDataManager
@@ -9,7 +10,9 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.minimessage.tag.Tag
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.scheduler.BukkitRunnable
 import org.koin.core.component.inject
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Optional
@@ -23,19 +26,48 @@ public class TranslationsCommands<T : PaperPlayerData>(
         GLOBAL, LOCAL
     }
 
+    private val instance = ThankmasPlugin.instance()
     private val configProvider: ConfigurationProvider by inject()
+    private val gitHubHelper: GitHubHelper by inject()
 
     @Command("reloadtranslations")
     @CommandPermission("thankmas.admin")
     private fun reloadTranslations(sender: Player, @Optional type: TranslationType = TranslationType.LOCAL) {
-        when (type) {
-            TranslationType.LOCAL -> miniPhrase.translationRegistry.reload()
-            TranslationType.GLOBAL -> ThankmasPlugin.instance().globalTranslations.translationRegistry.reload()
-        }
+        sender.sendMessage(Component.text("Fetching translations from context $type...", NamedTextColor.GREEN))
 
-        playerManager.getPlayerData(sender.uniqueId).setTranslation(sender.locale())
+        object : BukkitRunnable() {
+            override fun run() {
+                when (type) {
+                    TranslationType.LOCAL -> {
+                        val localTranslationDirectory = instance.localTranslationDirectory
 
-        sender.sendMessage(Component.text("Reloaded messages in context $type!", NamedTextColor.GREEN))
+                        gitHubHelper.downloadScope(
+                            localTranslationDirectory,
+                            Bukkit.getPluginsFolder().resolve(localTranslationDirectory)
+                        )
+
+                        miniPhrase.translationRegistry.reload()
+
+                    }
+
+                    TranslationType.GLOBAL -> {
+                        gitHubHelper.downloadScope(
+                            "global/lang",
+                            Bukkit.getPluginsFolder().resolve("global/lang")
+                        )
+
+                        instance.globalTranslations.translationRegistry.reload()
+                    }
+                }
+
+                object : BukkitRunnable() {
+                    override fun run() {
+                        playerManager.getPlayerData(sender.uniqueId).setTranslation(sender.locale())
+                        sender.sendMessage(Component.text("Reloaded messages in context $type!", NamedTextColor.GREEN))
+                    }
+                }.runTask(instance)
+            }
+        }.runTaskAsynchronously(instance)
     }
 
     @Command("previewmessage")
