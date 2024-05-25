@@ -5,16 +5,12 @@ import aws.sdk.kotlin.services.s3.endpoints.S3EndpointProvider
 import aws.sdk.kotlin.services.s3.listObjectsV2
 import aws.sdk.kotlin.services.s3.model.PutObjectResponse
 import aws.sdk.kotlin.services.s3.putObject
+import aws.sdk.kotlin.services.s3.withConfig
 import aws.smithy.kotlin.runtime.auth.awscredentials.Credentials
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProvider
-import aws.smithy.kotlin.runtime.auth.awssigning.AwsSigningAttributes
-import aws.smithy.kotlin.runtime.auth.awssigning.HashSpecification
-import aws.smithy.kotlin.runtime.client.ProtocolRequestInterceptorContext
 import aws.smithy.kotlin.runtime.client.endpoints.Endpoint
 import aws.smithy.kotlin.runtime.collections.Attributes
 import aws.smithy.kotlin.runtime.content.asByteStream
-import aws.smithy.kotlin.runtime.http.interceptors.HttpInterceptor
-import aws.smithy.kotlin.runtime.http.request.HttpRequest
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -41,7 +37,6 @@ public class S3WorldSynchronizer : KoinComponent {
     public suspend fun getClient(): S3Client = S3Client.fromEnvironment {
         val s3Config = configProvider.getOrLoad("global/s3.yml")
 
-        interceptors = mutableListOf(DisableChunkedSigning())
         region = s3Config.string("region")
         endpointProvider = S3EndpointProvider { Endpoint("${s3Config.string("endpoint")}/$configBucket") }
 
@@ -51,6 +46,9 @@ public class S3WorldSynchronizer : KoinComponent {
                 s3Config.string("secret-access-key")
             )
         }
+    }.withConfig {
+        // Disable chunk signing!
+        enableAwsChunked = false
     }
 
     /** Uploads this world's files to [path]. */
@@ -94,12 +92,5 @@ public class S3WorldSynchronizer : KoinComponent {
         }
 
         return tasks
-    }
-
-    public class DisableChunkedSigning : HttpInterceptor {
-        override suspend fun modifyBeforeSigning(context: ProtocolRequestInterceptorContext<Any, HttpRequest>): HttpRequest {
-            context.executionContext[AwsSigningAttributes.HashSpecification] = HashSpecification.UnsignedPayload
-            return super.modifyBeforeSigning(context)
-        }
     }
 }
