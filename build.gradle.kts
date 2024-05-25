@@ -21,17 +21,33 @@ repositories {
 
 dependencies {
     paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
+
+    // LuckPerms API for nice access to groups.
     compileOnly("net.luckperms:api:5.4")
 
+    // Dependency Injection framework.
     ksp("io.insert-koin:koin-ksp-compiler:1.3.1")
+
+    // Nice scoreboard API.
     implementation("fr.mrmicky:fastboard:2.1.2")
 
+    // Main Thankmas framework.
     implementation(files("C:/Users/hugov/IdeaProjects/TranslationsTest/build/libs/Thankmas-1.0-SNAPSHOT-all.jar"))
 
+    // Minecraft UI interface framework from the absolute goats at Noxcrew.
     implementation("com.noxcrew.interfaces:interfaces:1.0.1")
+
+    // Nice command framework.
     implementation("com.github.Revxrsal.Lamp:common:3.2.1")
     implementation("com.github.Revxrsal.Lamp:bukkit:3.2.1")
+
+    // Library to access minecraft world files.
     implementation("io.github.jglrxavpok.hephaistos:common:2.6.1")
+
+    // Amazon S3 API for nice world downloading and uploading :)
+    implementation("aws.sdk.kotlin:s3:1.2.19")
+
+    // Slime worlds APIs.
     compileOnly("com.infernalsuite.aswm:api:1.20.4-R0.1-SNAPSHOT")
 }
 
