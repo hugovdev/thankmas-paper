@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Update hologram to use new APIs." />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Make translations reload download new git files.">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/git/GitFileAction.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/git/GitFileChange.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/commands/TranslationsCommands.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/commands/TranslationsCommands.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/git/GitHubHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/git/GitHubHelper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/git.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/git.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -608,12 +616,19 @@
       <option name="project" value="LOCAL" />
       <updated>1716561988470</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Make translations reload download new git files.">
+      <option name="closed" value="true" />
+      <created>1716589119787</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1716589119787</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Last menu for paginated menus, allowing for better locale handling when players join" />
     <MESSAGE value="Add encodings" />
     <MESSAGE value="Bug fixing and some more utility" />
     <MESSAGE value="Add Nametags, LuckPerms hook and more!" />
@@ -638,6 +653,7 @@
     <MESSAGE value="Support for slime world markers!" />
     <MESSAGE value="Add marker getter implementations for some primitive list types." />
     <MESSAGE value="Update hologram to use new APIs." />
-    <option name="LAST_COMMIT_MESSAGE" value="Update hologram to use new APIs." />
+    <MESSAGE value="Make translations reload download new git files." />
+    <option name="LAST_COMMIT_MESSAGE" value="Make translations reload download new git files." />
   </component>
 </project>

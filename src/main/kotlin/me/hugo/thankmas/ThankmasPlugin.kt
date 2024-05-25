@@ -101,9 +101,7 @@ public open class ThankmasPlugin(
     private fun downloadConfigFiles() {
         logger.info("Starting scope download...")
 
-        val pluginsFolder = Bukkit.getPluginsFolder()
-
-        if (downloadGlobalScope) gitHubHelper.downloadScope("global", pluginsFolder.resolve("global"))
-        configScopes.forEach { gitHubHelper.downloadScope(it, pluginsFolder.resolve(it).also { it.mkdirs() }) }
+        if (downloadGlobalScope) gitHubHelper.downloadScope("global")
+        configScopes.forEach { gitHubHelper.downloadScope(it) }
     }
 }

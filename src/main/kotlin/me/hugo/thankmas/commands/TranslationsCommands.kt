@@ -41,20 +41,14 @@ public class TranslationsCommands<T : PaperPlayerData>(
                     TranslationType.LOCAL -> {
                         val localTranslationDirectory = instance.localTranslationDirectory
 
-                        gitHubHelper.downloadScope(
-                            localTranslationDirectory,
-                            Bukkit.getPluginsFolder().resolve(localTranslationDirectory)
-                        )
+                        gitHubHelper.downloadScope(localTranslationDirectory)
 
                         miniPhrase.translationRegistry.reload()
 
                     }
 
                     TranslationType.GLOBAL -> {
-                        gitHubHelper.downloadScope(
-                            "global/lang",
-                            Bukkit.getPluginsFolder().resolve("global/lang")
-                        )
+                        gitHubHelper.downloadScope("global/lang")
 
                         instance.globalTranslations.translationRegistry.reload()
                     }

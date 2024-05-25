@@ -1,2 +1,4 @@
 access-token: ""
-github-api-url: ""
+github-user: "hugovdev"
+github-repository: "ThankmasScopes"
+branch: "main"
