@@ -47,7 +47,7 @@ public class MarkerRegistry : KoinComponent {
             logger.info("[Markers] [$worldName] Loading markers on region ${it.first}, ${it.second}...")
 
             val regionFile = RegionFile(
-                RandomAccessFile(regionPath.resolve(RegionFile.createFileName(it.first, it.second)), "r"),
+                RandomAccessFile(regionPath.resolve(RegionFile.createFileName(it.first, it.second)), "rw"),
                 it.first,
                 it.second
             )

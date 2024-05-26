@@ -50,7 +50,12 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
 
     /** Removes every text display and hologram for this player. */
     public fun removeAllHolograms() {
-        spawnedHolograms.keys.forEach { spawnedHolograms.remove(it)?.remove() }
+        val iterator = spawnedHolograms.iterator()
+
+        while (iterator.hasNext()) {
+            iterator.next().value.remove()
+            iterator.remove()
+        }
     }
 
     /** Update every spawn hologram for [player]. */

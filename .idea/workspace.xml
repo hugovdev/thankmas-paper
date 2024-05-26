@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Some fixes">
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="World downloading">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/markers/registry/MarkerRegistry.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/markers/registry/MarkerRegistry.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PaperPlayerData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/player/PaperPlayerData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/world/s3/S3WorldSynchronizer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/world/s3/S3WorldSynchronizer.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -234,14 +236,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1702550999552</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Thankmas Base for paper plugins!">
-      <option name="closed" value="true" />
-      <created>1702552397705</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1702552397705</updated>
     </task>
     <task id="LOCAL-00002" summary="Start work in scoreboard API">
       <option name="closed" value="true" />
@@ -627,12 +621,19 @@
       <option name="project" value="LOCAL" />
       <updated>1716640991484</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="World downloading">
+      <option name="closed" value="true" />
+      <created>1716723809089</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1716723809090</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Bug fixing and some more utility" />
     <MESSAGE value="Add Nametags, LuckPerms hook and more!" />
     <MESSAGE value="Stateful icons" />
     <MESSAGE value="Stateful icons, suffix suplier for RankedPlayerData." />
@@ -657,6 +658,7 @@
     <MESSAGE value="Update hologram to use new APIs." />
     <MESSAGE value="Make translations reload download new git files." />
     <MESSAGE value="Simplify some git stuff and optimize file pushing." />
-    <option name="LAST_COMMIT_MESSAGE" value="Simplify some git stuff and optimize file pushing." />
+    <MESSAGE value="World downloading" />
+    <option name="LAST_COMMIT_MESSAGE" value="World downloading" />
   </component>
 </project>

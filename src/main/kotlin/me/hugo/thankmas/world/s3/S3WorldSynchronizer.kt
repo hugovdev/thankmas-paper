@@ -16,6 +16,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
+import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.config.ConfigurationProvider
 import me.hugo.thankmas.config.string
 import org.bukkit.World
@@ -28,6 +29,7 @@ import java.io.File
 @Single
 public class S3WorldSynchronizer : KoinComponent {
 
+    private val logger = ThankmasPlugin.instance().logger
     private val configProvider: ConfigurationProvider by inject()
 
     /** Bucket for world download/upload. */
@@ -57,6 +59,8 @@ public class S3WorldSynchronizer : KoinComponent {
         // worldDirectory = hub/2024
         // selectedDirectory = hub/2024/{timestamp}
         // relativeDirectory = [[hub/2024/{timestamp}]]/entities
+
+        logger.info("Downloading world $worldDirectory...")
 
         if (localPath.exists() && localPath.isDirectory) localPath.deleteRecursively()
         val tasks: MutableList<Deferred<*>> = mutableListOf()
@@ -113,6 +117,8 @@ public class S3WorldSynchronizer : KoinComponent {
             }
 
             tasks.awaitAll()
+
+            logger.info("Downloaded world $worldDirectory...")
         }
     }
 
