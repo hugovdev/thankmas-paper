@@ -3,7 +3,7 @@ package me.hugo.thankmas.world.s3
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.endpoints.S3EndpointProvider
 import aws.sdk.kotlin.services.s3.listObjectsV2
-import aws.sdk.kotlin.services.s3.model.PutObjectResponse
+import aws.sdk.kotlin.services.s3.model.*
 import aws.sdk.kotlin.services.s3.putObject
 import aws.sdk.kotlin.services.s3.withConfig
 import aws.smithy.kotlin.runtime.auth.awscredentials.Credentials
@@ -11,6 +11,7 @@ import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProvider
 import aws.smithy.kotlin.runtime.client.endpoints.Endpoint
 import aws.smithy.kotlin.runtime.collections.Attributes
 import aws.smithy.kotlin.runtime.content.asByteStream
+import aws.smithy.kotlin.runtime.content.writeToFile
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -51,16 +52,75 @@ public class S3WorldSynchronizer : KoinComponent {
         enableAwsChunked = false
     }
 
+    /** Downloads the latest world in [worldDirectory] to [localPath]. */
+    public suspend fun downloadWorld(worldDirectory: String, localPath: File) {
+        // worldDirectory = hub/2024
+        // selectedDirectory = hub/2024/{timestamp}
+        // relativeDirectory = [[hub/2024/{timestamp}]]/entities
+
+        if (localPath.exists() && localPath.isDirectory) localPath.deleteRecursively()
+        val tasks: MutableList<Deferred<*>> = mutableListOf()
+
+        getClient().use { client ->
+            runBlocking {
+                val selectedDirectories = client.listObjectsV2 {
+                    bucket = configBucket
+                    prefix = "$worldDirectory/"
+                    delimiter = "/"
+                }.commonPrefixes?.mapNotNull { it.prefix }
+                    ?.sortedByDescending { it.removePrefix("$worldDirectory/") }
+                    ?: emptyList()
+
+                val selectedDirectory = selectedDirectories.firstOrNull() ?: return@runBlocking
+
+                // Download all the files!
+                client.listObjectsV2 {
+                    bucket = configBucket
+                    prefix = selectedDirectory
+                }.contents?.filter { it.key != null }?.forEach {
+                    val request = GetObjectRequest {
+                        key = it.key
+                        bucket = configBucket
+                    }
+
+                    val relativeDirectory = it.key!!.removePrefix(selectedDirectory)
+
+                    tasks += async {
+                        client.getObject(request) { resp ->
+                            resp.body?.writeToFile(localPath.resolve(relativeDirectory).also { it.parentFile.mkdirs() })
+                        }
+                    }
+                }
+
+                // Delete the oldest map cache if we already have 15 versions!
+                if (selectedDirectories.size > 15) {
+                    val oldestMapFiles = client.listObjectsV2 {
+                        bucket = configBucket
+                        prefix = selectedDirectories.last()
+                    }.contents?.mapNotNull {
+                        it.key?.let {
+                            ObjectIdentifier {
+                                key = it
+                            }
+                        }
+                    } ?: return@runBlocking
+
+                    client.deleteObjects(DeleteObjectsRequest {
+                        bucket = configBucket
+                        delete = Delete { objects = oldestMapFiles }
+                    })
+                }
+            }
+
+            tasks.awaitAll()
+        }
+    }
+
     /** Uploads this world's files to [path]. */
     public suspend fun uploadWorld(world: World, path: String) {
         val client = getClient()
 
         client.use { s3 ->
-            s3.listObjectsV2 {
-                bucket = configBucket
-                prefix = "$path/"
-            }.contents?.forEach { println(it.key) }
-
             uploadFolder(s3, world.worldFolder, "$path/${System.currentTimeMillis()}").awaitAll()
         }
     }
@@ -85,7 +145,6 @@ public class S3WorldSynchronizer : KoinComponent {
                         bucket = configBucket
                         key = "$newPath/${it.name}"
                         body = it.asByteStream()
-
                     }
                 }
             }
