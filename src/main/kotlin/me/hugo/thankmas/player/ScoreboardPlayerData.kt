@@ -75,11 +75,11 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
         public fun apply(viewer: Player, preferredLocale: Locale? = null) {
             val playerOwner = owner.player() ?: return
 
-            val team = viewer.scoreboard.getOrCreateTeam(teamId)
-
-            team.prefix(prefixSupplier?.let { it(viewer, preferredLocale) })
-            team.suffix(suffixSupplier?.let { it(viewer, preferredLocale) })
-            team.color(namedTextColor?.let { it(viewer, preferredLocale) })
+            val team = viewer.scoreboard.getOrCreateTeam(teamId).apply {
+                prefix(prefixSupplier?.let { it(viewer, preferredLocale) })
+                suffix(suffixSupplier?.let { it(viewer, preferredLocale) })
+                color(namedTextColor?.let { it(viewer, preferredLocale) })
+            }
 
             val entry = playerOwner.name
             if (!team.hasEntry(entry)) team.addEntry(entry)
@@ -96,9 +96,11 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
 
         /** Uses the [teamIdSupplier] to revalidate the team id. */
         public fun updateTeamId(updateTagGlobally: Boolean = true) {
+            val oldTeamId = teamId
+            teamId = teamIdSupplier()
+
             Bukkit.getOnlinePlayers().forEach {
-                it.scoreboard.getTeam(teamId)?.unregister()
-                teamId = teamIdSupplier()
+                it.scoreboard.getTeam(oldTeamId)?.unregister()
 
                 if (updateTagGlobally) apply(it)
             }
