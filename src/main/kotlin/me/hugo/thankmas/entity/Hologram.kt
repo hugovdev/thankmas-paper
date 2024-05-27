@@ -81,26 +81,26 @@ public class Hologram<P : PaperPlayerData>(
     /** Removes this hologram from the [player]'s client. */
     public fun remove(player: Player) {
         val playerData = playerManager.getPlayerData(player.uniqueId)
-        val textDisplay = playerData.getDisplayForHologramOrNull(this)
-        requireNotNull(textDisplay) { "Tried to despawn a hologram from ${player.name}, who wasn't a viewer! " }
+        val textDisplay = playerData.getDisplayForHologramOrNull(this) ?: return
 
         textDisplay.remove()
+        playerData.removeHologram(this)
     }
 
     /** All important hologram properties to keep track of. */
     public data class HologramProperties(
         private val billboardRotation: Display.Billboard,
-        private val brightness: Display.Brightness,
-        private val textAlignment: TextAlignment,
-        private val lineWidth: Int,
+        private val brightness: Display.Brightness? = null,
+        private val textAlignment: TextAlignment? = null,
+        private val lineWidth: Int? = null,
         private val textSeeThrough: Boolean = false,
         private val textShadow: Boolean = false,
     ) {
         public fun apply(display: TextDisplay) {
             display.billboard = billboardRotation
             display.brightness = brightness
-            display.alignment = textAlignment
-            display.lineWidth = lineWidth
+            textAlignment?.let { display.alignment = it }
+            lineWidth?.let { display.lineWidth = it }
             display.isSeeThrough = textSeeThrough
             display.isShadowed = textShadow
         }

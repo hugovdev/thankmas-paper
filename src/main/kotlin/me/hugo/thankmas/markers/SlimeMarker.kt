@@ -13,6 +13,8 @@ public class SlimeMarker(location: MapPoint, worldName: String, public val data:
         return data.getStringValue("name").get()
     }
 
+    override fun getKeys(): Collection<String> = data.value.keys
+
     override fun getString(key: String): String? = data.getStringValue(key).getOrNull()
 
     override fun getBoolean(key: String): Boolean? = data.getByteValue(key).getOrNull()?.let { it != 0.toByte() }

@@ -15,10 +15,10 @@ import aws.smithy.kotlin.runtime.content.writeToFile
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.runBlocking
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.config.ConfigurationProvider
 import me.hugo.thankmas.config.string
+import me.hugo.thankmas.coroutines.runBlockingMine
 import org.bukkit.World
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
@@ -66,7 +66,7 @@ public class S3WorldSynchronizer : KoinComponent {
         val tasks: MutableList<Deferred<*>> = mutableListOf()
 
         getClient().use { client ->
-            runBlocking {
+            runBlockingMine {
                 val selectedDirectories = client.listObjectsV2 {
                     bucket = configBucket
                     prefix = "$worldDirectory/"
@@ -75,7 +75,7 @@ public class S3WorldSynchronizer : KoinComponent {
                     ?.sortedByDescending { it.removePrefix("$worldDirectory/") }
                     ?: emptyList()
 
-                val selectedDirectory = selectedDirectories.firstOrNull() ?: return@runBlocking
+                val selectedDirectory = selectedDirectories.firstOrNull() ?: return@runBlockingMine
 
                 // Download all the files!
                 client.listObjectsV2 {
@@ -107,7 +107,7 @@ public class S3WorldSynchronizer : KoinComponent {
                                 key = it
                             }
                         }
-                    } ?: return@runBlocking
+                    } ?: return@runBlockingMine
 
                     client.deleteObjects(DeleteObjectsRequest {
                         bucket = configBucket
@@ -139,7 +139,7 @@ public class S3WorldSynchronizer : KoinComponent {
     ): List<Deferred<PutObjectResponse>> {
         val tasks: MutableList<Deferred<PutObjectResponse>> = mutableListOf()
 
-        runBlocking {
+        runBlockingMine {
             folder.listFiles()?.forEach {
                 if (it.isDirectory) {
                     tasks += uploadFolder(client, it, "$newPath/${it.name}")

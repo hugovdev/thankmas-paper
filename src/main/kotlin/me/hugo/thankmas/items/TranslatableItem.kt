@@ -1,10 +1,10 @@
 package me.hugo.thankmas.items
 
 import dev.kezz.miniphrase.MiniPhrase
-import dev.kezz.miniphrase.MiniPhraseContext
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import me.hugo.thankmas.DefaultTranslations
 import me.hugo.thankmas.config.string
+import me.hugo.thankmas.lang.TranslatedComponent
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Registry
@@ -21,7 +21,7 @@ public class TranslatableItem(
     config: FileConfiguration,
     path: String,
     override val miniPhrase: MiniPhrase = DefaultTranslations.instance.translations
-) : MiniPhraseContext {
+) : TranslatedComponent {
 
     private val material = Material.valueOf(config.string("$path.material"))
     private val customModelData = config.getInt("$path.custom-model-data")
@@ -31,8 +31,8 @@ public class TranslatableItem(
         .unbreakable(config.getBoolean("$path.unbreakable", false))
         .flags(*config.getStringList("$path.flags").map { ItemFlag.valueOf(it.uppercase()) }.toTypedArray())
 
-    public val name: String = config.string("$path.name")
-    public val lore: String = config.string("$path.lore")
+    public val name: String = config.getString("$path.name") ?: "name-not-specified"
+    public val lore: String = config.getString("$path.lore") ?: "lore-not-specified"
 
     init {
         config.getStringList("enchantments").forEach {

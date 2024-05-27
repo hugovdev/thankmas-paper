@@ -32,8 +32,26 @@ public class ConfigurationProvider {
     }
 
     /** Gets a cached configuration file or loads and caches it. */
+    public fun getOrLoadOrNull(path: String): FileConfiguration? {
+        if(configs.containsKey(path)) return configs[path]
+
+        val loadedConfig = load(path) ?: return null
+
+        configs[path] = loadedConfig
+        return loadedConfig
+
+        return configs.computeIfAbsent(path) {
+            requireNotNull(load(path))
+            { "Tried to load a config file that doesnt exist!" }
+        }
+    }
+
+    /** Gets a cached configuration file or loads and caches it. */
     public fun getOrLoad(path: String): FileConfiguration {
-        return configs.computeIfAbsent(path) { load(path) }
+        return configs.computeIfAbsent(path) {
+            requireNotNull(load(path))
+            { "Tried to load a config file that doesnt exist!" }
+        }
     }
 
     /** Gets a cached configuration file or loads and caches it. */
@@ -43,18 +61,20 @@ public class ConfigurationProvider {
 
     /** Reloads a configuration file and saves in cache the new version. */
     public fun reload(config: String): FileConfiguration {
-        val reloadedConfig = load(config)
+        val reloadedConfig = requireNotNull(load(config))
+        { "Tried to reload config that is not existent!" }
         configs[config] = reloadedConfig
 
         return reloadedConfig
     }
 
     /** Loads a configuration file. */
-    private fun load(path: String): FileConfiguration {
-        val configFile = files.computeIfAbsent(path) {
-            File(Bukkit.getPluginsFolder(), path)
-        }
+    private fun load(path: String): FileConfiguration? {
+        val file = File(Bukkit.getPluginsFolder(), path)
 
+        if (!file.exists()) return null
+
+        val configFile = files.computeIfAbsent(path) { file }
         return YamlConfiguration.loadConfiguration(configFile)
     }
 

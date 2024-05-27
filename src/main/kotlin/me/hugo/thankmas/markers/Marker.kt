@@ -15,6 +15,9 @@ public abstract class Marker(public val location: MapPoint, public val worldName
     /** Returns the name or id of this marker. */
     public abstract fun getMarkerId(): String
 
+    /** Gets all the keys on this marker's metadata. */
+    public abstract fun getKeys(): Collection<String>
+
     /** Gets a string from a key. */
     public abstract fun getString(key: String): String?
 

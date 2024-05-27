@@ -1,6 +1,5 @@
-package me.hugo.thankmas.listener
+package me.hugo.thankmas.entity
 
-import me.hugo.thankmas.entity.Hologram
 import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.markers.Marker
 import me.hugo.thankmas.markers.registry.MarkerRegistry

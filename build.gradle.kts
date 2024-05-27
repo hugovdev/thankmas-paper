@@ -17,6 +17,7 @@ repositories {
     maven(url = "https://repo.infernalsuite.com/repository/maven-snapshots/")
     maven(url = "https://repo.rapture.pw/repository/maven-releases/")
     maven(url = "https://maven.noxcrew.com/public/")
+    maven(url = "https://maven.citizensnpcs.co/repo")
 }
 
 dependencies {
@@ -24,6 +25,11 @@ dependencies {
 
     // LuckPerms API for nice access to groups.
     compileOnly("net.luckperms:api:5.4")
+
+    // Citizens API
+    compileOnly("net.citizensnpcs:citizens-main:2.0.33-SNAPSHOT") {
+        exclude(mutableMapOf("group" to "*", "module" to "*"))
+    }
 
     // Dependency Injection framework.
     ksp("io.insert-koin:koin-ksp-compiler:1.3.1")

@@ -12,6 +12,8 @@ public class VanillaMarker(location: MapPoint, worldName: String, public val dat
         return data.getString("name")!!
     }
 
+    override fun getKeys(): Collection<String> = data.keys
+
     override fun getString(key: String): String? = data.getString(key)
 
     override fun getBoolean(key: String): Boolean? = data.getBoolean(key)

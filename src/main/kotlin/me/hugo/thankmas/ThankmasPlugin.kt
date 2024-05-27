@@ -20,7 +20,6 @@ import org.koin.ksp.generated.module
 import java.io.File
 import java.util.*
 
-
 /**
  * JavaPlugin that also registers default translations for
  * the plugin and registers dependency injection for these

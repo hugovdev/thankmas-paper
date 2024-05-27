@@ -18,8 +18,8 @@ import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Optional
 import revxrsal.commands.bukkit.annotation.CommandPermission
 
-public class TranslationsCommands<T : PaperPlayerData>(
-    private val playerManager: PlayerDataManager<T>,
+public class TranslationsCommands<P : PaperPlayerData>(
+    private val playerManager: PlayerDataManager<P>,
 ) : TranslatedComponent {
 
     private enum class TranslationType {
