@@ -1,29 +1,24 @@
 package me.hugo.thankmas.world.s3
 
-import aws.sdk.kotlin.services.s3.S3Client
-import aws.sdk.kotlin.services.s3.endpoints.S3EndpointProvider
-import aws.sdk.kotlin.services.s3.listObjectsV2
-import aws.sdk.kotlin.services.s3.model.*
-import aws.sdk.kotlin.services.s3.putObject
-import aws.sdk.kotlin.services.s3.withConfig
-import aws.smithy.kotlin.runtime.auth.awscredentials.Credentials
-import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProvider
-import aws.smithy.kotlin.runtime.client.endpoints.Endpoint
-import aws.smithy.kotlin.runtime.collections.Attributes
-import aws.smithy.kotlin.runtime.content.asByteStream
-import aws.smithy.kotlin.runtime.content.writeToFile
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.config.ConfigurationProvider
 import me.hugo.thankmas.config.string
-import me.hugo.thankmas.coroutines.runBlockingMine
+import org.bukkit.Bukkit
 import org.bukkit.World
+import org.bukkit.configuration.file.FileConfiguration
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.zeroturnaround.zip.ZipUtil
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
+import software.amazon.awssdk.core.sync.RequestBody
+import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.services.s3.S3Client
+import software.amazon.awssdk.services.s3.model.GetObjectRequest
+import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import java.io.File
+import java.io.FileOutputStream
 
 /** Class that downloads or uploads the necessary worlds from an S3 bucket. */
 @Single
@@ -32,130 +27,72 @@ public class S3WorldSynchronizer : KoinComponent {
     private val logger = ThankmasPlugin.instance().logger
     private val configProvider: ConfigurationProvider by inject()
 
+    public val s3Config: FileConfiguration
+        get() = configProvider.getOrLoad("global/s3.yml")
+
     /** Bucket for world download/upload. */
-    public val configBucket: String
-        get() = configProvider.getOrLoad("global/s3.yml").string("bucket")
+    public val bucketName: String
+        get() = s3Config.string("bucket")
 
     /** Returns an S3 client. */
-    public suspend fun getClient(): S3Client = S3Client.fromEnvironment {
-        val s3Config = configProvider.getOrLoad("global/s3.yml")
-
-        region = s3Config.string("region")
-        endpointProvider = S3EndpointProvider { Endpoint("${s3Config.string("endpoint")}/$configBucket") }
-
-        credentialsProvider = object : CredentialsProvider {
-            override suspend fun resolve(attributes: Attributes): Credentials = Credentials(
-                s3Config.string("access-key"),
-                s3Config.string("secret-access-key")
+    public fun client(): S3Client = S3Client.builder()
+        .region(Region.of(s3Config.string("region")))
+        .credentialsProvider(
+            StaticCredentialsProvider.create(
+                AwsBasicCredentials.create(
+                    s3Config.string("access-key"),
+                    s3Config.string("secret-access-key")
+                )
             )
-        }
-    }.withConfig {
-        // Disable chunk signing!
-        enableAwsChunked = false
-    }
+        ).build();
 
     /** Downloads the latest world in [worldDirectory] to [localPath]. */
-    public suspend fun downloadWorld(worldDirectory: String, localPath: File) {
+    public fun downloadWorld(worldDirectory: String, localPath: File) {
         // worldDirectory = hub/2024
-        // selectedDirectory = hub/2024/{timestamp}
-        // relativeDirectory = [[hub/2024/{timestamp}]]/entities
 
         logger.info("Downloading world $worldDirectory...")
 
         if (localPath.exists() && localPath.isDirectory) localPath.deleteRecursively()
-        val tasks: MutableList<Deferred<*>> = mutableListOf()
 
-        getClient().use { client ->
-            runBlockingMine {
-                val selectedDirectories = client.listObjectsV2 {
-                    bucket = configBucket
-                    prefix = "$worldDirectory/"
-                    delimiter = "/"
-                }.commonPrefixes?.mapNotNull { it.prefix }
-                    ?.sortedByDescending { it.removePrefix("$worldDirectory/") }
-                    ?: emptyList()
+        val tempFolder = Bukkit.getWorldContainer().resolve(System.currentTimeMillis().toString()).also { it.mkdirs() }
 
-                val selectedDirectory = selectedDirectories.firstOrNull() ?: return@runBlockingMine
+        client().use { client ->
+            val request = GetObjectRequest.builder().bucket(bucketName).key("$worldDirectory/world.zip").build()
 
-                // Download all the files!
-                client.listObjectsV2 {
-                    bucket = configBucket
-                    prefix = selectedDirectory
-                }.contents?.filter { it.key != null }?.forEach {
-                    val request = GetObjectRequest {
-                        key = it.key
-                        bucket = configBucket
-                    }
+            val downloadedZip = tempFolder.resolve("world.zip")
 
-                    val relativeDirectory = it.key!!.removePrefix(selectedDirectory)
-
-                    tasks += async {
-                        client.getObject(request) { resp ->
-                            resp.body?.writeToFile(localPath.resolve(relativeDirectory).also { it.parentFile.mkdirs() })
-                        }
-                    }
-                }
-
-                // Delete the oldest map cache if we already have 15 versions!
-                if (selectedDirectories.size > 15) {
-                    val oldestMapFiles = client.listObjectsV2 {
-                        bucket = configBucket
-                        prefix = selectedDirectories.last()
-                    }.contents?.mapNotNull {
-                        it.key?.let {
-                            ObjectIdentifier {
-                                key = it
-                            }
-                        }
-                    } ?: return@runBlockingMine
-
-                    client.deleteObjects(DeleteObjectsRequest {
-                        bucket = configBucket
-                        delete = Delete { objects = oldestMapFiles }
-                    })
-                }
+            client.getObjectAsBytes(request)?.let { response ->
+                FileOutputStream(downloadedZip).use { it.write(response.asByteArray()) }
             }
 
-            tasks.awaitAll()
+            ZipUtil.unpack(downloadedZip, localPath)
 
             logger.info("Downloaded world $worldDirectory...")
         }
+
+        tempFolder.deleteRecursively()
     }
 
     /** Uploads this world's files to [path]. */
-    public suspend fun uploadWorld(world: World, path: String) {
-        val client = getClient()
-
-        client.use { s3 ->
-            uploadFolder(s3, world.worldFolder, "$path/${System.currentTimeMillis()}").awaitAll()
-        }
+    public fun uploadWorld(world: World, path: String) {
+        uploadFile(world.worldFolder, path)
     }
 
-    /** Uploads [folder] to the [newPath] in remote using [client]. */
-    public suspend fun uploadFolder(
-        client: S3Client,
-        folder: File,
-        newPath: String
-    ): List<Deferred<PutObjectResponse>> {
-        val tasks: MutableList<Deferred<PutObjectResponse>> = mutableListOf()
+    /** Uploads [file] to the [remotePath] in remote using [client]. */
+    public fun uploadFile(file: File, remotePath: String) {
+        client().use { client ->
+            val tempFolder =
+                Bukkit.getWorldContainer().resolve(System.currentTimeMillis().toString()).also { it.mkdirs() }
 
-        runBlockingMine {
-            folder.listFiles()?.forEach {
-                if (it.isDirectory) {
-                    tasks += uploadFolder(client, it, "$newPath/${it.name}")
-                    return@forEach
-                }
+            val zipFile = tempFolder.resolve("world.zip")
+            ZipUtil.pack(file, zipFile)
 
-                tasks += async {
-                    client.putObject {
-                        bucket = configBucket
-                        key = "$newPath/${it.name}"
-                        body = it.asByteStream()
-                    }
-                }
-            }
+            client.putObject(
+                PutObjectRequest.builder().bucket(bucketName).key("$remotePath/world.zip").build(),
+                RequestBody.fromFile(zipFile)
+            )
+
+            tempFolder.deleteRecursively()
         }
-
-        return tasks
     }
 }

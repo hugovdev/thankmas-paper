@@ -4,16 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Better code">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/coroutines/Coroutines.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/entity/npc/PlayerNPCMarkerRegistry.kt" afterDir="false" />
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Player NPC markers and more safety">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/ThankmasPlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/config/ConfigurationProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/config/ConfigurationProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/TranslatableItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/items/TranslatableItem.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/listener/HologramMarkerRegistry.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/entity/HologramMarkerRegistry.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/world/s3/S3WorldSynchronizer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/world/s3/S3WorldSynchronizer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/entity/npc/PlayerNPCMarkerRegistry.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/entity/npc/PlayerNPCMarkerRegistry.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,14 +234,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1702550999552</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Translatable scoreboards and menus">
-      <option name="closed" value="true" />
-      <created>1702683947593</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1702683947593</updated>
     </task>
     <task id="LOCAL-00005" summary="Add clickable items, item sets, configurable menus and ThankmasPlugin!">
       <option name="closed" value="true" />
@@ -634,12 +619,19 @@
       <option name="project" value="LOCAL" />
       <updated>1716762007144</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Player NPC markers and more safety">
+      <option name="closed" value="true" />
+      <created>1716828708188</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1716828708188</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Stateful icons, suffix suplier for RankedPlayerData." />
     <MESSAGE value="Allow for team id changing so tab order can change with ranks!" />
     <MESSAGE value="Add AutoCompletableMapRegistry for easy command autocompletion for registries, better statefulness," />
     <MESSAGE value="Start work on individual holograms." />
@@ -664,6 +656,7 @@
     <MESSAGE value="World downloading" />
     <MESSAGE value="Logging and fixing" />
     <MESSAGE value="Better code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Better code" />
+    <MESSAGE value="Player NPC markers and more safety" />
+    <option name="LAST_COMMIT_MESSAGE" value="Player NPC markers and more safety" />
   </component>
 </project>

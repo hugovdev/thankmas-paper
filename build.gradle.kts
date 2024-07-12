@@ -35,7 +35,7 @@ dependencies {
     ksp("io.insert-koin:koin-ksp-compiler:1.3.1")
 
     // Nice scoreboard API.
-    implementation("fr.mrmicky:fastboard:2.1.2")
+    implementation("fr.mrmicky:fastboard:2.1.3")
 
     // Main Thankmas framework.
     implementation(files("C:/Users/hugov/IdeaProjects/TranslationsTest/build/libs/Thankmas-1.0-SNAPSHOT-all.jar"))
@@ -51,7 +51,14 @@ dependencies {
     implementation("io.github.jglrxavpok.hephaistos:common:2.6.1")
 
     // Amazon S3 API for nice world downloading and uploading :)
-    implementation("aws.sdk.kotlin:s3:1.2.19")
+    implementation(platform("software.amazon.awssdk:bom:2.26.18"))
+    implementation("software.amazon.awssdk:s3")
+    implementation("software.amazon.awssdk:sso")
+    implementation("software.amazon.awssdk:ssooidc")
+    implementation("software.amazon.awssdk:apache-client")
+
+    // Zip library
+    implementation("org.zeroturnaround:zt-zip:1.17")
 
     // Slime worlds APIs.
     compileOnly("com.infernalsuite.aswm:api:1.20.4-R0.1-SNAPSHOT")

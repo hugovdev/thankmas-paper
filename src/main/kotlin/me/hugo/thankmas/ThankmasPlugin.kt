@@ -7,6 +7,7 @@ import me.hugo.thankmas.dependencyinjection.ThankmasModules
 import me.hugo.thankmas.git.GitHubHelper
 import me.hugo.thankmas.items.clickable.ClickableItemRegistry
 import me.hugo.thankmas.listener.MenuManager
+import me.hugo.thankmas.world.s3.S3WorldSynchronizer
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.Tag
@@ -36,6 +37,7 @@ public open class ThankmasPlugin(
 
     protected val configProvider: ConfigurationProvider by inject()
     protected val gitHubHelper: GitHubHelper by inject()
+    protected val s3WorldSynchronizer: S3WorldSynchronizer by inject()
 
     /** Global minimessage instance with all custom tags and styling. */
     public lateinit var miniMessage: MiniMessage.Builder
