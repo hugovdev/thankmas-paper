@@ -1,5 +1,3 @@
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
-
 plugins {
     kotlin("jvm")
     id("io.papermc.paperweight.userdev")
@@ -9,6 +7,8 @@ plugins {
 
 group = "me.hugo.thankmas"
 version = "1.0-SNAPSHOT"
+
+paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
@@ -54,15 +54,6 @@ dependencies {
     api("org.zeroturnaround:zt-zip:1.17")
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
-kotlin {
-    jvmToolchain(17)
-    explicitApi()
-}
-
 tasks.shadowJar {
     relocate("fr.mrmicky.fastboard", "me.hugo.thankmas.fastboard")
 }
@@ -72,4 +63,9 @@ tasks.compileKotlin {
         freeCompilerArgs.add("-Xcontext-receivers")
         javaParameters = true
     }
+}
+
+kotlin {
+    jvmToolchain(17)
+    explicitApi()
 }
