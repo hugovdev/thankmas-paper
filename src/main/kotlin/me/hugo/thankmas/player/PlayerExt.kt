@@ -66,7 +66,7 @@ public fun Player.reset(gameMode: GameMode) {
     closeInventory()
 
     inventory.clear()
-    inventory.armorContents = null
+    inventory.armorContents = null!!
 
     inventory.heldItemSlot = 0
 

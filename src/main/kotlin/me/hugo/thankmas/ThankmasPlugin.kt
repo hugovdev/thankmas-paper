@@ -32,8 +32,7 @@ public open class ThankmasPlugin(
         if (configScopes.isNotEmpty()) "${configScopes.first()}/lang"
         else "local",
     private val downloadGlobalScope: Boolean = true
-) :
-    JavaPlugin(), KoinComponent {
+) : JavaPlugin(), KoinComponent {
 
     protected val configProvider: ConfigurationProvider by inject()
     protected val gitHubHelper: GitHubHelper by inject()
