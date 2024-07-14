@@ -51,10 +51,8 @@ public open class ThankmasPlugin(
         private var instance: ThankmasPlugin? = null
 
         public fun instance(): ThankmasPlugin {
-            val instance = instance
-            requireNotNull(instance) { "Tried to fetch a ThankmasPlugin instance while it's null!" }
-
-            return instance
+            return requireNotNull(instance)
+            { "Tried to fetch a ThankmasPlugin instance while it's null!" }
         }
     }
 
