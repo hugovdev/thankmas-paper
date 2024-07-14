@@ -178,7 +178,7 @@ public fun ItemStack.putPatterns(vararg patterns: Pattern): ItemStack {
 /** Adds enchantment glint effect if [selected] is true. */
 public fun ItemStack.selectedEffect(selected: Boolean): ItemStack {
     return if (selected) {
-        enchantment(Enchantment.LUCK)
+        enchantment(Enchantment.LUCK_OF_THE_SEA)
         flags(ItemFlag.HIDE_ENCHANTS)
     } else this
 }

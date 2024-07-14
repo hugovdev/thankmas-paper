@@ -3,12 +3,10 @@ package me.hugo.thankmas.world.s3
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.config.ConfigurationProvider
 import me.hugo.thankmas.config.string
-import net.minecraft.server.MinecraftServer
-import net.minecraft.server.level.ServerLevel
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.configuration.file.FileConfiguration
-import org.bukkit.craftbukkit.v1_20_R3.CraftWorld
+import org.bukkit.craftbukkit.CraftWorld
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

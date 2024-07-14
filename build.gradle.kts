@@ -57,15 +57,3 @@ dependencies {
 tasks.shadowJar {
     relocate("fr.mrmicky.fastboard", "me.hugo.thankmas.fastboard")
 }
-
-tasks.compileKotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xcontext-receivers")
-        javaParameters = true
-    }
-}
-
-kotlin {
-    jvmToolchain(17)
-    explicitApi()
-}
