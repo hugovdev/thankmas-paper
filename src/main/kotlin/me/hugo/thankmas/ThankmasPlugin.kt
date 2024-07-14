@@ -34,8 +34,8 @@ public open class ThankmasPlugin(
     private val downloadGlobalScope: Boolean = true
 ) : JavaPlugin(), KoinComponent {
 
-    protected val configProvider: ConfigurationProvider by inject()
     protected val gitHubHelper: GitHubHelper by inject()
+    protected val configProvider: ConfigurationProvider by inject()
     protected val s3WorldSynchronizer: S3WorldSynchronizer by inject()
 
     /** Global minimessage instance with all custom tags and styling. */
@@ -101,7 +101,10 @@ public open class ThankmasPlugin(
     private fun downloadConfigFiles() {
         logger.info("Starting scope download...")
 
+        // Download all the global configurations.
         if (downloadGlobalScope) gitHubHelper.downloadScope("global")
+
+        // Download the local configurations for the current scope.
         configScopes.forEach { gitHubHelper.downloadScope(it) }
     }
 }
