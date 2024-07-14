@@ -3,9 +3,12 @@ package me.hugo.thankmas.world.s3
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.config.ConfigurationProvider
 import me.hugo.thankmas.config.string
+import net.minecraft.server.MinecraftServer
+import net.minecraft.server.level.ServerLevel
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.configuration.file.FileConfiguration
+import org.bukkit.craftbukkit.v1_20_R3.CraftWorld
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -44,7 +47,15 @@ public class S3WorldSynchronizer : KoinComponent {
                     s3Config.string("secret-access-key")
                 )
             )
-        ).build();
+        ).build()
+
+    /** Saves [world] with flush enabled. */
+    public fun saveWorldWithFlush(world: World) {
+        val serverLevel = (world as CraftWorld).handle
+
+        // Save with flush to immediately save all chunks.
+        serverLevel.save(null, true, serverLevel.noSave, false)
+    }
 
     /** Downloads the latest world in [worldDirectory] to [localPath]. */
     public fun downloadWorld(worldDirectory: String, localPath: File) {

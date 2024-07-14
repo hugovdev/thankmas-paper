@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Player NPC markers and more safety">
+    <list default="true" id="b0bd989b-2841-4982-8836-5c697da1d4e9" name="Changes" comment="Actually using amazon S3 instead of cloudflare R2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/entity/npc/PlayerNPCMarkerRegistry.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/entity/npc/PlayerNPCMarkerRegistry.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/world/s3/S3WorldSynchronizer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/me/hugo/thankmas/world/s3/S3WorldSynchronizer.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,14 +234,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1702550999552</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Add clickable items, item sets, configurable menus and ThankmasPlugin!">
-      <option name="closed" value="true" />
-      <created>1702728579998</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1702728579998</updated>
     </task>
     <task id="LOCAL-00006" summary="Small tweaks">
       <option name="closed" value="true" />
@@ -627,12 +619,19 @@
       <option name="project" value="LOCAL" />
       <updated>1716828708188</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="Actually using amazon S3 instead of cloudflare R2">
+      <option name="closed" value="true" />
+      <created>1720817389306</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1720817389306</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Allow for team id changing so tab order can change with ranks!" />
     <MESSAGE value="Add AutoCompletableMapRegistry for easy command autocompletion for registries, better statefulness," />
     <MESSAGE value="Start work on individual holograms." />
     <MESSAGE value="Use paper's API instead of NMS for individual holograms (slay)" />
@@ -657,6 +656,7 @@
     <MESSAGE value="Logging and fixing" />
     <MESSAGE value="Better code" />
     <MESSAGE value="Player NPC markers and more safety" />
-    <option name="LAST_COMMIT_MESSAGE" value="Player NPC markers and more safety" />
+    <MESSAGE value="Actually using amazon S3 instead of cloudflare R2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Actually using amazon S3 instead of cloudflare R2" />
   </component>
 </project>
