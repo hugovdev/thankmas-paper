@@ -1,14 +1,9 @@
 plugins {
-    kotlin("jvm")
-    id("io.papermc.paperweight.userdev")
-    id("com.github.johnrengelman.shadow")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.paperweight)
 }
 
 group = "me.hugo.thankmas"
 version = "1.0-SNAPSHOT"
-
-paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
@@ -52,8 +47,4 @@ dependencies {
 
     // Zip library
     api("org.zeroturnaround:zt-zip:1.17")
-}
-
-tasks.shadowJar {
-    relocate("fr.mrmicky.fastboard", "me.hugo.thankmas.fastboard")
 }
