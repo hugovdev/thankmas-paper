@@ -25,28 +25,16 @@ public open class PaginatedMenu(
     public companion object : KoinComponent {
         private val configProvider: ConfigurationProvider by inject()
 
-        public val EXIT: TranslatableItem = TranslatableItem(
-            configProvider.getOrLoad("global/menu_icons.yml"),
-            "exit",
+        /** Gets the icon with [id] from the menu icons configuration using global translations. */
+        private fun globalIcon(id: String): TranslatableItem = TranslatableItem(
+            configProvider.getOrLoad("global/menu_icons.yml"), id,
             ThankmasPlugin.instance().globalTranslations
         )
-        public val PREVIOUS_MENU: TranslatableItem =
-            TranslatableItem(
-                configProvider.getOrLoad("global/menu_icons.yml"),
-                "previous-menu",
-                ThankmasPlugin.instance().globalTranslations
-            )
-        public val PREVIOUS_PAGE: TranslatableItem =
-            TranslatableItem(
-                configProvider.getOrLoad("global/menu_icons.yml"),
-                "previous-page",
-                ThankmasPlugin.instance().globalTranslations
-            )
-        public val NEXT_PAGE: TranslatableItem = TranslatableItem(
-            configProvider.getOrLoad("global/menu_icons.yml"),
-            "next-page",
-            ThankmasPlugin.instance().globalTranslations
-        )
+
+        public val EXIT: TranslatableItem = globalIcon("exit")
+        public val PREVIOUS_MENU: TranslatableItem = globalIcon("previous-menu")
+        public val PREVIOUS_PAGE: TranslatableItem = globalIcon("previous-page")
+        public val NEXT_PAGE: TranslatableItem = globalIcon("next-page")
     }
 
     private var currentIndex: Int = -1
