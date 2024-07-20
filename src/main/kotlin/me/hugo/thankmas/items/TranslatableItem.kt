@@ -2,12 +2,13 @@ package me.hugo.thankmas.items
 
 import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.tag.TagResolverBuilder
+import io.papermc.paper.registry.RegistryAccess
+import io.papermc.paper.registry.RegistryKey
 import me.hugo.thankmas.DefaultTranslations
 import me.hugo.thankmas.config.string
 import me.hugo.thankmas.lang.TranslatedComponent
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
-import org.bukkit.Registry
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
@@ -40,7 +41,9 @@ public class TranslatableItem(
             requireNotNull(serializedParts.size == 2) { "Tried to apply enchantment to item in $path but it doesn't follow the correct config format. (enchantment_name, level)" }
 
             val enchantmentName = serializedParts[0]
-            val enchantment = Registry.ENCHANTMENT.get(NamespacedKey.minecraft(enchantmentName))
+            val enchantment = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT)
+                .get(NamespacedKey.minecraft(enchantmentName))
+
             requireNotNull(enchantment) { "Could not find enchantment with name $enchantmentName." }
 
             baseItem.addEnchantment(enchantment, serializedParts[1].toInt())
