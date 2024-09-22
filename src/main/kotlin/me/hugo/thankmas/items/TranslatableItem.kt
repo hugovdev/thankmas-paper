@@ -5,7 +5,7 @@ import dev.kezz.miniphrase.tag.TagResolverBuilder
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.hugo.thankmas.DefaultTranslations
-import me.hugo.thankmas.config.string
+import me.hugo.thankmas.config.enum
 import me.hugo.thankmas.lang.TranslatedComponent
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -24,7 +24,7 @@ public class TranslatableItem(
     override val miniPhrase: MiniPhrase = DefaultTranslations.instance.translations
 ) : TranslatedComponent {
 
-    private val material = Material.valueOf(config.string("$path.material"))
+    private val material = config.enum<Material>("$path.material")
     private val customModelData = config.getInt("$path.custom-model-data")
 
     private val baseItem = ItemStack(material)
