@@ -195,12 +195,6 @@ public fun ItemStack.enchantment(enchantment: Enchantment): ItemStack {
     return this
 }
 
-/** Changes this item stack's material to [material]. */
-public fun ItemStack.type(material: Material): ItemStack {
-    type = material
-    return this
-}
-
 /** Clears the enchantments of this item stack. */
 public fun ItemStack.clearEnchantments(): ItemStack {
     enchantments.keys.forEach { this.removeEnchantment(it) }

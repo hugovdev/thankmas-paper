@@ -107,7 +107,7 @@ public class GitHubHelper : KoinComponent {
             return
         }
 
-        URL(url).openStream().use { input ->
+        URI(url).toURL().openStream().use { input ->
             if (path.exists() && !path.isDirectory) path.deleteRecursively()
 
             path.mkdirs()
