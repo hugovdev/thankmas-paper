@@ -1,10 +1,12 @@
 package me.hugo.thankmas.player.rank
 
+import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.player
 import net.luckperms.api.LuckPermsProvider
 import net.luckperms.api.event.node.NodeMutateEvent
 import net.luckperms.api.model.user.User
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 /**
@@ -27,12 +29,15 @@ public class PlayerGroupChange<P : RankedPlayerData>(
             if (!event.isUser) return@subscribe
 
             val userId = (event.target as User).uniqueId
-            val onlinePlayer = userId.player() ?: return@subscribe
 
-            if (!shouldUpdate(onlinePlayer)) return@subscribe
+            Bukkit.getScheduler().getMainThreadExecutor(ThankmasPlugin.instance()).execute {
+                val onlinePlayer = userId.player() ?: return@execute
 
-            playerManager.getPlayerData(userId).playerNameTag?.updateTeamId()
-            extraActions(onlinePlayer)
+                if (!shouldUpdate(onlinePlayer)) return@execute
+
+                playerManager.getPlayerData(userId).playerNameTag?.updateTeamId()
+                extraActions(onlinePlayer)
+            }
         }
     }
 
