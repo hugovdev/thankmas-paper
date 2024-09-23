@@ -11,18 +11,18 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /** Modifies player attributes on join based on a config file! */
-public class PlayerAttributes : Listener, KoinComponent {
+public class PlayerAttributes(private val configFilePath: String) : Listener, KoinComponent {
 
     private val configProvider: ConfigurationProvider by inject()
 
     private val attributesConfig
-        get() = configProvider.getOrLoad("hub/attributes.yml")
+        get() = configProvider.getOrLoad("$configFilePath/attributes.yml")
 
     @EventHandler
     public fun onPlayerSpawn(event: PlayerJoinEvent) {
         val buffedPlayer = event.player
 
-        attributesConfig.getKeys(true).forEach { configKey ->
+        attributesConfig.getKeys(false).forEach { configKey ->
             val attribute = requireNotNull(Attribute.valueOf(configKey.uppercase()))
             { "Tried to modify player attribute $configKey, but doesn't exist!" }
 
