@@ -87,7 +87,7 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
     }
 
     /** Runs whenever the player changes translations. */
-    public open fun setTranslation(newLocale: Locale) {}
+    public open fun setLocale(newLocale: Locale) {}
 
     /** Saves player data safely in databases, asynchronously. */
     public open fun saveSafely(onSuccess: () -> Unit) {
@@ -98,6 +98,7 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
             save()
 
             Bukkit.getScheduler().runTask(instance, Runnable {
+                onSave()
                 onSuccess()
                 instance.logger.info("Player info for $playerUUID saved and cleaned in ${System.currentTimeMillis() - startTime}ms.")
             })
@@ -105,7 +106,19 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
     }
 
     /** Saves player data! */
-    public open fun save() {
+    protected open fun save() {}
 
+    /** Runs after saving player data! */
+    protected open fun onSave() {
+        removeAllHolograms()
+    }
+
+    /** Runs after the player profile has been loaded. */
+    public open fun onPrepared(player: Player) {}
+
+    /** Forces save without safely switching to an asynchronous thread. */
+    public fun forceSave() {
+        save()
+        onSave()
     }
 }

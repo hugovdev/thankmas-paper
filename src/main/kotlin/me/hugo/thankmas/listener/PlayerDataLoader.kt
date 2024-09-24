@@ -56,8 +56,10 @@ public class PlayerDataLoader<T : PaperPlayerData>(
 
     @EventHandler(priority = EventPriority.LOWEST)
     private fun onPlayerJoin(event: PlayerJoinEvent) {
+        val player = event.player
+
         // Player successfully logged in, register the data!
-        playerManager.registerPlayerData(event.player.uniqueId)
+        playerManager.registerPlayerData(player.uniqueId).onPrepared(player)
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

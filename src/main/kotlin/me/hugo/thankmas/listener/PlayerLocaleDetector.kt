@@ -25,7 +25,7 @@ public class PlayerLocaleDetector<T : PaperPlayerData>(
         if (!player.isOnline || newLocale == player.locale()) return
 
         val playerData = playerManager.getPlayerData(player.uniqueId)
-        playerData.setTranslation(newLocale)
+        playerData.setLocale(newLocale)
         player.sendMessage(translations.translate("general.locale_change", newLocale) {
             parsed("locale", newLocale.toLanguageTag())
         })

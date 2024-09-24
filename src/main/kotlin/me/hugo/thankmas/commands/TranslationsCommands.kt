@@ -55,7 +55,7 @@ public class TranslationsCommands<P : PaperPlayerData>(
 
                 object : BukkitRunnable() {
                     override fun run() {
-                        playerManager.getPlayerData(sender.uniqueId).setTranslation(sender.locale())
+                        playerManager.getPlayerData(sender.uniqueId).setLocale(sender.locale())
                         sender.sendMessage(Component.text("Reloaded messages in context $type!", NamedTextColor.GREEN))
                     }
                 }.runTask(instance)

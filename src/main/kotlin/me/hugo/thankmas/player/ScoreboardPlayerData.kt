@@ -118,4 +118,9 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
         }
     }
 
+    override fun onSave() {
+        super.onSave()
+        playerNameTag?.let { Bukkit.getOnlinePlayers().forEach { player -> it.remove(player.scoreboard) } }
+    }
+
 }
