@@ -1,5 +1,6 @@
 package me.hugo.thankmas.items
 
+import com.google.common.collect.Multimap
 import dev.kezz.miniphrase.MiniPhraseContext
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import net.kyori.adventure.text.Component
@@ -9,6 +10,8 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.block.banner.Pattern
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
@@ -108,6 +111,30 @@ public fun ItemStack.customModelData(id: Int): ItemStack {
 public fun ItemStack.unbreakable(unbreakable: Boolean): ItemStack {
     val meta = itemMeta
     meta.isUnbreakable = unbreakable
+    itemMeta = meta
+    return this
+}
+
+/** Adds an attribute modifier. */
+public fun ItemStack.attributeModifier(attribute: Attribute, modifier: AttributeModifier): ItemStack {
+    val meta = itemMeta
+    meta.addAttributeModifier(attribute, modifier)
+    itemMeta = meta
+    return this
+}
+
+/** Adds an attribute modifier. */
+public fun ItemStack.setAttributeModifiers(modifiers: Multimap<Attribute, AttributeModifier>?): ItemStack {
+    val meta = itemMeta
+    meta.attributeModifiers = modifiers
+    itemMeta = meta
+    return this
+}
+
+/** Removes an attribute modifier. */
+public fun ItemStack.removeAttributeModifier(attribute: Attribute): ItemStack {
+    val meta = itemMeta
+    meta.removeAttributeModifier(attribute)
     itemMeta = meta
     return this
 }

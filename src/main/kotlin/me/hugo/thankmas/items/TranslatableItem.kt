@@ -1,5 +1,6 @@
 package me.hugo.thankmas.items
 
+import com.google.common.collect.LinkedHashMultimap
 import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import io.papermc.paper.registry.RegistryAccess
@@ -15,9 +16,7 @@ import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
-/**
- * Item with translatable name and lore.
- */
+/** Item with translatable name and lore. */
 public class TranslatableItem(
     config: FileConfiguration,
     path: String,
@@ -30,7 +29,12 @@ public class TranslatableItem(
     private val baseItem = ItemStack(material)
         .customModelData(customModelData)
         .unbreakable(config.getBoolean("$path.unbreakable", false))
-        .flags(*config.getStringList("$path.flags").map { ItemFlag.valueOf(it.uppercase()) }.toTypedArray())
+        .apply {
+            val flags = config.getStringList("$path.flags").map { ItemFlag.valueOf(it.uppercase()) }.toTypedArray()
+            if (ItemFlag.HIDE_ATTRIBUTES in flags) setAttributeModifiers(LinkedHashMultimap.create())
+
+            flags(*flags)
+        }
 
     public val name: String = config.getString("$path.name") ?: "name-not-specified"
     public val lore: String = config.getString("$path.lore") ?: "lore-not-specified"
