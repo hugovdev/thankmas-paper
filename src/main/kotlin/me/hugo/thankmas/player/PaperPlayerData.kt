@@ -1,5 +1,6 @@
 package me.hugo.thankmas.player
 
+import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.entity.Hologram
 import me.hugo.thankmas.region.Region
 import me.hugo.thankmas.region.triggering.TriggeringRegion
@@ -87,4 +88,24 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
 
     /** Runs whenever the player changes translations. */
     public open fun setTranslation(newLocale: Locale) {}
+
+    /** Saves player data safely in databases, asynchronously. */
+    public open fun saveSafely(onSuccess: () -> Unit) {
+        val instance = ThankmasPlugin.instance()
+        val startTime = System.currentTimeMillis()
+
+        Bukkit.getScheduler().runTaskAsynchronously(instance, Runnable {
+            save()
+
+            Bukkit.getScheduler().runTask(instance, Runnable {
+                onSuccess()
+                instance.logger.info("Player info for $playerUUID saved and cleaned in ${System.currentTimeMillis() - startTime}ms.")
+            })
+        })
+    }
+
+    /** Saves player data! */
+    public open fun save() {
+
+    }
 }

@@ -116,7 +116,6 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
             scoreboard.getTeam(teamId)?.unregister()
             scoreboard.getObjective(owner.toString())?.unregister()
         }
-
     }
 
 }
