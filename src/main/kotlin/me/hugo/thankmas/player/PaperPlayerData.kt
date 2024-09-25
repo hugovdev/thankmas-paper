@@ -120,10 +120,7 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
 
     /** Runs after the player profile has been loaded. */
     context(MiniPhraseContext)
-    public open fun onPrepared(player: Player) {
-        // Spawn holograms!
-        updateHolograms()
-    }
+    public open fun onPrepared(player: Player) {}
 
     /** Forces save without safely switching to an asynchronous thread. */
     public fun forceSave() {

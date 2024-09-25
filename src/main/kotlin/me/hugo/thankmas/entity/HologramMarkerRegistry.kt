@@ -33,9 +33,4 @@ public class HologramMarkerRegistry<P : PaperPlayerData<P>>(
     public fun onPlayerJoin(event: PlayerJoinEvent) {
         getValues().forEach { it.spawnOrUpdate(event.player) }
     }
-
-    @EventHandler(priority = EventPriority.LOW)
-    private fun onPlayerLeave(event: PlayerQuitEvent) {
-        playerDataManager.getPlayerData(event.player.uniqueId).removeAllHolograms()
-    }
 }
