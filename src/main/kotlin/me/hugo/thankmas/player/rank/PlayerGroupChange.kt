@@ -13,7 +13,7 @@ import org.bukkit.entity.Player
  * Listens to any group changes made by LuckPerms and updates
  * the player's name tag and sidebar.
  */
-public class PlayerGroupChange<P : RankedPlayerData>(
+public class PlayerGroupChange<P : RankedPlayerData<P>>(
     private val playerManager: PlayerDataManager<P>,
     /** Predicate that checks if [player] should get their tag updated right now. */
     shouldUpdate: (player: Player) -> Boolean = { true },

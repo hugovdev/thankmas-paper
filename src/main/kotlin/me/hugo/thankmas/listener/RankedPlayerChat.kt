@@ -13,7 +13,7 @@ import org.bukkit.event.Listener
 /**
  * Registers default rank chat format and basic message filtering.
  */
-public class RankedPlayerChat<T : RankedPlayerData>(
+public class RankedPlayerChat<T : RankedPlayerData<T>>(
     private val playerManager: PlayerDataManager<T>,
     private val shouldSee: (viewer: Player, sender: Player) -> Boolean
 ) : Listener, Translated {

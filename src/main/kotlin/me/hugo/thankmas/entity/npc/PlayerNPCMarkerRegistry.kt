@@ -31,7 +31,7 @@ import org.koin.core.component.inject
 import java.util.*
 
 /** Spawns all the player NPCs for player_npc markers around [world]. */
-public class PlayerNPCMarkerRegistry<P : PaperPlayerData>(
+public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
     private val world: String,
     private val playerManager: PlayerDataManager<P>,
     private val spawnWorld: World = requireNotNull(Bukkit.getWorld(world))

@@ -52,14 +52,10 @@ public open class Region(public val id: String, public val corner1: Location, pu
     public fun toTriggering(
         onEnter: ((player: Player) -> Unit)? = null,
         onIdle: ((player: Player) -> Unit)? = null,
-        onLeave: ((player: Player) -> Unit)? = null
+        onLeave: ((player: Player) -> Unit)? = null,
+        registry: RegionRegistry<*>? = null,
     ): TriggeringRegion {
-        val registry: RegionRegistry by inject()
-        val triggeringRegion = TriggeringRegion(this, onEnter, onIdle, onLeave)
-
-        registry.register(this.id, triggeringRegion)
-
-        return triggeringRegion
+        return TriggeringRegion(this, onEnter, onIdle, onLeave).also { registry?.register(id, it) }
     }
 
     /**

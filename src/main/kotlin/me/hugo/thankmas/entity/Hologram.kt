@@ -17,7 +17,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent
 import java.util.*
 
 /** TextDisplay that shows different text per player. */
-public class Hologram<P : PaperPlayerData>(
+public class Hologram<P : PaperPlayerData<P>>(
     private val location: Location,
     private val propertiesSupplier: (viewer: Player, preferredLocale: Locale?) -> HologramProperties,
     private val textSupplier: (viewer: Player, preferredLocale: Locale?) -> Component,
@@ -26,7 +26,7 @@ public class Hologram<P : PaperPlayerData>(
 
     public companion object {
         context(MiniPhraseContext)
-        public fun <P : PaperPlayerData> fromMarker(
+        public fun <P : PaperPlayerData<P>> fromMarker(
             marker: Marker,
             playerDataManager: PlayerDataManager<P>
         ): Hologram<P> {

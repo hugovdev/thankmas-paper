@@ -14,7 +14,12 @@ import org.bukkit.scoreboard.DisplaySlot
 import org.bukkit.scoreboard.Scoreboard
 import java.util.*
 
-public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playerUUID) {
+/** Player data class with scoreboard functionality. */
+public open class ScoreboardPlayerData<P : ScoreboardPlayerData<P>>(
+    playerUUID: UUID,
+    playerDataManager: PlayerDataManager<P>
+) :
+    PaperPlayerData<P>(playerUUID, playerDataManager) {
 
     private var board: FastBoard? = null
     public var lastBoardId: String? = null
@@ -115,6 +120,27 @@ public open class ScoreboardPlayerData(playerUUID: UUID) : PaperPlayerData(playe
         public fun remove(scoreboard: Scoreboard) {
             scoreboard.getTeam(teamId)?.unregister()
             scoreboard.getObjective(owner.toString())?.unregister()
+        }
+    }
+
+    override fun setLocale(newLocale: Locale) {
+        super.setLocale(newLocale)
+
+        val player = onlinePlayer
+        playerDataManager.getAllPlayerData().forEach { it.playerNameTag?.apply(player, newLocale) }
+    }
+
+    context(MiniPhraseContext)
+    override fun onPrepared(player: Player) {
+        super.onPrepared(player)
+
+        // Initialize the scoreboard and send welcome message!
+        initializeBoard("scoreboard.title")
+
+        // Apply player nametags!
+        playerDataManager.getAllPlayerData().forEach {
+            if (it.playerUUID == playerUUID) return@forEach
+            it.playerNameTag?.apply(player)
         }
     }
 

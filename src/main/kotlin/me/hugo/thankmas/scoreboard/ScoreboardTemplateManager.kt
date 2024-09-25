@@ -15,7 +15,7 @@ import java.util.*
  * Registry of every [ScoreboardTemplate] used in the plugin.
  * Needs a player registry to get a player's scoreboard.
  */
-public open class ScoreboardTemplateManager<T : ScoreboardPlayerData>(
+public open class ScoreboardTemplateManager<T : ScoreboardPlayerData<T>>(
     public val playerManager: PlayerDataManager<T>
 ) : Translated {
 

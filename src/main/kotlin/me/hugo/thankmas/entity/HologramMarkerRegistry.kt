@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.koin.core.component.inject
 
 /** Registers all holograms in markers and spawns them to players. */
-public class HologramMarkerRegistry<P : PaperPlayerData>(
+public class HologramMarkerRegistry<P : PaperPlayerData<P>>(
     private val world: String,
     private val playerDataManager: PlayerDataManager<P>
 ) : MapBasedRegistry<Marker, Hologram<*>>(),

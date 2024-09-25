@@ -12,7 +12,7 @@ import java.util.*
  * Representation of a scoreboard configured
  * in the language files.
  */
-public class ScoreboardTemplate<T : ScoreboardPlayerData>(
+public class ScoreboardTemplate<T : ScoreboardPlayerData<T>>(
     private val key: String,
     private val templateId: String,
     private val scoreboardManager: ScoreboardTemplateManager<T>

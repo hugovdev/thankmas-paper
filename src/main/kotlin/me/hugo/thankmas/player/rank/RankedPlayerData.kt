@@ -2,6 +2,7 @@ package me.hugo.thankmas.player.rank
 
 import dev.kezz.miniphrase.MiniPhraseContext
 import me.hugo.thankmas.ThankmasPlugin
+import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.ScoreboardPlayerData
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -13,11 +14,12 @@ import java.util.*
 /**
  * Version of [ScoreboardPlayerData] that automatically adds rank prefixes.
  */
-public open class RankedPlayerData(
+public open class RankedPlayerData<P : RankedPlayerData<P>>(
     playerUUID: UUID,
+    playerDataManager: PlayerDataManager<P>,
     private val suffixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
     private val belowNameSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
-) : ScoreboardPlayerData(playerUUID) {
+) : ScoreboardPlayerData<P>(playerUUID, playerDataManager) {
 
     context(MiniPhraseContext)
     override fun initializeBoard(title: String?, locale: Locale?, player: Player?): Player {

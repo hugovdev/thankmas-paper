@@ -18,7 +18,7 @@ import java.sql.SQLException
  * Loads player data and keeps track of it until the player
  * disconnects from the server!
  */
-public class PlayerDataLoader<T : PaperPlayerData>(
+public class PlayerDataLoader<T : PaperPlayerData<T>>(
     private val instance: ThankmasPlugin,
     private val playerManager: PlayerDataManager<T>
 ) : Listener, TranslatedComponent {

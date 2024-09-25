@@ -9,7 +9,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerLocaleChangeEvent
 
 /** Listens to player language changes. */
-public class PlayerLocaleDetector<T : PaperPlayerData>(
+public class PlayerLocaleDetector<T : PaperPlayerData<T>>(
     private val playerManager: PlayerDataManager<T>
 ) : Listener, TranslatedComponent {
 

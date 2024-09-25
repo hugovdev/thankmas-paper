@@ -1,5 +1,6 @@
 package me.hugo.thankmas.player
 
+import dev.kezz.miniphrase.MiniPhraseContext
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.entity.Hologram
 import me.hugo.thankmas.region.Region
@@ -10,10 +11,11 @@ import org.bukkit.entity.TextDisplay
 import java.util.*
 
 /**
- * PlayerData class that provides a player
+ * PlayerData class that provides player
  * properties to get the bukkit player object.
  */
-public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
+public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDataManager: PlayerDataManager<P>) :
+    PlayerData<P>(playerUUID, playerDataManager) {
 
     /** @returns the player object from the UUID if online, can be null. */
     public val onlinePlayerOrNull: Player?
@@ -87,7 +89,10 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
     }
 
     /** Runs whenever the player changes translations. */
-    public open fun setLocale(newLocale: Locale) {}
+    public open fun setLocale(newLocale: Locale) {
+        // Update holograms!
+        updateHolograms(newLocale)
+    }
 
     /** Saves player data safely in databases, asynchronously. */
     public open fun saveSafely(onSuccess: () -> Unit) {
@@ -114,7 +119,11 @@ public open class PaperPlayerData(playerUUID: UUID) : PlayerData(playerUUID) {
     }
 
     /** Runs after the player profile has been loaded. */
-    public open fun onPrepared(player: Player) {}
+    context(MiniPhraseContext)
+    public open fun onPrepared(player: Player) {
+        // Spawn holograms!
+        updateHolograms()
+    }
 
     /** Forces save without safely switching to an asynchronous thread. */
     public fun forceSave() {

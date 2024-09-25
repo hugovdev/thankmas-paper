@@ -17,7 +17,7 @@ import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Optional
 import revxrsal.commands.bukkit.annotation.CommandPermission
 
-public class TranslationsCommands<P : PaperPlayerData>(
+public class TranslationsCommands<P : PaperPlayerData<P>>(
     private val playerManager: PlayerDataManager<P>,
 ) : TranslatedComponent {
 
