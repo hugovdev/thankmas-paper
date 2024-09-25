@@ -27,9 +27,11 @@ public open class RankedPlayerData<P : RankedPlayerData<P>>(
 
         val translations = ThankmasPlugin.instance().globalTranslations
 
+        // Setup player nametags to show their rank!
         playerNameTag = PlayerNameTag(
             playerUUID,
             {
+                // Order players by rank weight!
                 val rankIndex = 99 - (getPrimaryGroupOrNull(finalPlayer)?.weight?.orElse(0) ?: 0)
                 "$rankIndex-$playerUUID"
             },
@@ -68,6 +70,17 @@ public open class RankedPlayerData<P : RankedPlayerData<P>>(
         val api = LuckPermsProvider.get()
 
         return api.groupManager.getGroup(getPrimaryGroupName(player))
+    }
+
+    /** @returns the decorated rank name of this player. */
+    public fun getDecoratedRankName(locale: Locale = onlinePlayer.locale()): Component {
+        val globalTranslations = ThankmasPlugin.instance().globalTranslations
+        val group = getPrimaryGroupName(onlinePlayer)
+
+        return globalTranslations.translate("rank.$group.name", locale)
+            .color(
+                globalTranslations.translate("rank.$group.color", locale).color()
+            )
     }
 
     /** @returns the full player name tag with their rank prefix. */

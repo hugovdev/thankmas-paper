@@ -18,8 +18,7 @@ import java.util.*
 public open class ScoreboardPlayerData<P : ScoreboardPlayerData<P>>(
     playerUUID: UUID,
     playerDataManager: PlayerDataManager<P>
-) :
-    PaperPlayerData<P>(playerUUID, playerDataManager) {
+) : PaperPlayerData<P>(playerUUID, playerDataManager) {
 
     private var board: FastBoard? = null
     public var lastBoardId: String? = null

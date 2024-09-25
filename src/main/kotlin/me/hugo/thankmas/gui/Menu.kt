@@ -98,6 +98,14 @@ public open class Menu(
                     + "--XXXXX--"
                     + "---PIN---")
         ),
+        JOURNAL(
+            ("X-X---X-X" +
+                    "---------" +
+                    "X-X---X-X" +
+                    "---------" +
+                    "X-X---X-X" +
+                    "---PIN---")
+        ),
         TWO_ROWS(
             ("---------"
                     + "-XXXXXXX-"
