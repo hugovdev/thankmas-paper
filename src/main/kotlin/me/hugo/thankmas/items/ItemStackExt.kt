@@ -230,15 +230,14 @@ public fun ItemStack.clearEnchantments(): ItemStack {
 
 /** Changes the color of this leather armor piece to [color]. */
 public fun ItemStack.color(color: Color): ItemStack {
-    if (type == Material.LEATHER_BOOTS
-        || type == Material.LEATHER_CHESTPLATE
-        || type == Material.LEATHER_HELMET
-        || type == Material.LEATHER_LEGGINGS
+    if (type in listOf(
+            Material.LEATHER_BOOTS,
+            Material.LEATHER_CHESTPLATE,
+            Material.LEATHER_HELMET,
+            Material.LEATHER_LEGGINGS
+        )
     ) {
-
-        val meta = itemMeta as LeatherArmorMeta
-        meta.setColor(color)
-        itemMeta = meta
+        editMeta(LeatherArmorMeta::class.java) { it.setColor(color) }
         return this
     } else {
         throw IllegalArgumentException("Colors only applicable for leather armor!")

@@ -8,6 +8,7 @@ import io.papermc.paper.registry.RegistryKey
 import me.hugo.thankmas.DefaultTranslations
 import me.hugo.thankmas.config.enum
 import me.hugo.thankmas.lang.TranslatedComponent
+import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.FileConfiguration
@@ -34,6 +35,19 @@ public class TranslatableItem(
             if (ItemFlag.HIDE_ATTRIBUTES in flags) setAttributeModifiers(LinkedHashMultimap.create())
 
             flags(*flags)
+
+            // Enchant glint overrides!
+            if (config.contains("$path.enchant-glint")) {
+                editMeta { it.setEnchantmentGlintOverride(config.getBoolean("$path.enchant-glint")) }
+            }
+
+            // Tint leather armor!
+            run tint@{
+                val color = config.getInt("$path.color", -1)
+                if (color == -1) return@tint
+
+                color(Color.fromRGB(color))
+            }
         }
 
     public val name: String = config.getString("$path.name") ?: "name-not-specified"

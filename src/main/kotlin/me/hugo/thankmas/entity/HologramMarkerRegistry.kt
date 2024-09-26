@@ -7,10 +7,8 @@ import me.hugo.thankmas.player.PaperPlayerData
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.registry.MapBasedRegistry
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.event.player.PlayerQuitEvent
 import org.koin.core.component.inject
 
 /** Registers all holograms in markers and spawns them to players. */

@@ -26,9 +26,15 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.TextDisplay
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.scheduler.BukkitRunnable
 import org.koin.core.component.inject
 import java.util.*
+
+/** Holds all the information for a configured player NPC. */
+public data class PlayerNPC(
+    public val npc: NPC,
+    public val marker: Marker,
+    public val hologram: Hologram<*>?
+)
 
 /** Spawns all the player NPCs for player_npc markers around [world]. */
 public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
@@ -36,7 +42,7 @@ public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
     private val playerManager: PlayerDataManager<P>,
     private val spawnWorld: World = requireNotNull(Bukkit.getWorld(world))
     { "Tried to spawn player NPCs in world $world but it is not loaded." }
-) : MapBasedRegistry<String, Triple<NPC, Marker, Hologram<*>?>>(), TranslatedComponent, Listener {
+) : MapBasedRegistry<String, PlayerNPC>(), TranslatedComponent, Listener {
 
     private val markerRegistry: MarkerRegistry by inject()
     private val configProvider: ConfigurationProvider by inject()
@@ -46,13 +52,15 @@ public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
             val npcId = marker.getString("id") ?: UUID.randomUUID().toString()
 
             val npcSkin = marker.getStringList("skin") ?: emptyList()
+            val isPlayerSkin = npcSkin.size == 1
 
-            val npc = CitizensAPI.getNPCRegistry()
-                .createNPC(EntityType.PLAYER, if (npcSkin.size == 1) npcSkin.first() else "")
+            val npc =
+                CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, if (isPlayerSkin) npcSkin.first() else "")
 
             // If the skin list has two values then its value (0) and signature (1).
-            if (npcSkin.size == 2) {
-                npc.getOrAddTrait(SkinTrait::class.java)?.apply {
+            npc.getOrAddTrait(SkinTrait::class.java)?.apply {
+                if (isPlayerSkin) skinName = npcSkin.first()
+                else {
                     setSkinPersistent(
                         npcId,
                         npcSkin[1],
@@ -74,7 +82,7 @@ public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
             npcsConfig?.let {
                 npc.getOrAddTrait(Equipment::class.java).apply {
                     Equipment.EquipmentSlot.entries.forEach { slot ->
-                        if (it.getConfigurationSection("$npcId.equipment.${slot.name.lowercase()}") != null) {
+                        if (it.contains("$npcId.equipment.${slot.name.lowercase()}")) {
                             set(slot, TranslatableItem(it, "$npcId.equipment.${slot.name.lowercase()}").getBaseItem())
                         }
                     }
@@ -107,27 +115,27 @@ public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
             }
 
             npc.spawn(marker.location.toLocation(spawnWorld))
-            register(npcId, Triple(npc, marker, hologram))
+            register(npcId, PlayerNPC(npc, marker, hologram))
         }
     }
 
     @EventHandler
     private fun onNpcSpawn(event: NPCLinkToPlayerEvent) {
-        object : BukkitRunnable() {
-            override fun run() {
-                getOrNull(event.npc.data().get("id"))?.third?.spawnOrUpdate(event.player)
+        getOrNull(event.npc.data().get("id"))?.hologram?.let {
+            Bukkit.getScheduler().getMainThreadExecutor(ThankmasPlugin.instance()).execute {
+                it.spawnOrUpdate(event.player)
             }
-        }.runTask(ThankmasPlugin.instance())
+        }
     }
 
     @EventHandler
     private fun onNpcDespawn(event: NPCUnlinkFromPlayerEvent) {
         if (!event.player.isOnline) return
 
-        object : BukkitRunnable() {
-            override fun run() {
-                getOrNull(event.npc.data().get("id"))?.third?.remove(event.player)
+        getOrNull(event.npc.data().get("id"))?.hologram?.let {
+            Bukkit.getScheduler().getMainThreadExecutor(ThankmasPlugin.instance()).execute {
+                it.remove(event.player)
             }
-        }.runTask(ThankmasPlugin.instance())
+        }
     }
 }

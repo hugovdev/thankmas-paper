@@ -9,6 +9,8 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.entity.TextDisplay
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 
 /**
  * PlayerData class that provides player
@@ -34,7 +36,7 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     private val regions: MutableList<Region> = mutableListOf()
 
     /** Map of hologram entity ids that this players can see. */
-    private val spawnedHolograms: MutableMap<Hologram<*>, TextDisplay> = mutableMapOf()
+    private val spawnedHolograms: ConcurrentMap<Hologram<*>, TextDisplay> = ConcurrentHashMap()
 
     /** @returns the entity id for this hologram. */
     public fun getDisplayForHologramOrNull(hologram: Hologram<*>): TextDisplay? {
