@@ -59,7 +59,7 @@ public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
 
             // If the skin list has two values then its value (0) and signature (1).
             npc.getOrAddTrait(SkinTrait::class.java)?.apply {
-                if (isPlayerSkin) skinName = npcSkin.first()
+                if (isPlayerSkin) setSkinName(npcSkin.first(), true)
                 else {
                     setSkinPersistent(
                         npcId,
@@ -69,12 +69,14 @@ public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
                 }
             }
 
-            npc.data().setPersistent(NPC.Metadata.SHOULD_SAVE, false)
-            npc.data().setPersistent(NPC.Metadata.NAMEPLATE_VISIBLE, false)
-            npc.data().setPersistent(NPC.Metadata.ALWAYS_USE_NAME_HOLOGRAM, true)
+            val data = npc.data()
 
-            npc.data().setPersistent("id", npcId)
-            npc.data().setPersistent("use", marker.getString("use"))
+            data.setPersistent(NPC.Metadata.SHOULD_SAVE, false)
+            data.setPersistent(NPC.Metadata.NAMEPLATE_VISIBLE, false)
+            data.setPersistent(NPC.Metadata.ALWAYS_USE_NAME_HOLOGRAM, true)
+
+            data.setPersistent("id", npcId)
+            data.setPersistent("use", marker.getString("use"))
 
             val npcsConfig =
                 configProvider.getOrLoadOrNull("${ThankmasPlugin.instance().configScopes.firstOrNull() ?: "global"}/npcs.yml")
@@ -96,7 +98,7 @@ public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
 
             marker.getString("text")?.let { textKey ->
                 hologram = Hologram(
-                    marker.location.toLocation(spawnWorld).add(0.0, marker.getDouble("hologram_offset") ?: 1.85, 0.0),
+                    marker.location.toLocation(spawnWorld).add(0.0, marker.getDouble("hologram_offset") ?: 1.88, 0.0),
                     propertiesSupplier = { _, _ ->
                         Hologram.HologramProperties(
                             Display.Billboard.CENTER,

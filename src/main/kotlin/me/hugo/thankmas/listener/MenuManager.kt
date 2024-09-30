@@ -5,6 +5,7 @@ import me.hugo.thankmas.gui.view.MenuView
 import me.hugo.thankmas.registry.MapBasedRegistry
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -18,7 +19,7 @@ import org.koin.core.annotation.Single
 @Single
 public class MenuManager : MapBasedRegistry<Inventory, MenuView>(), Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     private fun onInventoryClick(event: InventoryClickEvent) {
         val player = event.whoClicked as Player
         val menuView = getOrNull(event.view.topInventory) ?: return

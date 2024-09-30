@@ -69,6 +69,7 @@ public class Hologram<P : PaperPlayerData<P>>(
             location.world.spawnEntity(location, EntityType.TEXT_DISPLAY, CreatureSpawnEvent.SpawnReason.CUSTOM) {
                 it as TextDisplay
                 it.isVisibleByDefault = false
+                it.isPersistent = true
 
                 it.text(textSupplier(player, locale))
                 propertiesSupplier(player, locale).apply(it)

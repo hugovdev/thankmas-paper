@@ -6,6 +6,7 @@ import me.hugo.thankmas.lang.Translated
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.rank.RankedPlayerData
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -18,11 +19,24 @@ public class RankedPlayerChat<T : RankedPlayerData<T>>(
     private val shouldSee: (viewer: Player, sender: Player) -> Boolean
 ) : Listener, Translated {
 
+    // Only allow normal symbols when chatting! (Avoid negative space symbols or glyphs)
+    private val normalChatRegex = "^[a-zA-Z0-9_\\-. %<>!@?:()*+',]*\$".toRegex()
     private val translations = ThankmasPlugin.instance().globalTranslations
 
     @EventHandler
     private fun onPlayerChat(event: AsyncChatEvent) {
-        event.viewers().removeIf { it is Player && !shouldSee(it, event.player) }
+        val text = (event.message() as TextComponent).content()
+
+        val chatter = event.player
+
+        if (!normalChatRegex.matches(text)) {
+            chatter.sendMessage(translations.translate("general.chat.invalid", chatter.locale()))
+
+            event.isCancelled = true
+            return
+        }
+
+        event.viewers().removeIf { it is Player && !shouldSee(it, chatter) }
 
         event.renderer { source, _, message, viewer ->
             if (viewer is Player) {
