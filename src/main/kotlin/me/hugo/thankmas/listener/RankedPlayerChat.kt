@@ -6,7 +6,7 @@ import me.hugo.thankmas.lang.Translated
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.rank.RankedPlayerData
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -19,17 +19,16 @@ public class RankedPlayerChat<T : RankedPlayerData<T>>(
     private val shouldSee: (viewer: Player, sender: Player) -> Boolean
 ) : Listener, Translated {
 
-    // Only allow normal symbols when chatting! (Avoid negative space symbols or glyphs)
-    private val normalChatRegex = "^[a-zA-Z0-9_\\-. %<>!@?:()*+',]*\$".toRegex()
     private val translations = ThankmasPlugin.instance().globalTranslations
 
     @EventHandler
     private fun onPlayerChat(event: AsyncChatEvent) {
-        val text = (event.message() as TextComponent).content()
-
+        val text = PlainTextComponentSerializer.plainText().serialize(event.message())
         val chatter = event.player
 
-        if (!normalChatRegex.matches(text)) {
+        // If the chat message contains Private Use Area symbols, don't let the message go through!
+        // https://jrgraphix.net/r/Unicode/E000-F8FF
+        if (text.any { Character.UnicodeBlock.of(it) == Character.UnicodeBlock.PRIVATE_USE_AREA }) {
             chatter.sendMessage(translations.translate("general.chat.invalid", chatter.locale()))
 
             event.isCancelled = true
