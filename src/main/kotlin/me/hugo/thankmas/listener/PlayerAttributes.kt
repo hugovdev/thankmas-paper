@@ -1,6 +1,8 @@
 package me.hugo.thankmas.listener
 
 import me.hugo.thankmas.config.ConfigurationProvider
+import org.bukkit.NamespacedKey
+import org.bukkit.Registry
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeInstance
 import org.bukkit.entity.Player
@@ -23,15 +25,15 @@ public class PlayerAttributes(private val configFilePath: String) : Listener, Ko
         val buffedPlayer = event.player
 
         attributesConfig.getKeys(false).forEach { configKey ->
-            val attribute = requireNotNull(Attribute.valueOf(configKey.uppercase()))
+            val attribute = requireNotNull(Registry.ATTRIBUTE.getOrThrow(NamespacedKey.minecraft(configKey)))
             { "Tried to modify player attribute $configKey, but doesn't exist!" }
 
             val value = attributesConfig.getDouble(configKey)
 
             // Use a different method for walk and fly speeds so the fov doesn't change!
             when (attribute) {
-                Attribute.GENERIC_MOVEMENT_SPEED -> buffedPlayer.walkSpeed = value.toFloat()
-                Attribute.GENERIC_FLYING_SPEED -> buffedPlayer.flySpeed = value.toFloat()
+                Attribute.MOVEMENT_SPEED -> buffedPlayer.walkSpeed = value.toFloat()
+                Attribute.FLYING_SPEED -> buffedPlayer.flySpeed = value.toFloat()
                 else -> buffedPlayer.getOrRegisterAttribute(attribute).baseValue = value
             }
         }

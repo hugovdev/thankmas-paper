@@ -55,7 +55,7 @@ public fun Player.playSound(sound: Sound): Unit = playSound(location, sound, 1.0
 
 public fun Player.reset(gameMode: GameMode) {
     setGameMode(gameMode)
-    health = getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue ?: 20.0
+    health = getAttribute(Attribute.MAX_HEALTH)?.baseValue ?: 20.0
     foodLevel = 20
     exp = 0.0f
     level = 0
