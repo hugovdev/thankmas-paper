@@ -67,6 +67,11 @@ public open class Menu(
     public fun setIcon(slot: Int, icon: Icon): Icon? = icons.put(slot, icon)
 
     /**
+     * Add the icon [icon] to the slots [slots].
+     */
+    public fun setIcons(icon: Icon, vararg slots: Int): Unit = slots.forEach { slot -> icons[slot] = icon }
+
+    /**
      * Gets the icon in the slot [slot] if existent.
      */
     public fun getIconOrNull(slot: Int): Icon? = icons[slot]

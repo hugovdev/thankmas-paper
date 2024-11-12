@@ -15,3 +15,9 @@ public inline fun <reified T : Enum<T>> FileConfiguration.enum(path: String): T 
 
     return enumValueOf<T>(string.uppercase())
 }
+
+public inline fun <reified T : Enum<T>> FileConfiguration.enumOrNull(path: String): T? {
+    val string = this.getString(path)
+
+    return string?.let { enumValueOf<T>(string.uppercase()) }
+}

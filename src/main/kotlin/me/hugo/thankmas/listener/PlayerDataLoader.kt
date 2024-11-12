@@ -43,7 +43,7 @@ public class PlayerDataLoader<T : PaperPlayerData<T>>(
         // Load player data from the database into the login cache!
         try {
             playerManager.createPlayerData(playerUUID)
-        } catch (exception: SQLException) {
+        } catch (exception: Exception) {
             exception.printStackTrace()
 
             // Something went wrong!

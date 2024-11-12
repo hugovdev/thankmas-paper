@@ -6,7 +6,7 @@ import dev.kezz.miniphrase.tag.TagResolverBuilder
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.hugo.thankmas.DefaultTranslations
-import me.hugo.thankmas.config.enum
+import me.hugo.thankmas.config.enumOrNull
 import me.hugo.thankmas.lang.TranslatedComponent
 import org.bukkit.Color
 import org.bukkit.Material
@@ -45,7 +45,7 @@ public class TranslatableItem(
         path: String,
         miniPhrase: MiniPhrase = DefaultTranslations.instance.translations
     ) : this(
-        config.enum<Material>("$path.material"),
+        config.enumOrNull<Material>("$path.material") ?: Material.PHANTOM_MEMBRANE,
         config.getInt("$path.custom-model-data", -1),
         config.getString("$path.model"),
         config.getBoolean("$path.unbreakable", false),

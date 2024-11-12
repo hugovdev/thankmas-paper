@@ -16,7 +16,6 @@ import net.citizensnpcs.api.event.NPCLinkToPlayerEvent
 import net.citizensnpcs.api.event.NPCUnlinkFromPlayerEvent
 import net.citizensnpcs.api.npc.NPC
 import net.citizensnpcs.api.trait.trait.Equipment
-import net.citizensnpcs.api.trait.trait.PlayerFilter
 import net.citizensnpcs.trait.CurrentLocation
 import net.citizensnpcs.trait.LookClose
 import net.citizensnpcs.trait.SkinTrait
@@ -29,8 +28,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.koin.core.component.inject
 import java.util.*
-import kotlin.math.max
-import kotlin.math.min
 
 /** Holds all the information for a configured player NPC. */
 public data class PlayerNPC(
@@ -69,16 +66,6 @@ public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
                         npcSkin[1],
                         npcSkin[0]
                     )
-                }
-            }
-
-            // Hide NPCs that are 20 blocks down or up!
-            npc.getOrAddTrait(PlayerFilter::class.java)?.apply {
-                setPlayerFilter { viewer ->
-                    val npcY = npc.storedLocation.y
-                    val viewerY = viewer.location.y
-
-                    viewer in CitizensAPI.getLocationLookup().getNearbyPlayers(npc) && max(npcY, viewerY) - min(npcY, viewerY) > 20
                 }
             }
 
