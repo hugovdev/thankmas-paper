@@ -107,6 +107,16 @@ public fun ItemStack.customModelData(id: Int): ItemStack {
     return this
 }
 
+/** Sets the custom model data of this item stack. */
+public fun ItemStack.model(model: String?): ItemStack {
+    if (model == null) return this
+
+    val meta = itemMeta
+    meta.itemModel = NamespacedKey.fromString(model)
+    itemMeta = meta
+    return this
+}
+
 /** Changes whether this item is unbreakable. */
 public fun ItemStack.unbreakable(unbreakable: Boolean): ItemStack {
     val meta = itemMeta

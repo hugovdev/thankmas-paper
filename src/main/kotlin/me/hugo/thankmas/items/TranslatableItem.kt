@@ -12,6 +12,7 @@ import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.FileConfiguration
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
@@ -19,54 +20,90 @@ import java.util.*
 
 /** Item with translatable name and lore. */
 public class TranslatableItem(
-    config: FileConfiguration,
-    path: String,
+    private val material: Material = Material.PHANTOM_MEMBRANE,
+    private val customModelData: Int = -1,
+    private val model: String? = null,
+    private val unbreakable: Boolean = false,
+    private val flags: List<ItemFlag> = emptyList(),
+    private val name: String? = null,
+    private val lore: String? = null,
+    private val glint: Boolean? = null,
+    private val enchantments: Map<Enchantment, Int> = emptyMap(),
+    private val color: Int = -1,
     override val miniPhrase: MiniPhrase = DefaultTranslations.instance.translations
 ) : TranslatedComponent {
 
-    private val material = config.enum<Material>("$path.material")
-    private val customModelData = config.getInt("$path.custom-model-data")
+    public val nameNotNull: String
+        get() = requireNotNull(name) { "Tried to get a null translatable name!" }
 
+    public val loreNotNull: String
+        get() = requireNotNull(lore) { "Tried to get a null translatable lore!" }
+
+    /** Reading every value from a config file! */
+    public constructor(
+        config: FileConfiguration,
+        path: String,
+        miniPhrase: MiniPhrase = DefaultTranslations.instance.translations
+    ) : this(
+        config.enum<Material>("$path.material"),
+        config.getInt("$path.custom-model-data", -1),
+        config.getString("$path.model"),
+        config.getBoolean("$path.unbreakable", false),
+        config.getStringList("$path.flags").map { ItemFlag.valueOf(it.uppercase()) }.toList(),
+        config.getString("$path.name"),
+        config.getString("$path.lore"),
+        // Only replace enchantment glint when explicitly specified.
+        if (config.contains("$path.enchant-glint")) config.getBoolean("$path.enchant-glint") else null,
+        config.getStringList("enchantments").associate {
+            val serializedParts = it.split(", ")
+
+            require(serializedParts.size == 2)
+            { "Tried to apply enchantment to item in $path but it doesn't follow the correct config format. (enchantment_name, level)" }
+
+            val enchantmentName = serializedParts[0]
+            val enchantmentKey = requireNotNull(NamespacedKey.fromString(enchantmentName))
+            { "Could not find enchantment with name $enchantmentName." }
+
+            Pair(
+                RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).getOrThrow(enchantmentKey),
+                serializedParts[1].toInt()
+            )
+        },
+        config.getInt("$path.color", -1),
+        miniPhrase
+    )
+
+    // Build the base item with every shared attribute!
     private val baseItem = ItemStack(material)
-        .customModelData(customModelData)
-        .unbreakable(config.getBoolean("$path.unbreakable", false))
         .apply {
-            val flags = config.getStringList("$path.flags").map { ItemFlag.valueOf(it.uppercase()) }.toTypedArray()
             if (ItemFlag.HIDE_ATTRIBUTES in flags) setAttributeModifiers(LinkedHashMultimap.create())
 
-            flags(*flags)
+            // Assign all special ItemMeta!
+            editMeta {
+                // Enchant glint overrides!
+                if (glint != null) it.setEnchantmentGlintOverride(glint)
 
-            // Enchant glint overrides!
-            if (config.contains("$path.enchant-glint")) {
-                editMeta { it.setEnchantmentGlintOverride(config.getBoolean("$path.enchant-glint")) }
+                // Item model overrides!
+                if (model != null) it.itemModel = NamespacedKey.fromString(model)
+                if (customModelData != -1) it.setCustomModelData(customModelData)
+
+                // Item Flags!
+                if (flags.isNotEmpty()) it.addItemFlags(*flags.toTypedArray())
+
+                it.isUnbreakable = unbreakable
             }
 
             // Tint leather armor!
             run tint@{
-                val color = config.getInt("$path.color", -1)
                 if (color == -1) return@tint
 
                 color(Color.fromRGB(color))
             }
+
+            this@TranslatableItem.enchantments.forEach { (enchantment, level) ->
+                addEnchantment(enchantment, level)
+            }
         }
-
-    public val name: String = config.getString("$path.name") ?: "name-not-specified"
-    public val lore: String = config.getString("$path.lore") ?: "lore-not-specified"
-
-    init {
-        config.getStringList("enchantments").forEach {
-            val serializedParts = it.split(", ")
-            requireNotNull(serializedParts.size == 2) { "Tried to apply enchantment to item in $path but it doesn't follow the correct config format. (enchantment_name, level)" }
-
-            val enchantmentName = serializedParts[0]
-            val enchantment = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT)
-                .get(NamespacedKey.minecraft(enchantmentName))
-
-            requireNotNull(enchantment) { "Could not find enchantment with name $enchantmentName." }
-
-            baseItem.addEnchantment(enchantment, serializedParts[1].toInt())
-        }
-    }
 
     /** Lets other classes edit details from this translatable item. */
     public fun editBaseItem(editor: (item: ItemStack) -> ItemStack) {
@@ -79,7 +116,8 @@ public class TranslatableItem(
 
     /** Builds this item in [locale]. */
     public fun buildItem(locale: Locale, tags: (TagResolverBuilder.() -> Unit)? = null): ItemStack =
-        ItemStack(baseItem).nameTranslatable(name, locale, tags).loreTranslatable(lore, locale, tags)
+        ItemStack(baseItem).nameTranslatable(nameNotNull, locale, tags)
+            .loreTranslatable(loreNotNull, locale, tags)
 
     /** @returns a copy of the base item. */
     public fun getBaseItem(): ItemStack = ItemStack(baseItem)
