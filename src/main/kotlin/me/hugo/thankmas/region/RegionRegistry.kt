@@ -19,7 +19,7 @@ public class RegionRegistry<P : PaperPlayerData<P>>(playerDataRegistry: PlayerDa
             playerDataRegistry.getAllPlayerData().forEach { player ->
                 val onlinePlayer = player.onlinePlayerOrNull ?: return@forEach
                 getValues().forEach { region ->
-                    if (region.contains(onlinePlayer.location)) player.updateOnRegion(region)
+                    if (onlinePlayer.location in region) player.updateOnRegion(region)
                     else player.leaveRegion(region)
                 }
             }

@@ -32,8 +32,8 @@ public class VanillaMarker(location: MapPoint, worldName: String, public val dat
 
     override fun getDoubleList(key: String): List<Double>? = data.getList<NBTDouble>(key)?.value?.map { it.value }
 
-    public override fun toRegion(world: World): Region {
-        return Region(getMarkerId(), getMapPoint("min").toLocation(world), getMapPoint("max").toLocation(world))
+    public override fun toRegion(world: World, id: String?): Region {
+        return Region(id ?: getMarkerId(), getMapPoint("min").toLocation(world), getMapPoint("max").toLocation(world))
     }
 
     override fun getMapPoint(key: String): MapPoint {

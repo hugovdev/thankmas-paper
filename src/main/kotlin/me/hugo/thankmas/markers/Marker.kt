@@ -46,7 +46,7 @@ public abstract class Marker(public val location: MapPoint, public val worldName
     public abstract fun getDoubleList(key: String): List<Double>?
 
     /** Returns a region out of the Axiom box data fields. */
-    public abstract fun toRegion(world: World): Region
+    public abstract fun toRegion(world: World, id: String? = null): Region
 
     /** Gets a map point from a list of doubles in a data field. */
     public abstract fun getMapPoint(key: String): MapPoint

@@ -37,8 +37,8 @@ public class SlimeMarker(location: MapPoint, worldName: String, public val data:
     override fun getDoubleList(key: String): List<Double>? =
         data.getAsListTag(key)?.getOrNull()?.asDoubleTagList?.getOrNull()?.value?.map { it.value }
 
-    public override fun toRegion(world: World): Region {
-        return Region(getMarkerId(), getMapPoint("min").toLocation(world), getMapPoint("max").toLocation(world))
+    public override fun toRegion(world: World, id: String?): Region {
+        return Region(id ?: getMarkerId(), getMapPoint("min").toLocation(world), getMapPoint("max").toLocation(world))
     }
 
     public override fun getMapPoint(key: String): MapPoint {
