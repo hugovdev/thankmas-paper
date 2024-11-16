@@ -17,6 +17,7 @@ import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Optional
 import revxrsal.commands.bukkit.annotation.CommandPermission
 
+@CommandPermission("thankmas.admin")
 public class TranslationsCommands<P : PaperPlayerData<P>>(
     private val playerManager: PlayerDataManager<P>,
 ) : TranslatedComponent {
@@ -30,7 +31,6 @@ public class TranslationsCommands<P : PaperPlayerData<P>>(
     private val gitHubHelper: GitHubHelper by inject()
 
     @Command("reloadtranslations")
-    @CommandPermission("thankmas.admin")
     private fun reloadTranslations(sender: Player, @Optional type: TranslationType = TranslationType.LOCAL) {
         sender.sendMessage(Component.text("Fetching translations from context $type...", NamedTextColor.GREEN))
 
@@ -64,7 +64,6 @@ public class TranslationsCommands<P : PaperPlayerData<P>>(
     }
 
     @Command("previewmessage")
-    @CommandPermission("thankmas.admin")
     private fun previewTranslation(
         sender: Player,
         key: String,
@@ -85,7 +84,6 @@ public class TranslationsCommands<P : PaperPlayerData<P>>(
     }
 
     @Command("reloadstyles")
-    @CommandPermission("thankmas.admin")
     private fun reloadStyles(sender: Player) {
         val instance = ThankmasPlugin.instance()
 

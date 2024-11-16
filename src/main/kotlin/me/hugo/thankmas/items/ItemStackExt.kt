@@ -244,7 +244,8 @@ public fun ItemStack.color(color: Color): ItemStack {
             Material.LEATHER_BOOTS,
             Material.LEATHER_CHESTPLATE,
             Material.LEATHER_HELMET,
-            Material.LEATHER_LEGGINGS
+            Material.LEATHER_LEGGINGS,
+            Material.LEATHER_HORSE_ARMOR
         )
     ) {
         editMeta(LeatherArmorMeta::class.java) { it.setColor(color) }

@@ -106,7 +106,7 @@ public class TranslatableItem(
         }
 
     /** Lets other classes edit details from this translatable item. */
-    public fun editBaseItem(editor: (item: ItemStack) -> ItemStack) {
+    public fun editBaseItem(editor: (item: ItemStack) -> Unit) {
         editor(baseItem)
     }
 
@@ -116,8 +116,17 @@ public class TranslatableItem(
 
     /** Builds this item in [locale]. */
     public fun buildItem(locale: Locale, tags: (TagResolverBuilder.() -> Unit)? = null): ItemStack =
-        ItemStack(baseItem).nameTranslatable(nameNotNull, locale, tags)
-            .loreTranslatable(loreNotNull, locale, tags)
+        ItemStack(baseItem).apply {
+            val nameKey = this@TranslatableItem.name
+            if (nameKey != null) nameTranslatable(nameKey, locale, tags)
+
+            val loreKey = this@TranslatableItem.lore
+            if (loreKey != null) loreTranslatable(loreKey, locale, tags)
+        }
+
+    /** Builds this item for [player]. */
+    public fun buildItem(player: Player, tags: (TagResolverBuilder.() -> Unit)? = null): ItemStack =
+        buildItem(player.locale(), tags)
 
     /** @returns a copy of the base item. */
     public fun getBaseItem(): ItemStack = ItemStack(baseItem)
