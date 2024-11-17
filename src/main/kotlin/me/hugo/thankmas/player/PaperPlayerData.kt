@@ -1,6 +1,5 @@
 package me.hugo.thankmas.player
 
-import dev.kezz.miniphrase.MiniPhraseContext
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.entity.Hologram
 import me.hugo.thankmas.region.Region
@@ -121,7 +120,6 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     }
 
     /** Runs after the player profile has been loaded. */
-    context(MiniPhraseContext)
     public open fun onPrepared(player: Player) {}
 
     /** Forces save without safely switching to an asynchronous thread. */

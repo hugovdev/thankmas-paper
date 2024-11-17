@@ -23,7 +23,9 @@ public class ItemSetRegistry(private val config: FileConfiguration) : MapBasedRe
 
     private val itemRegistry: ClickableItemRegistry by inject()
 
-    init { loadItems() }
+    init {
+        loadItems()
+    }
 
     /** Loads item sets from config. */
     public fun loadItems() {
@@ -41,6 +43,11 @@ public class ItemSetRegistry(private val config: FileConfiguration) : MapBasedRe
     /** Gives every item in the set with id [id] to [player]. */
     public fun giveSet(id: String, player: Player, locale: Locale? = null) {
         get(id).forEach { it.give(player, locale) }
+    }
+
+    /** Gives every item in the set with id [id] to [player]. */
+    public fun giveSetNullable(id: String?, player: Player, locale: Locale? = null) {
+        id?.let { getOrNull(id)?.forEach { it.give(player, locale) } }
     }
 
 }

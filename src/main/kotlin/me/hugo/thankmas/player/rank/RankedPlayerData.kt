@@ -1,6 +1,5 @@
 package me.hugo.thankmas.player.rank
 
-import dev.kezz.miniphrase.MiniPhraseContext
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.ScoreboardPlayerData
@@ -21,7 +20,6 @@ public open class RankedPlayerData<P : RankedPlayerData<P>>(
     private val belowNameSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
 ) : ScoreboardPlayerData<P>(playerUUID, playerDataManager) {
 
-    context(MiniPhraseContext)
     override fun initializeBoard(title: String?, locale: Locale?, player: Player?): Player {
         val finalPlayer = super.initializeBoard(title, locale, player)
 

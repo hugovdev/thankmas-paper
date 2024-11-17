@@ -1,6 +1,5 @@
 package me.hugo.thankmas.player
 
-import dev.kezz.miniphrase.MiniPhraseContext
 import fr.mrmicky.fastboard.adventure.FastBoard
 import io.papermc.paper.scoreboard.numbers.NumberFormat
 import me.hugo.thankmas.scoreboard.getOrCreateObjective
@@ -31,7 +30,6 @@ public open class ScoreboardPlayerData<P : ScoreboardPlayerData<P>>(
             Bukkit.getOnlinePlayers().forEach { tag.apply(it) }
         }
 
-    context(MiniPhraseContext)
     public open fun initializeBoard(title: String? = null, locale: Locale? = null, player: Player? = null): Player {
         val finalPlayer = player ?: onlinePlayer
 
@@ -129,7 +127,6 @@ public open class ScoreboardPlayerData<P : ScoreboardPlayerData<P>>(
         playerDataManager.getAllPlayerData().forEach { it.playerNameTag?.apply(player, newLocale) }
     }
 
-    context(MiniPhraseContext)
     override fun onPrepared(player: Player) {
         super.onPrepared(player)
 

@@ -40,6 +40,9 @@ public open class PaginatedMenu(
     private var currentIndex: Int = -1
     private var pages: MutableList<Menu> = mutableListOf(Menu(titleKey, size, menuFormat = menuFormat))
 
+    public val pageList: List<Menu>
+        get() = pages.toList()
+
     init {
         createNewPage()
     }
@@ -95,7 +98,8 @@ public open class PaginatedMenu(
         }
 
         if (currentIndex > 0) {
-            pages[currentIndex - 1].setIcon(menuFormat.getSlotForChar('N'),
+            pages[currentIndex - 1].setIcon(
+                menuFormat.getSlotForChar('N'),
                 Icon({ context, _ ->
                     val clicker = context.clicker
 
@@ -107,7 +111,8 @@ public open class PaginatedMenu(
                     }
                 })
 
-            newPage.setIcon(menuFormat.getSlotForChar('P'),
+            newPage.setIcon(
+                menuFormat.getSlotForChar('P'),
                 Icon({ context, _ ->
                     val clicker = context.clicker
 

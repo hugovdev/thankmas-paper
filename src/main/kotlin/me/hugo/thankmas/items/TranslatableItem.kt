@@ -30,7 +30,7 @@ public class TranslatableItem(
     private val name: String? = null,
     private val lore: String? = null,
     private val glint: Boolean? = null,
-    private val cooldown: Pair<Double, String?> = Pair(-1.0, null),
+    private val cooldown: Pair<Double, String?> = Pair(0.0, null),
     private val enchantments: Map<Enchantment, Int> = emptyMap(),
     private val color: Int = -1,
     override val miniPhrase: MiniPhrase = DefaultTranslations.instance.translations
@@ -58,7 +58,7 @@ public class TranslatableItem(
         config.getString("$path.lore"),
         // Only replace enchantment glint when explicitly specified.
         if (config.contains("$path.enchant-glint")) config.getBoolean("$path.enchant-glint") else null,
-        Pair(config.getDouble("$path.cooldown.time", -1.0), config.getString("$path.cooldown.group")),
+        Pair(config.getDouble("$path.cooldown.time"), config.getString("$path.cooldown.group")),
         config.getStringList("enchantments").associate {
             val serializedParts = it.split(", ")
 

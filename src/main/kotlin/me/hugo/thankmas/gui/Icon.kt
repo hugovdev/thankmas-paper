@@ -1,6 +1,7 @@
 package me.hugo.thankmas.gui
 
 import me.hugo.thankmas.gui.view.MenuView
+import me.hugo.thankmas.items.TranslatableItem
 import me.hugo.thankmas.state.StatefulValue
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
@@ -34,6 +35,15 @@ public open class Icon {
     ) {
         this.actions.add(action)
         this.itemSupplier = itemSupplier
+    }
+
+    /** Constructor with a single click action. */
+    public constructor(
+        translatableItem: TranslatableItem,
+        action: (iconClickContext: IconClickContext, menuView: MenuView) -> Unit,
+    ) {
+        this.actions.add(action)
+        this.itemSupplier = { player -> translatableItem.buildItem(player) }
     }
 
     /** Transforms this icon into a Stateful Icon. */
