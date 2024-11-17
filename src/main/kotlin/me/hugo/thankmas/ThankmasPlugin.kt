@@ -6,6 +6,7 @@ import me.hugo.thankmas.config.ConfigurationProvider
 import me.hugo.thankmas.dependencyinjection.ThankmasModules
 import me.hugo.thankmas.git.GitHubHelper
 import me.hugo.thankmas.items.clickable.ClickableItemRegistry
+import me.hugo.thankmas.listener.InfiniteProjectiles
 import me.hugo.thankmas.listener.MenuManager
 import me.hugo.thankmas.world.s3.S3WorldSynchronizer
 import net.kyori.adventure.text.format.TextColor
@@ -93,6 +94,7 @@ public open class ThankmasPlugin(
 
         val menuManager: MenuManager by inject()
         pluginManager.registerEvents(menuManager, this)
+        pluginManager.registerEvents(InfiniteProjectiles(), this)
     }
 
     /** Downloads all the config files from GitHub. */

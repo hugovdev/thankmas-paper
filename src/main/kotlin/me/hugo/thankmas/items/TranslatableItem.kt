@@ -16,6 +16,7 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
 import java.util.*
 
 /** Item with translatable name and lore. */
@@ -25,9 +26,11 @@ public class TranslatableItem(
     private val model: String? = null,
     private val unbreakable: Boolean = false,
     private val flags: List<ItemFlag> = emptyList(),
+    private val tags: List<String> = emptyList(),
     private val name: String? = null,
     private val lore: String? = null,
     private val glint: Boolean? = null,
+    private val cooldown: Pair<Double, String?> = Pair(-1.0, null),
     private val enchantments: Map<Enchantment, Int> = emptyMap(),
     private val color: Int = -1,
     override val miniPhrase: MiniPhrase = DefaultTranslations.instance.translations
@@ -50,10 +53,12 @@ public class TranslatableItem(
         config.getString("$path.model"),
         config.getBoolean("$path.unbreakable", false),
         config.getStringList("$path.flags").map { ItemFlag.valueOf(it.uppercase()) }.toList(),
+        config.getStringList("$path.tags"),
         config.getString("$path.name"),
         config.getString("$path.lore"),
         // Only replace enchantment glint when explicitly specified.
         if (config.contains("$path.enchant-glint")) config.getBoolean("$path.enchant-glint") else null,
+        Pair(config.getDouble("$path.cooldown.time", -1.0), config.getString("$path.cooldown.group")),
         config.getStringList("enchantments").associate {
             val serializedParts = it.split(", ")
 
@@ -90,6 +95,14 @@ public class TranslatableItem(
                 // Item Flags!
                 if (flags.isNotEmpty()) it.addItemFlags(*flags.toTypedArray())
 
+                // Cooldown component
+                if (cooldown.first > 0.0) {
+                    val cooldownComponent = it.useCooldown
+                    cooldownComponent.cooldownSeconds = cooldown.first.toFloat()
+                    cooldownComponent.cooldownGroup = NamespacedKey("thankmas", cooldown.second!!)
+                    it.setUseCooldown(cooldownComponent)
+                }
+
                 it.isUnbreakable = unbreakable
             }
 
@@ -103,6 +116,8 @@ public class TranslatableItem(
             this@TranslatableItem.enchantments.forEach { (enchantment, level) ->
                 addEnchantment(enchantment, level)
             }
+
+            tags.forEach { setKeyedData(it.lowercase(), PersistentDataType.BOOLEAN, true) }
         }
 
     /** Lets other classes edit details from this translatable item. */

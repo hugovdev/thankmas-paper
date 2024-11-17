@@ -1,6 +1,5 @@
 package me.hugo.thankmas.items.clickable
 
-import me.hugo.thankmas.config.string
 import me.hugo.thankmas.items.TranslatableItem
 import me.hugo.thankmas.items.setKeyedData
 import me.hugo.thankmas.lang.TranslatedComponent
@@ -38,10 +37,13 @@ public class ClickableItem : TranslatedComponent {
     public constructor(id: String, config: FileConfiguration, path: String) {
         this.id = id
 
-        val command = config.string("$path.command")
-        this.clickAction = { player, action ->
+        val command = config.getString("$path.command")
+
+        this.clickAction = if (command != null) { player, action ->
             if (action.isRightClick) player.chat("/$command")
             true
+        } else { _, _ ->
+            false
         }
 
         this.defaultSlot = config.getInt("$path.slot")

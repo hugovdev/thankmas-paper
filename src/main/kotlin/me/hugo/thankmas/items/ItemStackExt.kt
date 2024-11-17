@@ -167,16 +167,28 @@ public fun <T, V : Any> ItemStack.setKeyedData(
 }
 
 /** @returns whether this item has data saved in [key] of type [type]. */
-public fun <T, V : Any> ItemStack.hasKeyedData(key: String, type: PersistentDataType<T, V>): Boolean =
+public fun <T : Any, V : Any> ItemStack.hasKeyedData(key: String, type: PersistentDataType<T, V>): Boolean =
     hasKeyedData(NamespacedKey("thankmas", key), type)
 
 /** @returns whether this item has data saved in [key] of type [type]. */
-public fun <T, V : Any> ItemStack.hasKeyedData(key: NamespacedKey, type: PersistentDataType<T, V>): Boolean =
+public fun <T : Any, V : Any> ItemStack.hasKeyedData(key: NamespacedKey, type: PersistentDataType<T, V>): Boolean =
     if (hasItemMeta()) {
         itemMeta?.persistentDataContainer?.has(key, type) ?: false
     } else {
         false
     }
+
+/** @returns whether this item has data saved in [key]. */
+public fun ItemStack.hasKeyedData(key: NamespacedKey): Boolean =
+    if (hasItemMeta()) {
+        itemMeta?.persistentDataContainer?.has(key) ?: false
+    } else {
+        false
+    }
+
+/** @returns whether this item has data saved in [key]. */
+public fun ItemStack.hasKeyedData(key: String): Boolean =
+    hasKeyedData(NamespacedKey("thankmas", key))
 
 /** @returns the data of type [type] in the key [key], can be null. */
 public fun <T, V : Any> ItemStack.getKeyedData(key: String, type: PersistentDataType<T, V>): V? =
