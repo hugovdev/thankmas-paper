@@ -104,7 +104,6 @@ public class MarkerRegistry : KoinComponent {
         logger.info("[Markers] [$worldName] Loading markers for slime world $worldName...")
 
         val slimeWorldRegistry: SlimeWorldRegistry by inject()
-
         val slimeWorld = slimeWorldRegistry.getOrLoad(worldName)
 
         slimeWorld.chunkStorage.forEach {

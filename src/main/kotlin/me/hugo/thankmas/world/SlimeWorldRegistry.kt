@@ -22,14 +22,14 @@ public class SlimeWorldRegistry : MapBasedRegistry<String, SlimeWorld>() {
     }
 
     /** Gets or loads a slime world, should be run asynchronously on runtime. */
-    public fun getOrLoad(slimeWorldName: String): SlimeWorld {
+    public fun getOrLoad(slimeWorldName: String, properties: SlimePropertyMap = DEFAULT_PROPERTIES): SlimeWorld {
         val slimePlugin: SlimePlugin = Bukkit.getPluginManager().getPlugin("SlimeWorldManager") as SlimePlugin
 
         val slimeWorld = getOrNull(slimeWorldName) ?: slimePlugin.loadWorld(
-            slimePlugin.getLoader(""),
+            slimePlugin.getLoader("file"),
             slimeWorldName,
             true,
-            DEFAULT_PROPERTIES
+            properties
         ).also { register(slimeWorldName, it) }
 
         return slimeWorld
