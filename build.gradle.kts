@@ -18,6 +18,7 @@ dependencies {
 
     // Advanced Slime World Manager Plugin API.
     compileOnly(libs.aswm)
+    compileOnly(libs.aswm.loaders)
 
     // Dependency Injection framework.
     ksp(libs.koin.ksp.compiler)

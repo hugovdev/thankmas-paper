@@ -12,7 +12,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import java.sql.SQLException
 
 /**
  * Loads player data and keeps track of it until the player

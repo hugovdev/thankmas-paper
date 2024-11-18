@@ -82,6 +82,23 @@ public class S3WorldSynchronizer : KoinComponent {
         tempFolder.deleteRecursively()
     }
 
+    /** Downloads the latest world in [fileDirectory] to [localPath]. */
+    public fun downloadSlimeFile(fileDirectory: String, localPath: File) {
+        // worldDirectory = hub/2024
+
+        logger.info("Downloading world $fileDirectory...")
+
+        client().use { client ->
+            val request = GetObjectRequest.builder().bucket(bucketName).key("$fileDirectory/world.slime").build()
+
+            client.getObjectAsBytes(request)?.let { response ->
+                FileOutputStream(localPath).use { it.write(response.asByteArray()) }
+            }
+
+            logger.info("Downloaded slime file $fileDirectory...")
+        }
+    }
+
     /** Uploads this world's files to [path]. */
     public fun uploadWorld(world: World, path: String) {
         uploadFile(world.worldFolder, path)
@@ -90,18 +107,30 @@ public class S3WorldSynchronizer : KoinComponent {
     /** Uploads [file] to the [remotePath] in remote using [client]. */
     public fun uploadFile(file: File, remotePath: String) {
         client().use { client ->
-            val tempFolder =
-                Bukkit.getWorldContainer().resolve(System.currentTimeMillis().toString()).also { it.mkdirs() }
 
-            val zipFile = tempFolder.resolve("world.zip")
-            ZipUtil.pack(file, zipFile)
+            // Vanilla world being updated!
+            if (file.isDirectory) {
+                val tempFolder =
+                    Bukkit.getWorldContainer().resolve(System.currentTimeMillis().toString()).also { it.mkdirs() }
 
-            client.putObject(
-                PutObjectRequest.builder().bucket(bucketName).key("$remotePath/world.zip").build(),
-                RequestBody.fromFile(zipFile)
-            )
+                val zipFile = tempFolder.resolve("world.zip")
+                ZipUtil.pack(file, zipFile)
 
-            tempFolder.deleteRecursively()
+                client.putObject(
+                    PutObjectRequest.builder().bucket(bucketName).key("$remotePath/world.zip").build(),
+                    RequestBody.fromFile(zipFile)
+                )
+
+                tempFolder.deleteRecursively()
+            }
+            // Slime world being uploaded!
+            else if (file.extension == "slime") {
+                client.putObject(
+                    PutObjectRequest.builder().bucket(bucketName).key("$remotePath/world.slime").build(),
+                    RequestBody.fromFile(file)
+                )
+            } else throw IllegalArgumentException("File ${file.name} can't be uploaded to S3, unsupported file type!")
+
         }
     }
 }
