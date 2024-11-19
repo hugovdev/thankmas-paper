@@ -2,6 +2,7 @@ package me.hugo.thankmas.player
 
 import dev.kezz.miniphrase.MiniPhraseContext
 import dev.kezz.miniphrase.tag.TagResolverBuilder
+import me.hugo.thankmas.ThankmasPlugin
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title
 import org.bukkit.Bukkit
@@ -13,7 +14,7 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
-public fun UUID.player(): Player? = Bukkit.getPlayer(this)?.takeIf { it.isOnline }
+public fun UUID?.player(): Player? = this?.let { Bukkit.getPlayer(it)?.takeIf { it.isOnline } }
 
 context(MiniPhraseContext)
 public fun Player.translate(
@@ -49,6 +50,27 @@ public fun Player.showTitle(key: String, times: Title.Times, tags: (TagResolverB
 
         showTitle(Title.title(title, subtitle, times))
     } else showTitle(Title.title(titles.first(), Component.empty(), times))
+}
+
+/** @returns every online player with an active scoreboard. */
+public fun playersWithBoard(): List<Player> {
+    return Bukkit.getOnlinePlayers()
+        .filter { ThankmasPlugin.instance().playerDataManager.getPlayerDataOrNull(it.uniqueId)?.getBoardOrNull() != null }
+}
+
+/** Updates this player's board lines that contains [tags]. */
+public fun Player.updateBoardTags(vararg tags: String) {
+    val scoreboardManager = ThankmasPlugin.instance().scoreboardTemplateManager
+    val playerData = ThankmasPlugin.instance().playerDataManager.getPlayerData(uniqueId)
+
+    playerData.getBoardOrNull() ?: return
+
+    scoreboardManager.getTemplate(playerData.lastBoardId).updateLinesForTag(this, *tags)
+}
+
+/** Updates this player's board lines that contains [tags]. */
+public fun updateBoardTags(vararg tags: String) {
+    playersWithBoard().forEach { it.updateBoardTags(*tags) }
 }
 
 public fun Player.playSound(sound: Sound): Unit = playSound(location, sound, 1.0f, 1.0f)

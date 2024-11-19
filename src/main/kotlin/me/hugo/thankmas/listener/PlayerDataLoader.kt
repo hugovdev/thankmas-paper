@@ -18,8 +18,9 @@ import org.bukkit.event.player.PlayerQuitEvent
  * disconnects from the server!
  */
 public class PlayerDataLoader<T : PaperPlayerData<T>>(
-    private val instance: ThankmasPlugin,
-    private val playerManager: PlayerDataManager<T>
+    private val instance: ThankmasPlugin<*>,
+    private val playerManager: PlayerDataManager<T>,
+    private val removeAccessMessages: Boolean = true,
 ) : Listener, TranslatedComponent {
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -57,6 +58,8 @@ public class PlayerDataLoader<T : PaperPlayerData<T>>(
     private fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.player
 
+        if (removeAccessMessages) event.joinMessage(null)
+
         // Player successfully logged in, register the data!
         playerManager.registerPlayerData(player.uniqueId).onPrepared(player)
     }
@@ -64,6 +67,8 @@ public class PlayerDataLoader<T : PaperPlayerData<T>>(
     @EventHandler(priority = EventPriority.HIGHEST)
     private fun onPlayerQuit(event: PlayerQuitEvent) {
         val playerId = event.player.uniqueId
+
+        if (removeAccessMessages) event.quitMessage(null)
 
         // Player quit, save their data and forget the player!
         playerManager.getPlayerData(playerId).saveSafely { playerManager.removePlayerData(playerId) }

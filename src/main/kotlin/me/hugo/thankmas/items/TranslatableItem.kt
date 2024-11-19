@@ -14,6 +14,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -31,6 +32,7 @@ public class TranslatableItem(
     private val lore: String? = null,
     private val glint: Boolean? = null,
     private val cooldown: Pair<Double, String?> = Pair(0.0, null),
+    private val equipabbleSlot: EquipmentSlot? = null,
     private val enchantments: Map<Enchantment, Int> = emptyMap(),
     private val color: Int = -1,
     override val miniPhrase: MiniPhrase = DefaultTranslations.instance.translations
@@ -59,6 +61,7 @@ public class TranslatableItem(
         // Only replace enchantment glint when explicitly specified.
         if (config.contains("$path.enchant-glint")) config.getBoolean("$path.enchant-glint") else null,
         Pair(config.getDouble("$path.cooldown.time"), config.getString("$path.cooldown.group")),
+        config.enumOrNull<EquipmentSlot>("$path.equippable-slot"),
         config.getStringList("enchantments").associate {
             val serializedParts = it.split(", ")
 
@@ -101,6 +104,12 @@ public class TranslatableItem(
                     cooldownComponent.cooldownSeconds = cooldown.first.toFloat()
                     cooldownComponent.cooldownGroup = NamespacedKey("thankmas", cooldown.second!!)
                     it.setUseCooldown(cooldownComponent)
+                }
+
+                if (equipabbleSlot != null) {
+                    val equippable = it.equippable
+                    equippable.slot = equipabbleSlot
+                    it.setEquippable(equippable)
                 }
 
                 it.isUnbreakable = unbreakable

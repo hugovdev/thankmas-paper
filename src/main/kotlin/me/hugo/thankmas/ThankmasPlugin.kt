@@ -8,6 +8,9 @@ import me.hugo.thankmas.git.GitHubHelper
 import me.hugo.thankmas.items.clickable.ClickableItemRegistry
 import me.hugo.thankmas.listener.InfiniteProjectiles
 import me.hugo.thankmas.listener.MenuManager
+import me.hugo.thankmas.player.PlayerDataManager
+import me.hugo.thankmas.player.ScoreboardPlayerData
+import me.hugo.thankmas.scoreboard.ScoreboardTemplateManager
 import me.hugo.thankmas.world.s3.S3WorldSynchronizer
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -27,7 +30,7 @@ import java.util.*
  * the plugin and registers dependency injection for these
  * APIs utility classes.
  */
-public open class ThankmasPlugin(
+public abstract class ThankmasPlugin<T : ScoreboardPlayerData<T>>(
     public val configScopes: List<String> = listOf(),
     public val localTranslationDirectory: String =
         if (configScopes.isNotEmpty()) "${configScopes.first()}/lang"
@@ -48,10 +51,14 @@ public open class ThankmasPlugin(
     /** Global shared translations for all Thankmas plugins. */
     public lateinit var globalTranslations: MiniPhrase
 
-    public companion object {
-        private var instance: ThankmasPlugin? = null
+    public abstract val playerDataManager: PlayerDataManager<T>
+    public abstract val scoreboardTemplateManager: ScoreboardTemplateManager<T>
 
-        public fun instance(): ThankmasPlugin {
+
+    public companion object {
+        private var instance: ThankmasPlugin<*>? = null
+
+        public fun instance(): ThankmasPlugin<*> {
             return requireNotNull(instance)
             { "Tried to fetch a ThankmasPlugin instance while it's null!" }
         }
