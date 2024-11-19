@@ -104,6 +104,19 @@ public abstract class ThankmasPlugin<T : ScoreboardPlayerData<T>>(
         pluginManager.registerEvents(InfiniteProjectiles(), this)
     }
 
+    override fun onDisable() {
+        super.onDisable()
+
+        logger.info("Saving all player data...")
+
+        // Save all player data before disabling!
+        this.playerDataManager.getAllPlayerData().forEach {
+            it.forceSave(it.onlinePlayer)
+        }
+
+        logger.info("Saved!")
+    }
+
     /** Downloads all the config files from GitHub. */
     private fun downloadConfigFiles() {
         logger.info("Starting scope download...")

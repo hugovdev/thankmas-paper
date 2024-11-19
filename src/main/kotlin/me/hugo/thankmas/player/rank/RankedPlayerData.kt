@@ -16,41 +16,44 @@ import java.util.*
 public open class RankedPlayerData<P : RankedPlayerData<P>>(
     playerUUID: UUID,
     playerDataManager: PlayerDataManager<P>,
-    private val suffixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
-    private val belowNameSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
+    private val rankedNametags: Boolean = true,
+    protected val suffixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
+    protected val belowNameSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
 ) : ScoreboardPlayerData<P>(playerUUID, playerDataManager) {
 
     override fun initializeBoard(title: String?, locale: Locale?, player: Player?): Player {
         val finalPlayer = super.initializeBoard(title, locale, player)
 
-        val translations = ThankmasPlugin.instance().globalTranslations
-
         // Setup player nametags to show their rank!
-        playerNameTag = PlayerNameTag(
-            playerUUID,
-            {
-                // Order players by rank weight!
-                val rankIndex = 99 - (getPrimaryGroupOrNull(finalPlayer)?.weight?.orElse(0) ?: 0)
-                "$rankIndex-$playerUUID"
-            },
-            { viewer, preferredLocale ->
-                NamedTextColor.nearestTo(
+        if (rankedNametags) {
+            val translations = ThankmasPlugin.instance().globalTranslations
+
+            playerNameTag = PlayerNameTag(
+                playerUUID,
+                {
+                    // Order players by rank weight!
+                    val rankIndex = 99 - (getPrimaryGroupOrNull(finalPlayer)?.weight?.orElse(0) ?: 0)
+                    "$rankIndex-$playerUUID"
+                },
+                { viewer, preferredLocale ->
+                    NamedTextColor.nearestTo(
+                        translations.translate(
+                            "rank.${getPrimaryGroupName(finalPlayer)}.color",
+                            preferredLocale ?: viewer.locale()
+                        ).color() ?: NamedTextColor.BLACK
+                    )
+                },
+                { viewer, preferredLocale ->
                     translations.translate(
-                        "rank.${getPrimaryGroupName(finalPlayer)}.color",
+                        "rank.${getPrimaryGroupName(finalPlayer)}.prefix",
                         preferredLocale ?: viewer.locale()
-                    ).color() ?: NamedTextColor.BLACK
-                )
-            },
-            { viewer, preferredLocale ->
-                translations.translate(
-                    "rank.${getPrimaryGroupName(finalPlayer)}.prefix",
-                    preferredLocale ?: viewer.locale()
-                )
-                    .append(Component.space())
-            },
-            suffixSupplier,
-            belowNameSupplier
-        )
+                    )
+                        .append(Component.space())
+                },
+                suffixSupplier,
+                belowNameSupplier
+            )
+        }
 
         return finalPlayer
     }
@@ -64,7 +67,7 @@ public open class RankedPlayerData<P : RankedPlayerData<P>>(
     }
 
     /** @returns the primary LuckPerms group for [player]. */
-    private fun getPrimaryGroupOrNull(player: Player): Group? {
+    public fun getPrimaryGroupOrNull(player: Player): Group? {
         val api = LuckPermsProvider.get()
 
         return api.groupManager.getGroup(getPrimaryGroupName(player))

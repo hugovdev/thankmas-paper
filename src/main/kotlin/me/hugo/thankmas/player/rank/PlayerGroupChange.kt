@@ -18,7 +18,7 @@ public class PlayerGroupChange<P : RankedPlayerData<P>>(
     /** Predicate that checks if [player] should get their tag updated right now. */
     shouldUpdate: (player: Player) -> Boolean = { true },
     /** Extra actions that run when [player]'s permissions profile changes. */
-    extraActions: (player: Player) -> Unit
+    extraActions: (player: Player) -> Unit = {}
 ) {
 
     init {

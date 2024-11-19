@@ -71,6 +71,6 @@ public class PlayerDataLoader<T : PaperPlayerData<T>>(
         if (removeAccessMessages) event.quitMessage(null)
 
         // Player quit, save their data and forget the player!
-        playerManager.getPlayerData(playerId).saveSafely { playerManager.removePlayerData(playerId) }
+        playerManager.getPlayerData(playerId).saveSafely(event.player) { playerManager.removePlayerData(playerId) }
     }
 }

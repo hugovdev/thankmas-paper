@@ -96,7 +96,7 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     }
 
     /** Saves player data safely in databases, asynchronously. */
-    public open fun saveSafely(onSuccess: () -> Unit) {
+    public open fun saveSafely(player: Player, onSuccess: () -> Unit) {
         val instance = ThankmasPlugin.instance()
         val startTime = System.currentTimeMillis()
 
@@ -104,7 +104,7 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
             save()
 
             Bukkit.getScheduler().runTask(instance, Runnable {
-                onSave()
+                onSave(player)
                 onSuccess()
                 instance.logger.info("Player info for $playerUUID saved and cleaned in ${System.currentTimeMillis() - startTime}ms.")
             })
@@ -115,7 +115,7 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     protected open fun save() {}
 
     /** Runs after saving player data! */
-    protected open fun onSave() {
+    protected open fun onSave(player: Player) {
         removeAllHolograms()
     }
 
@@ -123,8 +123,8 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     public open fun onPrepared(player: Player) {}
 
     /** Forces save without safely switching to an asynchronous thread. */
-    public fun forceSave() {
+    public fun forceSave(player: Player) {
         save()
-        onSave()
+        onSave(player)
     }
 }
