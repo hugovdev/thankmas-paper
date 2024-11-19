@@ -1,5 +1,6 @@
 package me.hugo.thankmas.player
 
+import dev.kezz.miniphrase.MiniPhrase
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.entity.Hologram
 import me.hugo.thankmas.region.Region
@@ -17,6 +18,9 @@ import java.util.concurrent.ConcurrentMap
  */
 public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDataManager: PlayerDataManager<P>) :
     PlayerData<P>(playerUUID, playerDataManager) {
+
+    protected val globalTranslations: MiniPhrase
+        get() = ThankmasPlugin.instance().globalTranslations
 
     /** @returns the player object from the UUID if online, can be null. */
     public val onlinePlayerOrNull: Player?

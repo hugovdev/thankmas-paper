@@ -6,7 +6,6 @@ import me.hugo.thankmas.lang.Translated
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.rank.RankedPlayerData
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -23,17 +22,7 @@ public class RankedPlayerChat<T : RankedPlayerData<T>>(
 
     @EventHandler
     private fun onPlayerChat(event: AsyncChatEvent) {
-        val text = PlainTextComponentSerializer.plainText().serialize(event.message())
         val chatter = event.player
-
-        // If the chat message contains Private Use Area symbols, don't let the message go through!
-        // https://jrgraphix.net/r/Unicode/E000-F8FF
-        if (text.any { Character.UnicodeBlock.of(it) == Character.UnicodeBlock.PRIVATE_USE_AREA }) {
-            chatter.sendMessage(translations.translate("general.chat.invalid", chatter.locale()))
-
-            event.isCancelled = true
-            return
-        }
 
         event.viewers().removeIf { it is Player && !shouldSee(it, chatter) }
 
@@ -42,12 +31,12 @@ public class RankedPlayerChat<T : RankedPlayerData<T>>(
                 val sourceData = playerManager.getPlayerData(source.uniqueId)
 
                 translations.translate(
-                    "rank.${sourceData.getPrimaryGroupName(source)}.chat",
+                    "rank.${sourceData.getPrimaryGroupName()}.chat",
                     viewer.locale()
                 ) {
                     inserting("message", message)
                     parsed("player", source.name)
-                    inserting("nametag", sourceData.getNameTag())
+                    inserting("nametag", sourceData.getNameTag(viewer.locale()))
                 }
             } else Component.text(("${source.name}: ")).append(message)
         }

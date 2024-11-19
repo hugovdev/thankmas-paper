@@ -26,30 +26,15 @@ public open class RankedPlayerData<P : RankedPlayerData<P>>(
 
         // Setup player nametags to show their rank!
         if (rankedNametags) {
-            val translations = ThankmasPlugin.instance().globalTranslations
-
             playerNameTag = PlayerNameTag(
                 playerUUID,
                 {
                     // Order players by rank weight!
-                    val rankIndex = 99 - (getPrimaryGroupOrNull(finalPlayer)?.weight?.orElse(0) ?: 0)
+                    val rankIndex = 99 - (getPrimaryGroupOrNull()?.weight?.orElse(0) ?: 0)
                     "$rankIndex-$playerUUID"
                 },
-                { viewer, preferredLocale ->
-                    NamedTextColor.nearestTo(
-                        translations.translate(
-                            "rank.${getPrimaryGroupName(finalPlayer)}.color",
-                            preferredLocale ?: viewer.locale()
-                        ).color() ?: NamedTextColor.BLACK
-                    )
-                },
-                { viewer, preferredLocale ->
-                    translations.translate(
-                        "rank.${getPrimaryGroupName(finalPlayer)}.prefix",
-                        preferredLocale ?: viewer.locale()
-                    )
-                        .append(Component.space())
-                },
+                { _, preferredLocale -> getTagColor(preferredLocale) },
+                { _, preferredLocale -> getRankPrefix(preferredLocale) },
                 suffixSupplier,
                 belowNameSupplier
             )
@@ -58,25 +43,25 @@ public open class RankedPlayerData<P : RankedPlayerData<P>>(
         return finalPlayer
     }
 
-    /** @returns the primary LuckPerms group for [player]. */
-    public fun getPrimaryGroupName(player: Player): String {
+    /** @returns the primary LuckPerms group for this player. */
+    public fun getPrimaryGroupName(): String {
         val api = LuckPermsProvider.get()
-        val user = api.getPlayerAdapter(Player::class.java).getUser(player)
+        val user = api.getPlayerAdapter(Player::class.java).getUser(onlinePlayer)
 
         return user.primaryGroup
     }
 
-    /** @returns the primary LuckPerms group for [player]. */
-    public fun getPrimaryGroupOrNull(player: Player): Group? {
+    /** @returns the primary LuckPerms group for this player. */
+    public fun getPrimaryGroupOrNull(): Group? {
         val api = LuckPermsProvider.get()
 
-        return api.groupManager.getGroup(getPrimaryGroupName(player))
+        return api.groupManager.getGroup(getPrimaryGroupName())
     }
 
     /** @returns the decorated rank name of this player. */
     public fun getDecoratedRankName(locale: Locale = onlinePlayer.locale()): Component {
         val globalTranslations = ThankmasPlugin.instance().globalTranslations
-        val group = getPrimaryGroupName(onlinePlayer)
+        val group = getPrimaryGroupName()
 
         return globalTranslations.translate("rank.$group.name", locale)
             .color(
@@ -84,24 +69,25 @@ public open class RankedPlayerData<P : RankedPlayerData<P>>(
             )
     }
 
+    /** @returns the tag color for this player's rank. */
+    public fun getTagColor(locale: Locale? = null): NamedTextColor = NamedTextColor.nearestTo(
+        globalTranslations.translate(
+            "rank.${getPrimaryGroupName()}.color",
+            locale ?: globalTranslations.defaultLocale
+        ).color() ?: NamedTextColor.BLACK
+    )
+
+    /** @returns the prefix for this player's rank. */
+    public fun getRankPrefix(locale: Locale? = null): Component = globalTranslations.translate(
+        "rank.${getPrimaryGroupName()}.prefix",
+        locale ?: globalTranslations.defaultLocale
+    ).append(Component.space())
+
     /** @returns the full player name tag with their rank prefix. */
-    public fun getNameTag(): Component {
+    public fun getNameTag(locale: Locale = onlinePlayer.locale()): Component {
         val finalPlayer = onlinePlayer
-        val translations = ThankmasPlugin.instance().globalTranslations
-        val locale = finalPlayer.locale()
 
-        val primaryGroup = getPrimaryGroupName(finalPlayer)
-
-        return translations.translate("rank.${primaryGroup}.prefix", locale).append(Component.space()).append(
-            Component.text(finalPlayer.name).color(
-                NamedTextColor.nearestTo(
-                    translations.translate(
-                        "rank.${primaryGroup}.color",
-                        locale
-                    ).color() ?: NamedTextColor.BLACK
-                )
-            )
-        )
+        return getRankPrefix(locale).append(Component.text(finalPlayer.name).color(getTagColor(locale)))
     }
 
 }

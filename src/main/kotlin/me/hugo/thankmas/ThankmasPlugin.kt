@@ -8,6 +8,7 @@ import me.hugo.thankmas.git.GitHubHelper
 import me.hugo.thankmas.items.clickable.ClickableItemRegistry
 import me.hugo.thankmas.listener.InfiniteProjectiles
 import me.hugo.thankmas.listener.MenuManager
+import me.hugo.thankmas.listener.PrivateUseAreaCharacterBlocker
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.ScoreboardPlayerData
 import me.hugo.thankmas.scoreboard.ScoreboardTemplateManager
@@ -102,6 +103,7 @@ public abstract class ThankmasPlugin<T : ScoreboardPlayerData<T>>(
         val menuManager: MenuManager by inject()
         pluginManager.registerEvents(menuManager, this)
         pluginManager.registerEvents(InfiniteProjectiles(), this)
+        pluginManager.registerEvents(PrivateUseAreaCharacterBlocker(), this)
     }
 
     override fun onDisable() {
