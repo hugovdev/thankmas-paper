@@ -39,10 +39,12 @@ public data class PlayerNPC(
 /** Spawns all the player NPCs for player_npc markers around [world]. */
 public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
     private val world: String,
-    private val playerManager: PlayerDataManager<P>,
-    private val spawnWorld: World = requireNotNull(Bukkit.getWorld(world))
-    { "Tried to spawn player NPCs in world $world but it is not loaded." }
+    private val playerManager: PlayerDataManager<P>
 ) : MapBasedRegistry<String, PlayerNPC>(), TranslatedComponent, Listener {
+
+    private val spawnWorld: World
+        get() = requireNotNull(Bukkit.getWorld(world))
+        { "Tried to spawn player NPCs in world $world but it is not loaded." }
 
     private val markerRegistry: MarkerRegistry by inject()
     private val configProvider: ConfigurationProvider by inject()

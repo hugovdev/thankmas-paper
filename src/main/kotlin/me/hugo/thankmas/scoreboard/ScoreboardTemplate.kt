@@ -40,9 +40,11 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData<T>>(
                 val locations = mutableListOf<Int>()
 
                 lines.forEachIndexed { index, line ->
-                    if (line.contains("<$tag>")) locations.add(index)
-                    inversedTagLocations.computeIfAbsent(language) { mutableMapOf() }
-                        .computeIfAbsent(index) { mutableListOf() }.add(tag)
+                    if (line.contains("<$tag>")) {
+                        locations.add(index)
+                        inversedTagLocations.computeIfAbsent(language) { mutableMapOf() }
+                            .computeIfAbsent(index) { mutableListOf() }.add(tag)
+                    }
                 }
 
                 if (locations.isNotEmpty()) {
@@ -97,26 +99,24 @@ public class ScoreboardTemplate<T : ScoreboardPlayerData<T>>(
 
     /** Updates every line that contains any of the [tags] for [player]. */
     public fun updateLinesForTag(player: Player, vararg tags: String) {
-        val locations = mutableListOf<Int>()
+        val locations = mutableSetOf<Int>()
         val language = getValidLanguage(player)
 
-        tags.forEach {
-            getTagLocations(language)[it]?.let { newLocations -> locations.addAll(newLocations) }
-        }
+        tags.forEach { getTagLocations(language)[it]?.let { newLocations -> locations.addAll(newLocations) } }
 
         val boardLines = boardLines[language]
         requireNotNull(boardLines) { "Board lines for $key are null for ${language.toLanguageTag()} and default lang!" }
 
-        locations.toSet().forEach {
+        locations.forEach { lineIndex ->
             val inversedTags = inversedTagLocations[language] ?: inversedTagLocations[miniPhrase.defaultLocale]
             requireNotNull(inversedTags) { "Could not find inversed scoreboard tag locations for ${language.toLanguageTag()}!" }
 
             scoreboardManager.playerManager.getPlayerData(player.uniqueId).getBoard()
-                .updateLine(it, miniPhrase.format(boardLines[it]) {
+                .updateLine(lineIndex, miniPhrase.format(boardLines[lineIndex], player.locale()) {
 
-                    inversedTags[it]?.forEach { tag ->
+                    inversedTags[lineIndex]?.forEach { tag ->
                         val resolver = usedResolvers[tag]
-                        requireNotNull(resolver) { "Couldn't find resolver for scoreboard tag $tag!" }
+                        requireNotNull(resolver) { "Couldn't find resolver for scoreboard tag $tag in line $lineIndex!" }
 
                         resolver(TagResolver.resolver(tag, resolver(player, language)))
                     }

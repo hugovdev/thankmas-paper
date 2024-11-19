@@ -20,7 +20,7 @@ public open class ScoreboardPlayerData<P : ScoreboardPlayerData<P>>(
 ) : PaperPlayerData<P>(playerUUID, playerDataManager) {
 
     private var board: FastBoard? = null
-    public var lastBoardId: String? = null
+    public var lastBoardId: String = "lobby"
 
     public var playerNameTag: PlayerNameTag? = null
         set(tag) {
