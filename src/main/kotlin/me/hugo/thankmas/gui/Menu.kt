@@ -136,7 +136,15 @@ public open class Menu(
                     + "--XXXXX--"
                     + "--XXXXX--"
                     + "---PIN---")
-        );
+        ),
+        FOUR_SLIM_ROWS(
+            "---XXX---" +
+                    "---XXX---" +
+                    "---XXX---" +
+                    "---XXX---" +
+                    "---P-N---" +
+                    "---------"
+        ), ;
 
         public fun getSlotsForChar(char: Char = 'X'): List<Int> =
             itemDistribution.toCharArray()

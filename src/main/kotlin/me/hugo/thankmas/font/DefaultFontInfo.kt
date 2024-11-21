@@ -1,7 +1,7 @@
 package me.hugo.thankmas.font
 
 
-public enum class DefaultFontInfo(private val char: Char, private val length: Int) {
+public enum class DefaultFontInfo(private val char: Char, public val length: Int) {
     A('A', 5),
     a('a', 5),
     B('B', 5),
