@@ -6,6 +6,8 @@ import me.hugo.thankmas.gui.paginated.PaginatedMenu
 import me.hugo.thankmas.items.loreTranslatable
 import me.hugo.thankmas.lang.Translated
 import me.hugo.thankmas.registry.AutoCompletableMapRegistry
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.sound.Sound
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.koin.core.annotation.Single
@@ -46,5 +48,7 @@ public class CosmeticsRegistry(config: FileConfiguration) : AutoCompletableMapRe
     }
 
     /** Opens the cosmetics selector for [player]. */
-    public fun openSelector(player: Player): Unit = cosmeticsSelector.open(player)
+    public fun openSelector(player: Player): Unit = cosmeticsSelector.open(player).also {
+        player.playSound(Sound.sound(Key.key("lobby.cosmetic_selector_open"), Sound.Source.AMBIENT, 1.0f, 1.0f))
+    }
 }
