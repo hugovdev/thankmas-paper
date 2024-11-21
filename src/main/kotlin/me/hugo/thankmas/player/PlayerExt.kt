@@ -3,6 +3,8 @@ package me.hugo.thankmas.player
 import dev.kezz.miniphrase.MiniPhraseContext
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import me.hugo.thankmas.ThankmasPlugin
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.sound.Sound.*
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title
 import org.bukkit.Bukkit
@@ -55,7 +57,9 @@ public fun Player.showTitle(key: String, times: Title.Times, tags: (TagResolverB
 /** @returns every online player with an active scoreboard. */
 public fun playersWithBoard(): List<Player> {
     return Bukkit.getOnlinePlayers()
-        .filter { ThankmasPlugin.instance().playerDataManager.getPlayerDataOrNull(it.uniqueId)?.getBoardOrNull() != null }
+        .filter {
+            ThankmasPlugin.instance().playerDataManager.getPlayerDataOrNull(it.uniqueId)?.getBoardOrNull() != null
+        }
 }
 
 /** Updates this player's board lines that contains [tags]. */
@@ -74,6 +78,9 @@ public fun updateBoardTags(vararg tags: String) {
 }
 
 public fun Player.playSound(sound: Sound): Unit = playSound(location, sound, 1.0f, 1.0f)
+
+public fun Player.playSound(sound: String, source: Source = Source.AMBIENT): Unit =
+    playSound(sound(Key.key(sound), source, 1.0f, 1.0f))
 
 public fun Player.reset(gameMode: GameMode) {
     setGameMode(gameMode)
