@@ -39,6 +39,8 @@ dependencies {
     // Library to access minecraft world files.
     api(libs.hephaistos)
 
+    api(libs.bundles.exposed.runtime)
+
     // Amazon S3 API for nice world downloading and uploading :)
     api(platform("software.amazon.awssdk:bom:2.26.25"))
     api("software.amazon.awssdk:s3")

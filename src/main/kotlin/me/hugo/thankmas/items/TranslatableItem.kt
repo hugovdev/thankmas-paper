@@ -1,8 +1,10 @@
 package me.hugo.thankmas.items
 
-import com.google.common.collect.LinkedHashMultimap
 import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.tag.TagResolverBuilder
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.DyedItemColor
+import io.papermc.paper.datacomponent.item.ItemAttributeModifiers
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.hugo.thankmas.DefaultTranslations
@@ -84,7 +86,13 @@ public class TranslatableItem(
     // Build the base item with every shared attribute!
     private val baseItem = ItemStack(material)
         .apply {
-            if (ItemFlag.HIDE_ATTRIBUTES in flags) setAttributeModifiers(LinkedHashMultimap.create())
+            if (ItemFlag.HIDE_ATTRIBUTES in flags) {
+                setData(
+                    DataComponentTypes.ATTRIBUTE_MODIFIERS,
+                    getData(DataComponentTypes.ATTRIBUTE_MODIFIERS)?.showInTooltip(false)
+                        ?: ItemAttributeModifiers.itemAttributes().showInTooltip(false).build()
+                )
+            }
 
             // Assign all special ItemMeta!
             editMeta {
@@ -119,7 +127,7 @@ public class TranslatableItem(
             run tint@{
                 if (color == -1) return@tint
 
-                color(Color.fromRGB(color))
+                setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
             }
 
             this@TranslatableItem.enchantments.forEach { (enchantment, level) ->

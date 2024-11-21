@@ -2,13 +2,9 @@ package me.hugo.thankmas.cosmetics
 
 import me.hugo.thankmas.config.enumOrNull
 import me.hugo.thankmas.items.TranslatableItem
-import me.hugo.thankmas.items.attributeModifier
 import me.hugo.thankmas.lang.TranslatedComponent
 import org.bukkit.Color
 import org.bukkit.Material
-import org.bukkit.NamespacedKey
-import org.bukkit.attribute.Attribute
-import org.bukkit.attribute.AttributeModifier
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
@@ -32,9 +28,11 @@ public class Cosmetic(
         config.getString("$id.model-id")?.let { "cosmetics/$it" } ?: "cosmetics/$id"
     )
 
+    public val nameKey: String = "cosmetics.$id.item.name"
+
     public val item: TranslatableItem = TranslatableItem(
         material = Material.LEATHER_HORSE_ARMOR,
-        name = "cosmetics.$id.item.name",
+        name = nameKey,
         model = modelId,
         color = color?.asRGB() ?: -1,
         flags = listOf(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ADDITIONAL_TOOLTIP)
@@ -45,15 +43,6 @@ public class Cosmetic(
                 equippable.slot = slot
                 it.setEquippable(equippable)
             }
-
-            it.attributeModifier(
-                Attribute.ARMOR,
-                AttributeModifier(
-                    NamespacedKey("thankmas", "armor_removal"),
-                    0.0,
-                    AttributeModifier.Operation.MULTIPLY_SCALAR_1
-                )
-            )
         }
     }
 

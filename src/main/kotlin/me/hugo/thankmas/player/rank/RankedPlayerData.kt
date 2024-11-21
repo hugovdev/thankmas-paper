@@ -16,29 +16,35 @@ import java.util.*
 public open class RankedPlayerData<P : RankedPlayerData<P>>(
     playerUUID: UUID,
     playerDataManager: PlayerDataManager<P>,
-    private val rankedNametags: Boolean = true,
-    protected val suffixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
-    protected val belowNameSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null,
 ) : ScoreboardPlayerData<P>(playerUUID, playerDataManager) {
+
+    protected open val teamIdSupplier: (() -> String) = {
+        // Order players by rank weight!
+        val rankIndex = 99 - (getPrimaryGroupOrNull()?.weight?.orElse(0) ?: 0)
+        "$rankIndex-$playerUUID"
+    }
+
+    protected open val namedTextColor: ((viewer: Player, preferredLocale: Locale?) -> NamedTextColor)? =
+        { _, preferredLocale -> getTagColor(preferredLocale) }
+
+    protected open val prefixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? =
+        { _, preferredLocale -> getRankPrefix(preferredLocale) }
+
+    protected open val suffixSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null
+    protected open val belowNameSupplier: ((viewer: Player, preferredLocale: Locale?) -> Component)? = null
 
     override fun initializeBoard(title: String?, locale: Locale?, player: Player?): Player {
         val finalPlayer = super.initializeBoard(title, locale, player)
 
         // Setup player nametags to show their rank!
-        if (rankedNametags) {
-            playerNameTag = PlayerNameTag(
-                playerUUID,
-                {
-                    // Order players by rank weight!
-                    val rankIndex = 99 - (getPrimaryGroupOrNull()?.weight?.orElse(0) ?: 0)
-                    "$rankIndex-$playerUUID"
-                },
-                { _, preferredLocale -> getTagColor(preferredLocale) },
-                { _, preferredLocale -> getRankPrefix(preferredLocale) },
-                suffixSupplier,
-                belowNameSupplier
-            )
-        }
+        playerNameTag = PlayerNameTag(
+            playerUUID,
+            teamIdSupplier,
+            namedTextColor,
+            prefixSupplier,
+            suffixSupplier,
+            belowNameSupplier
+        )
 
         return finalPlayer
     }
