@@ -15,12 +15,20 @@ import org.koin.core.component.inject
  * Collection of menus with page navigation.
  */
 public open class PaginatedMenu(
-    private val titleKey: String,
+    private val menuFrames: List<Pair<Int, String>>,
     private val size: Int,
     private val menuFormat: Menu.MenuFormat,
     private val representativeIcon: TranslatableItem? = null,
     private val lastMenu: Menu? = null,
 ) {
+
+    public constructor(
+        titleKey: String,
+        size: Int,
+        menuFormat: Menu.MenuFormat,
+        representativeIcon: TranslatableItem? = null,
+        lastMenu: Menu? = null,
+    ): this(listOf(Pair(0, titleKey)), size, menuFormat, representativeIcon, lastMenu)
 
     public companion object : KoinComponent {
         private val configProvider: ConfigurationProvider by inject()
@@ -38,7 +46,7 @@ public open class PaginatedMenu(
     }
 
     private var currentIndex: Int = -1
-    private var pages: MutableList<Menu> = mutableListOf(Menu(titleKey, size, menuFormat = menuFormat))
+    private var pages: MutableList<Menu> = mutableListOf(Menu(menuFrames, size, menuFormat = menuFormat))
 
     public val pageList: List<Menu>
         get() = pages.toList()
@@ -77,7 +85,7 @@ public open class PaginatedMenu(
 
     /** Adds a new page. */
     private fun createNewPage(): Menu {
-        val newPage = Menu(titleKey, size, menuFormat = menuFormat)
+        val newPage = Menu(menuFrames, size, menuFormat = menuFormat)
 
         pages.add(newPage)
         currentIndex++
@@ -103,7 +111,7 @@ public open class PaginatedMenu(
                 Icon({ context, _ ->
                     val clicker = context.clicker
 
-                    newPage.open(clicker)
+                    newPage.open(clicker, false)
                     clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
                 }) {
                     NEXT_PAGE.buildItem(it.locale()) {
@@ -111,12 +119,13 @@ public open class PaginatedMenu(
                     }
                 })
 
+            val lastIndex = currentIndex - 1
             newPage.setIcon(
                 menuFormat.getSlotForChar('P'),
                 Icon({ context, _ ->
                     val clicker = context.clicker
 
-                    pages[currentIndex - 1].open(clicker)
+                    pages[lastIndex].open(clicker, false)
                     clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
                 }) {
                     PREVIOUS_PAGE.buildItem(it.locale()) {

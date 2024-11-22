@@ -5,15 +5,27 @@ import me.hugo.thankmas.gui.StatefulIcon
 import me.hugo.thankmas.state.StatefulValue
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.InventoryView
 import org.koin.core.component.KoinComponent
 
 /** Specific menu view of [menu] for [player]. */
-public class MenuView(private val player: Player, public val menu: Menu) : KoinComponent {
+public class MenuView(public val player: Player, public val menu: Menu) :
+    KoinComponent {
 
     private val callbacks: MutableMap<StatefulValue<*>, (old: Any?, new: Any?, value: StatefulValue<out Any?>) -> Unit> =
         mutableMapOf()
 
     public val inventory: Inventory = menu.buildInventory(player, this)
+
+    public var inventoryView: InventoryView? = null
+        private set
+
+    public var currentTitleFrame: Int = 1
+    public var currentTitleTick: Int = 0
+
+    public fun open() {
+        inventoryView = player.openInventory(inventory)
+    }
 
     public fun subscribeRebuild(slot: Int, icon: StatefulIcon<*>) {
         val callback: (old: Any?, new: Any?, value: StatefulValue<out Any?>) -> Unit =

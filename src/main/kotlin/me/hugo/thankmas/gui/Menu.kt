@@ -5,28 +5,50 @@ import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.listener.MenuManager
 import me.hugo.thankmas.player.translate
 import org.bukkit.Bukkit
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.koin.core.component.inject
 
 /** Translatable menu with clickable icons and a default format. */
 public open class Menu(
-    public val titleKey: String,
+    private val menuFrames: List<Pair<Int, String>>,
     private val size: Int,
     private val icons: MutableMap<Int, Icon> = mutableMapOf(),
     private val menuFormat: MenuFormat? = null
 ) : TranslatedComponent {
 
+    public constructor(titleKey: String, size: Int, icons: MutableMap<Int, Icon>, menuFormat: MenuFormat?) :
+            this(listOf(Pair(0, titleKey)), size, icons, menuFormat)
+
+    public constructor(
+        config: FileConfiguration,
+        path: String
+    ) : this(
+        listOf(Pair(0, config.getString("$path.title") ?: "$path.title")),
+        config.getInt("$path.size", 9 * 3),
+        menuFormat = config.getString("$path.format")?.uppercase()?.let { MenuFormat.valueOf(it) })
+
+    private val titleKey: String
+        get() = menuFrames[0].second
+
+    public val frames: Int = menuFrames.size
+
+    /** Gets the frame in position [index]. */
+    public fun getFrameEntry(index: Int): Pair<Int, String> = menuFrames[index]
+
     /** Creates an inventory view for [player] and opens it. */
-    public fun open(player: Player) {
+    public fun open(player: Player, animated: Boolean = true) {
         val menuView = MenuView(player, this)
 
-        val inventory = menuView.inventory
+        // Jump into the last frame to prevent the menu from
+        // being animated!
+        if (!animated) menuView.currentTitleFrame = frames
 
         val menuManager: MenuManager by inject()
-        menuManager.register(inventory, menuView)
+        menuManager.register(menuView.inventory, menuView)
 
-        player.openInventory(inventory)
+        menuView.open()
     }
 
     /** Build this menu for [player]. */

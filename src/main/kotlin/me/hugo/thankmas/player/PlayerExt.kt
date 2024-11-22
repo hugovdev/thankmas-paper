@@ -4,7 +4,8 @@ import dev.kezz.miniphrase.MiniPhraseContext
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import me.hugo.thankmas.ThankmasPlugin
 import net.kyori.adventure.key.Key
-import net.kyori.adventure.sound.Sound.*
+import net.kyori.adventure.sound.Sound.Source
+import net.kyori.adventure.sound.Sound.sound
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title
 import org.bukkit.Bukkit
@@ -81,6 +82,9 @@ public fun Player.playSound(sound: Sound): Unit = playSound(location, sound, 1.0
 
 public fun Player.playSound(sound: String, source: Source = Source.AMBIENT): Unit =
     playSound(sound(Key.key(sound), source, 1.0f, 1.0f))
+
+public fun Player.stopSound(sound: String, source: Source = Source.AMBIENT): Unit =
+    stopSound(sound(Key.key(sound), source, 1.0f, 1.0f))
 
 public fun Player.reset(gameMode: GameMode) {
     setGameMode(gameMode)

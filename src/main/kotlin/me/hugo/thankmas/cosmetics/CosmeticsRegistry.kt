@@ -9,8 +9,10 @@ import me.hugo.thankmas.items.loreTranslatable
 import me.hugo.thankmas.lang.Translated
 import me.hugo.thankmas.player.cosmetics.CosmeticsPlayerData
 import me.hugo.thankmas.player.playSound
+import me.hugo.thankmas.player.stopSound
 import me.hugo.thankmas.player.translate
 import me.hugo.thankmas.registry.AutoCompletableMapRegistry
+import net.kyori.adventure.sound.Sound
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.koin.core.annotation.Single
@@ -23,7 +25,15 @@ public class CosmeticsRegistry(config: FileConfiguration) :
 
     /** Cosmetics selector menu. */
     private val cosmeticsSelector: PaginatedMenu = PaginatedMenu(
-        "menu.cosmetics_selector.title", 9 * 6,
+        listOf(
+            Pair(0, "menu.cosmetics_selector.title.on"),
+            Pair(5, "menu.cosmetics_selector.title.off"),
+            Pair(8, "menu.cosmetics_selector.title.on"),
+            Pair(12, "menu.cosmetics_selector.title.off"),
+            Pair(14, "menu.cosmetics_selector.title.on"),
+            Pair(18, "menu.cosmetics_selector.title.off"),
+            Pair(25, "menu.cosmetics_selector.title.on")
+        ), 9 * 6,
         Menu.MenuFormat.FOUR_SLIM_ROWS, null, null
     )
 
@@ -45,6 +55,8 @@ public class CosmeticsRegistry(config: FileConfiguration) :
                     }
 
                     playerData.selectedCosmetic.value = cosmetic
+
+                    clicker.stopSound("lobby.cosmetic_selector_open", Sound.Source.AMBIENT)
                     clicker.playSound("lobby.cosmetic_selector_buy")
                     clicker.closeInventory()
                 }) { player ->
@@ -58,7 +70,7 @@ public class CosmeticsRegistry(config: FileConfiguration) :
                     cosmetic.item.buildItem(player)
                         .loreTranslatable(
                             if (selected) "cosmetics.$slotKey.selected"
-                            else if(playerData.ownsCosmetic(cosmetic)) "cosmetics.$slotKey.selectable"
+                            else if (playerData.ownsCosmetic(cosmetic)) "cosmetics.$slotKey.selectable"
                             else if (cosmetic.price > 0) "cosmetics.$slotKey.priced"
                             else "cosmetics.$slotKey.exclusive",
                             player.locale()
