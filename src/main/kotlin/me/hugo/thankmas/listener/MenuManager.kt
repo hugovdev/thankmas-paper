@@ -1,11 +1,10 @@
 package me.hugo.thankmas.listener
 
 import io.papermc.paper.adventure.PaperAdventure
-import me.hugo.thankmas.ThankmasPlugin
+import me.hugo.thankmas.SimpleThankmasPlugin
 import me.hugo.thankmas.gui.Icon
 import me.hugo.thankmas.gui.view.MenuView
 import me.hugo.thankmas.lang.Translated
-import me.hugo.thankmas.player.translate
 import me.hugo.thankmas.registry.MapBasedRegistry
 import net.kyori.adventure.text.Component
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket
@@ -31,7 +30,7 @@ import org.koin.core.annotation.Single
 public class MenuManager : MapBasedRegistry<Inventory, MenuView>(), Listener, Translated {
 
     init {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(ThankmasPlugin.instance(), Runnable {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(SimpleThankmasPlugin.instance(), Runnable {
             val openedViews = iterator()
 
             while (openedViews.hasNext()) {
@@ -45,7 +44,7 @@ public class MenuManager : MapBasedRegistry<Inventory, MenuView>(), Listener, Tr
                 val nextFrame = menu.getFrameEntry(menuView.currentTitleFrame)
 
                 if (menuView.currentTitleTick >= nextFrame.first) {
-                    menuView.inventoryView?.setTitle(menuView.player.translate(nextFrame.second))
+                    menuView.inventoryView?.setTitle(menuView.miniPhrase.translate(nextFrame.second, menuView.player.locale()))
 
                     menuView.currentTitleFrame++
                 }

@@ -16,7 +16,7 @@ import java.util.*
 /** Special PlayerData implementation that load up cosmetics and offers hooks to fetch and save data. */
 public open class CosmeticsPlayerData<P : CosmeticsPlayerData<P>>(
     playerUUID: UUID, instance: ThankmasPlugin<P>,
-    private val doesUpdateCosmetic: (player: Player) -> Boolean = { _ -> true }
+    public val doesUpdateCosmetic: (player: Player) -> Boolean = { _ -> true }
 ) : RankedPlayerData<P>(playerUUID, instance.playerDataManager) {
 
     private val cosmeticRegistry: CosmeticsRegistry by inject()
@@ -41,7 +41,7 @@ public open class CosmeticsPlayerData<P : CosmeticsPlayerData<P>>(
     public fun ownsCosmetic(cosmetic: Cosmetic): Boolean = cosmeticsOwned.contains(cosmetic)
 
     /** Gives this player their selected cosmetic. */
-    protected fun giveCosmetic() {
+    public fun giveCosmetic() {
         val cosmetic = selectedCosmetic.value ?: return
 
         val bukkitPlayer = onlinePlayer

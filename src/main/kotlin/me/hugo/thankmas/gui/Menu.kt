@@ -1,13 +1,13 @@
 package me.hugo.thankmas.gui
 
+import dev.kezz.miniphrase.MiniPhrase
 import me.hugo.thankmas.gui.view.MenuView
-import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.listener.MenuManager
-import me.hugo.thankmas.player.translate
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /** Translatable menu with clickable icons and a default format. */
@@ -15,19 +15,26 @@ public open class Menu(
     private val menuFrames: List<Pair<Int, String>>,
     private val size: Int,
     private val icons: MutableMap<Int, Icon> = mutableMapOf(),
-    private val menuFormat: MenuFormat? = null
-) : TranslatedComponent {
+    private val menuFormat: MenuFormat? = null,
+    private val miniPhrase: MiniPhrase
+) : KoinComponent {
 
-    public constructor(titleKey: String, size: Int, icons: MutableMap<Int, Icon>, menuFormat: MenuFormat?) :
-            this(listOf(Pair(0, titleKey)), size, icons, menuFormat)
+    public constructor(
+        titleKey: String, size: Int, icons: MutableMap<Int, Icon>, menuFormat: MenuFormat?,
+        miniPhrase: MiniPhrase
+    ) :
+            this(listOf(Pair(0, titleKey)), size, icons, menuFormat, miniPhrase)
 
     public constructor(
         config: FileConfiguration,
-        path: String
+        path: String,
+        miniPhrase: MiniPhrase
     ) : this(
         listOf(Pair(0, config.getString("$path.title") ?: "$path.title")),
         config.getInt("$path.size", 9 * 3),
-        menuFormat = config.getString("$path.format")?.uppercase()?.let { MenuFormat.valueOf(it) })
+        menuFormat = config.getString("$path.format")?.uppercase()?.let { MenuFormat.valueOf(it) },
+        miniPhrase = miniPhrase
+    )
 
     private val titleKey: String
         get() = menuFrames[0].second
@@ -39,7 +46,7 @@ public open class Menu(
 
     /** Creates an inventory view for [player] and opens it. */
     public fun open(player: Player, animated: Boolean = true) {
-        val menuView = MenuView(player, this)
+        val menuView = MenuView(player, this, miniPhrase)
 
         // Jump into the last frame to prevent the menu from
         // being animated!
@@ -52,8 +59,8 @@ public open class Menu(
     }
 
     /** Build this menu for [player]. */
-    public fun buildInventory(player: Player, view: MenuView): Inventory {
-        val inventory = Bukkit.createInventory(null, size, player.translate(titleKey))
+    public fun buildInventory(player: Player, view: MenuView, miniPhrase: MiniPhrase = this.miniPhrase): Inventory {
+        val inventory = Bukkit.createInventory(null, size, miniPhrase.translate(titleKey, player.locale()))
 
         icons.forEach {
             val icon = it.value

@@ -2,18 +2,17 @@ package me.hugo.thankmas.items
 
 import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.tag.TagResolverBuilder
-import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.DyedItemColor
-import io.papermc.paper.datacomponent.item.ItemAttributeModifiers
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.hugo.thankmas.DefaultTranslations
 import me.hugo.thankmas.config.enumOrNull
 import me.hugo.thankmas.lang.TranslatedComponent
-import org.bukkit.Color
+import net.minecraft.core.component.DataComponents
+import net.minecraft.world.item.component.ItemAttributeModifiers.EMPTY
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.FileConfiguration
+import org.bukkit.craftbukkit.inventory.CraftItemStack
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
@@ -84,58 +83,67 @@ public class TranslatableItem(
     )
 
     // Build the base item with every shared attribute!
-    private val baseItem = ItemStack(material)
-        .apply {
-            if (ItemFlag.HIDE_ATTRIBUTES in flags) {
-                setData(
-                    DataComponentTypes.ATTRIBUTE_MODIFIERS,
-                    getData(DataComponentTypes.ATTRIBUTE_MODIFIERS)?.showInTooltip(false)
-                        ?: ItemAttributeModifiers.itemAttributes().showInTooltip(false).build()
-                )
+    private val baseItem = (if (ItemFlag.HIDE_ATTRIBUTES in flags || color != -1) {
+        // Use NMS components for now as AdvancedSlimePaper is stuck on an old upstream version
+        // of paper 1.21.3
+        CraftItemStack.asBukkitCopy(CraftItemStack.asNMSCopy(ItemStack(material)).apply {
+            if (ItemFlag.HIDE_ATTRIBUTES in flags) set(DataComponents.ATTRIBUTE_MODIFIERS, EMPTY.withTooltip(false))
+            if (color != 1) set(
+                DataComponents.DYED_COLOR,
+                net.minecraft.world.item.component.DyedItemColor(color, false)
+            )
+        })
+    } else ItemStack(material)).apply {
+        /* if (ItemFlag.HIDE_ATTRIBUTES in flags) {
+            setData(
+                DataComponentTypes.ATTRIBUTE_MODIFIERS,
+                getData(DataComponentTypes.ATTRIBUTE_MODIFIERS)?.showInTooltip(false)
+                    ?: ItemAttributeModifiers.itemAttributes().showInTooltip(false).build()
+            )
+        }*/
+
+        // Assign all special ItemMeta!
+        editMeta {
+            // Enchant glint overrides!
+            if (glint != null) it.setEnchantmentGlintOverride(glint)
+
+            // Item model overrides!
+            if (model != null) it.itemModel = NamespacedKey.fromString(model)
+            if (customModelData != -1) it.setCustomModelData(customModelData)
+
+            // Item Flags!
+            if (flags.isNotEmpty()) it.addItemFlags(*flags.toTypedArray())
+
+            // Cooldown component
+            if (cooldown.first > 0.0) {
+                val cooldownComponent = it.useCooldown
+                cooldownComponent.cooldownSeconds = cooldown.first.toFloat()
+                cooldownComponent.cooldownGroup = NamespacedKey("thankmas", cooldown.second!!)
+                it.setUseCooldown(cooldownComponent)
             }
 
-            // Assign all special ItemMeta!
-            editMeta {
-                // Enchant glint overrides!
-                if (glint != null) it.setEnchantmentGlintOverride(glint)
-
-                // Item model overrides!
-                if (model != null) it.itemModel = NamespacedKey.fromString(model)
-                if (customModelData != -1) it.setCustomModelData(customModelData)
-
-                // Item Flags!
-                if (flags.isNotEmpty()) it.addItemFlags(*flags.toTypedArray())
-
-                // Cooldown component
-                if (cooldown.first > 0.0) {
-                    val cooldownComponent = it.useCooldown
-                    cooldownComponent.cooldownSeconds = cooldown.first.toFloat()
-                    cooldownComponent.cooldownGroup = NamespacedKey("thankmas", cooldown.second!!)
-                    it.setUseCooldown(cooldownComponent)
-                }
-
-                if (equipabbleSlot != null) {
-                    val equippable = it.equippable
-                    equippable.slot = equipabbleSlot
-                    it.setEquippable(equippable)
-                }
-
-                it.isUnbreakable = unbreakable
+            if (equipabbleSlot != null) {
+                val equippable = it.equippable
+                equippable.slot = equipabbleSlot
+                it.setEquippable(equippable)
             }
 
-            // Tint leather armor!
-            run tint@{
-                if (color == -1) return@tint
-
-                setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
-            }
-
-            this@TranslatableItem.enchantments.forEach { (enchantment, level) ->
-                addEnchantment(enchantment, level)
-            }
-
-            tags.forEach { setKeyedData(it.lowercase(), PersistentDataType.BOOLEAN, true) }
+            it.isUnbreakable = unbreakable
         }
+
+        // Tint leather armor!
+        /* run tint@{
+            if (color == -1) return@tint
+
+            setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
+        }*/
+
+        this@TranslatableItem.enchantments.forEach { (enchantment, level) ->
+            addEnchantment(enchantment, level)
+        }
+
+        tags.forEach { setKeyedData(it.lowercase(), PersistentDataType.BOOLEAN, true) }
+    }
 
     /** Lets other classes edit details from this translatable item. */
     public fun editBaseItem(editor: (item: ItemStack) -> Unit) {

@@ -1,5 +1,6 @@
 package me.hugo.thankmas.gui.view
 
+import dev.kezz.miniphrase.MiniPhrase
 import me.hugo.thankmas.gui.Menu
 import me.hugo.thankmas.gui.StatefulIcon
 import me.hugo.thankmas.state.StatefulValue
@@ -9,13 +10,13 @@ import org.bukkit.inventory.InventoryView
 import org.koin.core.component.KoinComponent
 
 /** Specific menu view of [menu] for [player]. */
-public class MenuView(public val player: Player, public val menu: Menu) :
+public class MenuView(public val player: Player, public val menu: Menu, public val miniPhrase: MiniPhrase) :
     KoinComponent {
 
     private val callbacks: MutableMap<StatefulValue<*>, (old: Any?, new: Any?, value: StatefulValue<out Any?>) -> Unit> =
         mutableMapOf()
 
-    public val inventory: Inventory = menu.buildInventory(player, this)
+    public val inventory: Inventory = menu.buildInventory(player, this, miniPhrase)
 
     public var inventoryView: InventoryView? = null
         private set

@@ -1,12 +1,14 @@
-package me.hugo.thankmas.gui.paginated
+package me.hugo.thankmas.gui
 
+import dev.kezz.miniphrase.MiniPhrase
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.config.ConfigurationProvider
-import me.hugo.thankmas.gui.Icon
-import me.hugo.thankmas.gui.Menu
+import me.hugo.thankmas.config.enum
+import me.hugo.thankmas.config.string
 import me.hugo.thankmas.items.TranslatableItem
 import me.hugo.thankmas.player.playSound
 import org.bukkit.Sound
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -20,7 +22,17 @@ public open class PaginatedMenu(
     private val menuFormat: Menu.MenuFormat,
     private val representativeIcon: TranslatableItem? = null,
     private val lastMenu: Menu? = null,
+    private val miniPhrase: MiniPhrase
 ) {
+
+    public constructor(config: FileConfiguration, path: String, lastMenu: Menu? = null, miniPhrase: MiniPhrase) : this(
+        config.string("$path.title"),
+        config.getInt("$path.size", 9 * 3),
+        config.enum<Menu.MenuFormat>("$path.format"),
+        config.getConfigurationSection("$path.icon")?.let { TranslatableItem(config, "$path.icon") },
+        lastMenu,
+        miniPhrase
+    )
 
     public constructor(
         titleKey: String,
@@ -28,7 +40,8 @@ public open class PaginatedMenu(
         menuFormat: Menu.MenuFormat,
         representativeIcon: TranslatableItem? = null,
         lastMenu: Menu? = null,
-    ): this(listOf(Pair(0, titleKey)), size, menuFormat, representativeIcon, lastMenu)
+        miniPhrase: MiniPhrase
+    ) : this(listOf(Pair(0, titleKey)), size, menuFormat, representativeIcon, lastMenu, miniPhrase)
 
     public companion object : KoinComponent {
         private val configProvider: ConfigurationProvider by inject()
@@ -46,7 +59,8 @@ public open class PaginatedMenu(
     }
 
     private var currentIndex: Int = -1
-    private var pages: MutableList<Menu> = mutableListOf(Menu(menuFrames, size, menuFormat = menuFormat))
+    private var pages: MutableList<Menu> =
+        mutableListOf(Menu(menuFrames, size, menuFormat = menuFormat, miniPhrase = miniPhrase))
 
     public val pageList: List<Menu>
         get() = pages.toList()
@@ -85,7 +99,7 @@ public open class PaginatedMenu(
 
     /** Adds a new page. */
     private fun createNewPage(): Menu {
-        val newPage = Menu(menuFrames, size, menuFormat = menuFormat)
+        val newPage = Menu(menuFrames, size, menuFormat = menuFormat, miniPhrase = miniPhrase)
 
         pages.add(newPage)
         currentIndex++

@@ -40,6 +40,7 @@ dependencies {
     api(libs.hephaistos)
 
     api(libs.bundles.exposed.runtime)
+    api(libs.exposed.jbdc)
 
     // Amazon S3 API for nice world downloading and uploading :)
     api(platform("software.amazon.awssdk:bom:2.26.25"))

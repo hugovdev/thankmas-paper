@@ -3,8 +3,7 @@ package me.hugo.thankmas.player
 import dev.kezz.miniphrase.MiniPhrase
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.entity.Hologram
-import me.hugo.thankmas.region.Region
-import me.hugo.thankmas.region.triggering.TriggeringRegion
+import me.hugo.thankmas.region.WeakRegion
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.entity.TextDisplay
@@ -36,7 +35,7 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
         }
 
     /** List of regions the player is in. */
-    private val regions: MutableList<Region> = mutableListOf()
+    private val worldRegions: MutableList<WeakRegion> = mutableListOf()
 
     /** Map of hologram entity ids that this players can see. */
     private val spawnedHolograms: ConcurrentMap<Hologram<*>, TextDisplay> = ConcurrentHashMap()
@@ -71,26 +70,20 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
         spawnedHolograms.keys.forEach { it.spawnOrUpdate(onlinePlayer, locale) }
     }
 
-    /** Runs when a player enters [region] or actively is inside. */
-    public fun updateOnRegion(region: Region) {
+    /** Runs when a player enters [worldRegion] or actively is inside. */
+    public fun updateOnRegion(worldRegion: WeakRegion) {
         val player = onlinePlayer
 
-        val triggeringRegion = region as? TriggeringRegion?
-
-        if (regions.contains(region)) triggeringRegion?.onIdle?.invoke(player)
+        if (worldRegions.contains(worldRegion)) worldRegion.onIdle(player)
         else {
-            triggeringRegion?.onEnter?.invoke(player)
-            regions.add(region)
+            worldRegion.onEnter(player)
+            worldRegions.add(worldRegion)
         }
     }
 
-    /** Runs when a player leaves [region]. */
-    public fun leaveRegion(region: Region) {
-        val triggeringRegion = region as? TriggeringRegion?
-
-        if (regions.remove(region)) {
-            triggeringRegion?.onLeave?.invoke(onlinePlayer)
-        }
+    /** Runs when a player leaves [worldRegion]. */
+    public fun leaveRegion(worldRegion: WeakRegion) {
+        if (worldRegions.remove(worldRegion)) worldRegion.onLeave(onlinePlayer)
     }
 
     /** Runs whenever the player changes translations. */

@@ -1,5 +1,6 @@
 package me.hugo.thankmas.cosmetics
 
+import me.hugo.thankmas.SimpleThankmasPlugin
 import me.hugo.thankmas.config.enumOrNull
 import me.hugo.thankmas.items.TranslatableItem
 import me.hugo.thankmas.lang.TranslatedComponent
@@ -35,7 +36,8 @@ public class Cosmetic(
         name = nameKey,
         model = modelId,
         color = color?.asRGB() ?: -1,
-        flags = listOf(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ADDITIONAL_TOOLTIP)
+        flags = listOf(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ADDITIONAL_TOOLTIP),
+        miniPhrase = SimpleThankmasPlugin.instance().globalTranslations
     ).apply {
         editBaseItem {
             it.editMeta {

@@ -2,8 +2,7 @@ package me.hugo.thankmas.markers
 
 import com.flowpowered.nbt.CompoundTag
 import me.hugo.thankmas.location.MapPoint
-import me.hugo.thankmas.region.Region
-import org.bukkit.World
+import me.hugo.thankmas.region.WeakRegion
 import kotlin.jvm.optionals.getOrNull
 
 public class SlimeMarker(location: MapPoint, worldName: String, public val data: CompoundTag) :
@@ -37,8 +36,8 @@ public class SlimeMarker(location: MapPoint, worldName: String, public val data:
     override fun getDoubleList(key: String): List<Double>? =
         data.getAsListTag(key)?.getOrNull()?.asDoubleTagList?.getOrNull()?.value?.map { it.value }
 
-    public override fun toRegion(world: World, id: String?): Region {
-        return Region(id ?: getMarkerId(), getMapPoint("min").toLocation(world), getMapPoint("max").toLocation(world))
+    public override fun toRegion(id: String?): WeakRegion {
+        return WeakRegion(id ?: getMarkerId(), getMapPoint("min"), getMapPoint("max"))
     }
 
     public override fun getMapPoint(key: String): MapPoint {

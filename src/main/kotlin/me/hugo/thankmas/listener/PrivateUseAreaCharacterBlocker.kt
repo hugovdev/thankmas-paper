@@ -1,7 +1,7 @@
 package me.hugo.thankmas.listener
 
 import io.papermc.paper.event.player.AsyncChatEvent
-import me.hugo.thankmas.ThankmasPlugin
+import me.hugo.thankmas.SimpleThankmasPlugin
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -19,7 +19,7 @@ public class PrivateUseAreaCharacterBlocker : Listener {
         // https://jrgraphix.net/r/Unicode/E000-F8FF
         if (text.any { Character.UnicodeBlock.of(it) == Character.UnicodeBlock.PRIVATE_USE_AREA }) {
             chatter.sendMessage(
-                ThankmasPlugin.instance().globalTranslations.translate(
+                SimpleThankmasPlugin.instance().globalTranslations.translate(
                     "general.chat.invalid",
                     chatter.locale()
                 )

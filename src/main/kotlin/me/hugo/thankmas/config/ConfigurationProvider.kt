@@ -39,11 +39,6 @@ public class ConfigurationProvider {
 
         configs[path] = loadedConfig
         return loadedConfig
-
-        return configs.computeIfAbsent(path) {
-            requireNotNull(load(path))
-            { "Tried to load a config file that doesnt exist!" }
-        }
     }
 
     /** Gets a cached configuration file or loads and caches it. */

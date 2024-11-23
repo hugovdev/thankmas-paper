@@ -1,43 +1,40 @@
 package me.hugo.thankmas.cosmetics
 
-import dev.kezz.miniphrase.audience.sendTranslated
+import me.hugo.thankmas.SimpleThankmasPlugin
 import me.hugo.thankmas.ThankmasPlugin
+import me.hugo.thankmas.config.ConfigurationProvider
 import me.hugo.thankmas.gui.Icon
 import me.hugo.thankmas.gui.Menu
-import me.hugo.thankmas.gui.paginated.PaginatedMenu
-import me.hugo.thankmas.items.loreTranslatable
-import me.hugo.thankmas.lang.Translated
+import me.hugo.thankmas.gui.PaginatedMenu
+import me.hugo.thankmas.items.putLore
 import me.hugo.thankmas.player.cosmetics.CosmeticsPlayerData
 import me.hugo.thankmas.player.playSound
 import me.hugo.thankmas.player.stopSound
 import me.hugo.thankmas.player.translate
 import me.hugo.thankmas.registry.AutoCompletableMapRegistry
 import net.kyori.adventure.sound.Sound
-import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.koin.core.annotation.Single
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /** Registry of player cosmetics! */
 @Single
-public class CosmeticsRegistry(config: FileConfiguration) :
-    AutoCompletableMapRegistry<Cosmetic>(Cosmetic::class.java),
-    Translated {
+public class CosmeticsRegistry : AutoCompletableMapRegistry<Cosmetic>(Cosmetic::class.java), KoinComponent {
+
+    private val globalTranslations = SimpleThankmasPlugin.instance().globalTranslations
 
     /** Cosmetics selector menu. */
     private val cosmeticsSelector: PaginatedMenu = PaginatedMenu(
-        listOf(
-            Pair(0, "menu.cosmetics_selector.title.on"),
-            Pair(5, "menu.cosmetics_selector.title.off"),
-            Pair(8, "menu.cosmetics_selector.title.on"),
-            Pair(12, "menu.cosmetics_selector.title.off"),
-            Pair(14, "menu.cosmetics_selector.title.on"),
-            Pair(18, "menu.cosmetics_selector.title.off"),
-            Pair(25, "menu.cosmetics_selector.title.on")
-        ), 9 * 6,
-        Menu.MenuFormat.FOUR_SLIM_ROWS, null, null
+        "menu.cosmetics_selector.title.on", 9 * 6,
+        Menu.MenuFormat.FOUR_SLIM_ROWS, null, null,
+        globalTranslations
     )
 
     init {
+        val configurationProvider: ConfigurationProvider by inject()
+        val config = configurationProvider.getOrLoad("global/cosmetics.yml")
+
         config.getKeys(false).forEach { cosmeticId ->
             Cosmetic(config, cosmeticId).also { cosmetic ->
                 register(cosmeticId, cosmetic)
@@ -50,9 +47,13 @@ public class CosmeticsRegistry(config: FileConfiguration) :
 
                     if (playerData.selectedCosmetic.value == cosmetic) return@Icon
 
-                    clicker.sendTranslated("cosmetics.cosmetic.equip") {
-                        inserting("cosmetic", clicker.translate(cosmetic.nameKey).color(null))
-                    }
+                    clicker.sendMessage(
+                        globalTranslations.translate(
+                            "cosmetics.cosmetic.equip",
+                            clicker.locale()
+                        ) {
+                            inserting("cosmetic", clicker.translate(cosmetic.nameKey).color(null))
+                        })
 
                     playerData.selectedCosmetic.value = cosmetic
 
@@ -68,15 +69,17 @@ public class CosmeticsRegistry(config: FileConfiguration) :
                     val selected = playerData.selectedCosmetic.value == cosmetic
 
                     cosmetic.item.buildItem(player)
-                        .loreTranslatable(
-                            if (selected) "cosmetics.$slotKey.selected"
-                            else if (playerData.ownsCosmetic(cosmetic)) "cosmetics.$slotKey.selectable"
-                            else if (cosmetic.price > 0) "cosmetics.$slotKey.priced"
-                            else "cosmetics.$slotKey.exclusive",
-                            player.locale()
-                        ) {
-                            parsed("price", cosmetic.price)
-                        }.also { if (selected) it.editMeta { it.setEnchantmentGlintOverride(true) } }
+                        .putLore(
+                            globalTranslations.translateList(
+                                if (selected) "cosmetics.$slotKey.selected"
+                                else if (playerData.ownsCosmetic(cosmetic)) "cosmetics.$slotKey.selectable"
+                                else if (cosmetic.price > 0) "cosmetics.$slotKey.priced"
+                                else "cosmetics.$slotKey.exclusive",
+                                player.locale()
+                            ) {
+                                parsed("price", cosmetic.price)
+                            }
+                        ).also { if (selected) it.editMeta { it.setEnchantmentGlintOverride(true) } }
                 }.listen { (ThankmasPlugin.instance().playerDataManager.getPlayerData(it.uniqueId) as CosmeticsPlayerData).selectedCosmetic })
             }
         }

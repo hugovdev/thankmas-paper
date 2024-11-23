@@ -3,7 +3,7 @@ package me.hugo.thankmas.git
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import me.hugo.thankmas.ThankmasPlugin
+import me.hugo.thankmas.SimpleThankmasPlugin
 import me.hugo.thankmas.config.ConfigurationProvider
 import org.bukkit.Bukkit
 import org.koin.core.annotation.Single
@@ -25,7 +25,7 @@ import kotlin.time.toJavaDuration
 public class GitHubHelper : KoinComponent {
 
     private val configProvider: ConfigurationProvider by inject()
-    private val logger = ThankmasPlugin.instance().logger
+    private val logger = SimpleThankmasPlugin.instance().logger
 
     private val accessToken: String
         get() = requireNotNull(configProvider.getOrResources("git.yml", "base").getString("access-token"))

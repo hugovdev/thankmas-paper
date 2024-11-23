@@ -1,6 +1,6 @@
 package me.hugo.thankmas.world.s3
 
-import me.hugo.thankmas.ThankmasPlugin
+import me.hugo.thankmas.SimpleThankmasPlugin
 import me.hugo.thankmas.config.ConfigurationProvider
 import me.hugo.thankmas.config.string
 import org.bukkit.Bukkit
@@ -25,7 +25,7 @@ import java.io.FileOutputStream
 @Single
 public class S3WorldSynchronizer : KoinComponent {
 
-    private val logger = ThankmasPlugin.instance().logger
+    private val logger = SimpleThankmasPlugin.instance().logger
     private val configProvider: ConfigurationProvider by inject()
 
     public val s3Config: FileConfiguration

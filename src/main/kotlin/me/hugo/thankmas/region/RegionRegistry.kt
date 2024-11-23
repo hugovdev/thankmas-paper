@@ -1,28 +1,30 @@
 package me.hugo.thankmas.region
 
 import me.hugo.thankmas.ThankmasPlugin
-import me.hugo.thankmas.player.PaperPlayerData
-import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.registry.MapBasedRegistry
 import org.bukkit.Bukkit
-import org.koin.core.component.KoinComponent
+import org.koin.core.annotation.Single
 
 /**
  * Registry of all configured regions, also keeps track
  * of what players enter, leave and idle in them.
  */
-public class RegionRegistry<P : PaperPlayerData<P>>(playerDataRegistry: PlayerDataManager<P>) :
-    MapBasedRegistry<String, Region>(), KoinComponent {
+@Single
+public class RegionRegistry : MapBasedRegistry<String, WorldRegion>() {
+
+    private val instance = ThankmasPlugin.instance()
+    private val playerDataManager = instance.playerDataManager
 
     init {
-        Bukkit.getScheduler().runTaskTimer(ThankmasPlugin.instance(), Runnable {
-            playerDataRegistry.getAllPlayerData().forEach { player ->
-                val onlinePlayer = player.onlinePlayerOrNull ?: return@forEach
-                getValues().forEach { region ->
-                    if (onlinePlayer.location in region) player.updateOnRegion(region)
-                    else player.leaveRegion(region)
+        Bukkit.getScheduler().runTaskTimer(instance, Runnable {
+            getValues().forEach { region ->
+                region.world.players.forEach players@{ player ->
+                    val playerData = playerDataManager.getPlayerDataOrNull(player.uniqueId) ?: return@players
+
+                    if (player.location in region) playerData.updateOnRegion(region)
+                    else playerData.leaveRegion(region)
                 }
             }
-        }, 10L, 2L)
+        }, 0L, 1L)
     }
 }

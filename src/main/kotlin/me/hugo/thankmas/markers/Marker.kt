@@ -1,7 +1,7 @@
 package me.hugo.thankmas.markers
 
 import me.hugo.thankmas.location.MapPoint
-import me.hugo.thankmas.region.Region
+import me.hugo.thankmas.region.WeakRegion
 import org.bukkit.Bukkit
 import org.bukkit.World
 
@@ -46,7 +46,7 @@ public abstract class Marker(public val location: MapPoint, public val worldName
     public abstract fun getDoubleList(key: String): List<Double>?
 
     /** Returns a region out of the Axiom box data fields. */
-    public abstract fun toRegion(world: World, id: String? = null): Region
+    public abstract fun toRegion(id: String? = null): WeakRegion
 
     /** Gets a map point from a list of doubles in a data field. */
     public abstract fun getMapPoint(key: String): MapPoint
