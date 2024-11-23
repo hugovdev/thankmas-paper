@@ -10,8 +10,11 @@ import org.koin.core.component.inject
 /** A region composed of two corners attached to a specific world. */
 public open class WorldRegion(
     marker: Marker,
+    id: String,
     public val world: World
-) : WeakRegion(marker), KoinComponent {
+) : WeakRegion(marker, id), KoinComponent {
+
+    public constructor(marker: Marker, world: World) : this(marker, marker.getMarkerId(), world)
 
     private val minCornerLocation: Location = minCorner.toLocation(world)
     private val maxCornerLocation: Location = maxCorner.toLocation(world)

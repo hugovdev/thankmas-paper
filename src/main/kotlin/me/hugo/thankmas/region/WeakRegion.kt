@@ -16,6 +16,12 @@ public open class WeakRegion(
     protected val maxCorner: MapPoint,
 ) : TranslatedComponent {
 
+    public constructor(marker: Marker, id: String) : this(
+        id,
+        requireNotNull(marker.getMapPoint("min")),
+        requireNotNull(marker.getMapPoint("max"))
+    )
+
     public constructor(marker: Marker) : this(
         requireNotNull(marker.getString("id"))
         { "Tried to create a WeakRegion region without an id!" },
