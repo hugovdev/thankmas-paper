@@ -134,6 +134,8 @@ public open class PaginatedMenu(
                 })
 
             val lastIndex = currentIndex - 1
+
+            val previousPage = currentIndex
             newPage.setIcon(
                 menuFormat.getSlotForChar('P'),
                 Icon({ context, _ ->
@@ -143,7 +145,7 @@ public open class PaginatedMenu(
                     clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
                 }) {
                     PREVIOUS_PAGE.buildItem(it.locale()) {
-                        parsed("page", currentIndex)
+                        parsed("page", previousPage)
                     }
                 })
         } else {
