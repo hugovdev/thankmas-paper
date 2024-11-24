@@ -26,6 +26,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.TextDisplay
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.scheduler.BukkitRunnable
 import org.koin.core.component.inject
 import java.util.*
 
@@ -49,78 +50,110 @@ public class PlayerNPCMarkerRegistry<P : PaperPlayerData<P>>(
     private val markerRegistry: MarkerRegistry by inject()
     private val configProvider: ConfigurationProvider by inject()
 
+    private var skinFetches: Int = 0
+    private val pendingSkinNPCs: MutableSet<PlayerNPC> = mutableSetOf()
+
     init {
-        markerRegistry.getMarkerForType("player_npc", world).forEach { marker ->
-            val npcId = marker.getString("id") ?: UUID.randomUUID().toString()
+        markerRegistry.getMarkerForType("player_npc").forEach { spawnNPC(it) }
 
-            val npcSkin = marker.getStringList("skin") ?: emptyList()
-            val isPlayerSkin = npcSkin.size == 1
+        // Apply 20 player NPC skins per minute! (Mojang API rate limits)
+        object : BukkitRunnable() {
+            override fun run() {
+                val skins = pendingSkinNPCs.take(20)
 
-            val npc =
-                CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, if (isPlayerSkin) npcSkin.first() else "")
+                if (skins.isEmpty() || skinFetches >= 15) {
+                    cancel()
+                    return
+                }
 
-            // If the skin list has two values then its value (0) and signature (1).
-            npc.getOrAddTrait(SkinTrait::class.java)?.apply {
-                if (isPlayerSkin) skinName = npcSkin.first()
-                else {
-                    setSkinPersistent(
-                        npcId,
-                        npcSkin[1],
-                        npcSkin[0]
-                    )
+                skins.forEach {
+                    it.npc.getOrAddTrait(SkinTrait::class.java).skinName = it.marker.getStringList("skin")!!.first()
+
+                    pendingSkinNPCs -= it
                 }
             }
+        }.runTaskTimer(ThankmasPlugin.instance(), 0L, 20 * 60)
+    }
 
-            val data = npc.data()
+    private fun spawnNPC(marker: Marker) {
+        val npcUUID = UUID.randomUUID()
+        val npcId = marker.getString("id") ?: npcUUID.toString()
 
-            data.setPersistent(NPC.Metadata.SHOULD_SAVE, false)
-            data.setPersistent(NPC.Metadata.NAMEPLATE_VISIBLE, false)
-            data.setPersistent(NPC.Metadata.ALWAYS_USE_NAME_HOLOGRAM, true)
+        val npcSkin = marker.getStringList("skin") ?: emptyList()
+        val isPlayerSkin = npcSkin.size == 1
 
-            data.setPersistent("id", npcId)
-            data.setPersistent("use", marker.getString("use"))
+        val npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcUUID.toString())
 
-            val npcsConfig =
-                configProvider.getOrLoadOrNull("${ThankmasPlugin.instance().configScopes.firstOrNull() ?: "global"}/npcs.yml")
+        // If the skin list has two values then its value (0) and signature (1).
+        if (!isPlayerSkin) {
+            npc.getOrAddTrait(SkinTrait::class.java)?.apply {
+                setSkinPersistent(
+                    npcId,
+                    npcSkin[1],
+                    npcSkin[0]
+                )
+            }
+        }
 
-            npcsConfig?.let {
-                npc.getOrAddTrait(Equipment::class.java).apply {
-                    Equipment.EquipmentSlot.entries.forEach { slot ->
-                        if (it.contains("$npcId.equipment.${slot.name.lowercase()}")) {
-                            set(slot, TranslatableItem(it, "$npcId.equipment.${slot.name.lowercase()}").getBaseItem())
-                        }
+        val data = npc.data()
+
+        data.setPersistent(NPC.Metadata.SHOULD_SAVE, false)
+        data.setPersistent(NPC.Metadata.NAMEPLATE_VISIBLE, false)
+        data.setPersistent(NPC.Metadata.ALWAYS_USE_NAME_HOLOGRAM, true)
+
+        data.setPersistent("id", npcId)
+        data.setPersistent("use", marker.getString("use"))
+
+        val npcsConfig =
+            configProvider.getOrLoadOrNull("${ThankmasPlugin.instance().configScopes.firstOrNull() ?: "global"}/npcs.yml")
+
+        npcsConfig?.let {
+            npc.getOrAddTrait(Equipment::class.java).apply {
+                Equipment.EquipmentSlot.entries.forEach { slot ->
+                    if (it.contains("$npcId.equipment.${slot.name.lowercase()}")) {
+                        set(slot, TranslatableItem(it, "$npcId.equipment.${slot.name.lowercase()}").getBaseItem())
                     }
                 }
             }
-
-            npc.getOrAddTrait(CurrentLocation::class.java)
-            npc.getOrAddTrait(LookClose::class.java).apply { lookClose(marker.getBoolean("look_close") ?: false) }
-
-            var hologram: Hologram<*>? = null
-
-            marker.getString("text")?.let { textKey ->
-                hologram = Hologram(
-                    marker.location.toLocation(spawnWorld).add(0.0, marker.getDouble("hologram_offset") ?: 1.88, 0.0),
-                    propertiesSupplier = { _, _ ->
-                        Hologram.HologramProperties(
-                            Display.Billboard.CENTER,
-                            textAlignment = TextDisplay.TextAlignment.CENTER
-                        )
-                    },
-                    textSupplier = { viewer, locale ->
-                        viewer.translate(textKey, locale) {
-                            marker.getKeys().forEach {
-                                parsed(it, marker.getString(it))
-                            }
-                        }
-                    },
-                    playerManager
-                )
-            }
-
-            npc.spawn(marker.location.toLocation(spawnWorld))
-            register(npcId, PlayerNPC(npc, marker, hologram))
         }
+
+        npc.getOrAddTrait(CurrentLocation::class.java)
+        npc.getOrAddTrait(LookClose::class.java).apply { lookClose(marker.getBoolean("look_close") ?: false) }
+
+        var hologram: Hologram<*>? = null
+
+        marker.getString("text")?.let { textKey ->
+            hologram = Hologram(
+                marker.location.toLocation(spawnWorld).add(0.0, marker.getDouble("hologram_offset") ?: 1.88, 0.0),
+                propertiesSupplier = { _, _ ->
+                    Hologram.HologramProperties(
+                        Display.Billboard.CENTER,
+                        textAlignment = TextDisplay.TextAlignment.CENTER
+                    )
+                },
+                textSupplier = { viewer, locale ->
+                    viewer.translate(textKey, locale) {
+                        marker.getKeys().forEach {
+                            parsed(it, marker.getString(it))
+                        }
+                    }
+                },
+                playerManager
+            )
+        }
+
+
+        if (getOrNull(npcId) != null) {
+            ThankmasPlugin.instance().logger.warning("Key $npcId is duplicated!")
+            return
+        }
+
+        val playerNPC = PlayerNPC(npc, marker, hologram)
+
+        npc.spawn(marker.location.toLocation(spawnWorld))
+        register(npcId, playerNPC)
+
+        if (isPlayerSkin) pendingSkinNPCs.add(playerNPC)
     }
 
     @EventHandler
