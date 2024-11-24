@@ -3,8 +3,6 @@ package me.hugo.thankmas.entity
 import dev.kezz.miniphrase.MiniPhraseContext
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.markers.Marker
-import me.hugo.thankmas.player.PaperPlayerData
-import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.translate
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
@@ -17,19 +15,19 @@ import org.bukkit.event.entity.CreatureSpawnEvent
 import java.util.*
 
 /** TextDisplay that shows different text per player. */
-public class Hologram<P : PaperPlayerData<P>>(
+public class Hologram(
     private val location: Location,
     private val propertiesSupplier: (viewer: Player, preferredLocale: Locale?) -> HologramProperties,
-    private val textSupplier: (viewer: Player, preferredLocale: Locale?) -> Component,
-    private val playerManager: PlayerDataManager<P>
+    private val textSupplier: (viewer: Player, preferredLocale: Locale?) -> Component
 ) {
+
+    private val playerDataManager = ThankmasPlugin.instance().playerDataManager
 
     public companion object {
         context(MiniPhraseContext)
-        public fun <P : PaperPlayerData<P>> fromMarker(
-            marker: Marker,
-            playerDataManager: PlayerDataManager<P>
-        ): Hologram<P> {
+        public fun fromMarker(
+            marker: Marker
+        ): Hologram {
             val properties = HologramProperties(
                 Display.Billboard.valueOf(marker.getString("billboard")?.uppercase() ?: "FIXED"),
                 marker.getIntList("brightness")?.let {
@@ -46,15 +44,14 @@ public class Hologram<P : PaperPlayerData<P>>(
                 propertiesSupplier = { _, _ -> properties },
                 textSupplier = { player, locale ->
                     player.translate(marker.getString("text") ?: "hologram.error", locale)
-                },
-                playerDataManager
+                }
             )
         }
     }
 
     /** Spawns this hologram to [player]. */
     public fun spawnOrUpdate(player: Player, locale: Locale? = null) {
-        val playerData = playerManager.getPlayerData(player.uniqueId)
+        val playerData = playerDataManager.getPlayerData(player.uniqueId)
 
         // If the hologram has already spawned for [player], we just change the text and properties.
         val originalDisplay = playerData.getDisplayForHologramOrNull(this)
@@ -81,7 +78,7 @@ public class Hologram<P : PaperPlayerData<P>>(
 
     /** Removes this hologram from the [player]'s client. */
     public fun remove(player: Player) {
-        val playerData = playerManager.getPlayerData(player.uniqueId)
+        val playerData = playerDataManager.getPlayerData(player.uniqueId)
         val textDisplay = playerData.getDisplayForHologramOrNull(this) ?: return
 
         textDisplay.remove()

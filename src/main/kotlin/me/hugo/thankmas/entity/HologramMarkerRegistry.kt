@@ -15,7 +15,7 @@ import org.koin.core.component.inject
 public class HologramMarkerRegistry<P : PaperPlayerData<P>>(
     private val world: String,
     private val playerDataManager: PlayerDataManager<P>
-) : MapBasedRegistry<Marker, Hologram<*>>(),
+) : MapBasedRegistry<Marker, Hologram>(),
     Listener,
     TranslatedComponent {
 
@@ -23,7 +23,7 @@ public class HologramMarkerRegistry<P : PaperPlayerData<P>>(
 
     init {
         markerRegistry.getMarkerForType("hologram", world).forEach {
-            register(it, Hologram.fromMarker(it, playerDataManager))
+            register(it, Hologram.fromMarker(it))
         }
     }
 

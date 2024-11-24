@@ -38,20 +38,20 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     private val worldRegions: MutableList<WeakRegion> = mutableListOf()
 
     /** Map of hologram entity ids that this players can see. */
-    private val spawnedHolograms: ConcurrentMap<Hologram<*>, TextDisplay> = ConcurrentHashMap()
+    private val spawnedHolograms: ConcurrentMap<Hologram, TextDisplay> = ConcurrentHashMap()
 
     /** @returns the entity id for this hologram. */
-    public fun getDisplayForHologramOrNull(hologram: Hologram<*>): TextDisplay? {
+    public fun getDisplayForHologramOrNull(hologram: Hologram): TextDisplay? {
         return spawnedHolograms[hologram]
     }
 
     /** Adds this hologram and entity ids to the [spawnedHolograms] map. */
-    public fun addHologram(hologram: Hologram<*>, display: TextDisplay) {
+    public fun addHologram(hologram: Hologram, display: TextDisplay) {
         spawnedHolograms[hologram] = display
     }
 
     /** Removes [hologram] from the [spawnedHolograms] map. */
-    public fun removeHologram(hologram: Hologram<*>) {
+    public fun removeHologram(hologram: Hologram) {
         spawnedHolograms.remove(hologram)
     }
 
