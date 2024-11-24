@@ -73,7 +73,7 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
         val npcSkin = marker.getStringList("skin") ?: emptyList()
         val isPlayerSkin = npcSkin.size == 1
 
-        val npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcUUID.toString())
+        val npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "")
         val npcsConfig =
             configProvider.getOrLoadOrNull("${ThankmasPlugin.instance().configScopes.firstOrNull() ?: "global"}/npcs.yml")
 
@@ -83,10 +83,9 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
                 npcId,
                 if (!isPlayerSkin) npcSkin[1] else npcsConfig?.getString("$npcId.skin.signature")
                     ?: LOADING_SKIN_SIGNATURE,
-                if (!isPlayerSkin) npcSkin[0] else npcsConfig?.getString("$npcId.skin.texture") ?: LOADING_SKIN_TEXTURE
+                if (!isPlayerSkin) npcSkin[0] else npcsConfig?.getString("$npcId.skin.textures") ?: LOADING_SKIN_TEXTURE
             )
         }
-
 
         npc.data().apply {
             setPersistent(NPC.Metadata.SHOULD_SAVE, false)
