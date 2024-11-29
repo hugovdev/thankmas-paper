@@ -4,7 +4,6 @@ import dev.emortal.paperpolar.PolarReader
 import dev.emortal.paperpolar.PolarWorld
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.location.MapPoint
-import me.hugo.thankmas.markers.SlimeMarker
 import me.hugo.thankmas.markers.VanillaMarker
 import net.minecraft.nbt.NbtAccounter
 import net.minecraft.nbt.NbtIo
@@ -14,13 +13,11 @@ import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
-import kotlin.jvm.optionals.getOrNull
 
 public class PolarWorldRegistry : WorldRegistry<PolarWorld>() {
 
-    /** Directory where slime worlds are saved. */
+    /** Directory where polar worlds are saved. */
     public val polarWorldContainer: File = Bukkit.getWorldContainer().resolve("polar_worlds")
-
 
     /** Gets or loads a polar world, should be run asynchronously on runtime. */
     public fun getOrLoad(key: String): PolarWorld {
@@ -32,7 +29,6 @@ public class PolarWorldRegistry : WorldRegistry<PolarWorld>() {
             throw RuntimeException(exception)
         }
     }
-
 
     override fun getOrLoadWithMarkers(key: String): PolarWorld {
         val startTime = System.currentTimeMillis()
