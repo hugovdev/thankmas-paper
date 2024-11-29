@@ -9,11 +9,13 @@ import net.minecraft.nbt.NbtAccounter
 import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.Tag
 import org.bukkit.Bukkit
+import org.koin.core.annotation.Single
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 
+@Single
 public class PolarWorldRegistry : WorldRegistry<PolarWorld>() {
 
     /** Directory where polar worlds are saved. */

@@ -13,7 +13,6 @@ import org.koin.core.annotation.Single
 import java.io.File
 import kotlin.jvm.optionals.getOrNull
 
-/** Simple registry for slime worlds in memory. */
 @Single
 public class SlimeWorldRegistry : WorldRegistry<SlimeWorld>() {
 

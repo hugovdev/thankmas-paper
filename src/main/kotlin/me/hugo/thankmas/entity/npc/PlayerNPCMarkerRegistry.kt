@@ -8,9 +8,9 @@ import me.hugo.thankmas.entity.Hologram
 import me.hugo.thankmas.items.TranslatableItem
 import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.markers.Marker
-import me.hugo.thankmas.markers.registry.MarkerRegistry
 import me.hugo.thankmas.player.translate
 import me.hugo.thankmas.registry.MapBasedRegistry
+import me.hugo.thankmas.world.AnvilWorldRegistry
 import net.citizensnpcs.api.CitizensAPI
 import net.citizensnpcs.api.event.NPCLinkToPlayerEvent
 import net.citizensnpcs.api.event.NPCUnlinkFromPlayerEvent
@@ -59,11 +59,11 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
         get() = requireNotNull(Bukkit.getWorld(world))
         { "Tried to spawn player NPCs in world $world but it is not loaded." }
 
-    private val markerRegistry: MarkerRegistry by inject()
+    private val anvilWorldRegistry: AnvilWorldRegistry by inject()
     private val configProvider: ConfigurationProvider by inject()
 
     init {
-        markerRegistry.getMarkerForType("player_npc").forEach { spawnNPC(it) }
+        anvilWorldRegistry.getMarkerForType(world, "player_npc").forEach { spawnNPC(it) }
     }
 
     private fun spawnNPC(marker: Marker) {
@@ -165,7 +165,8 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
             configProvider.getOrLoadOrNull("${ThankmasPlugin.instance().configScopes.firstOrNull() ?: "global"}/npcs.yml")
                 ?: return
 
-        val dynamicSkins = markerRegistry.getMarkerForType("player_npc").filter { it.getStringList("skin")?.size == 1 }
+        val dynamicSkins = anvilWorldRegistry.getMarkerForType(world, "player_npc")
+            .filter { it.getStringList("skin")?.size == 1 }
 
         Bukkit.getScheduler().runTaskAsynchronously(ThankmasPlugin.instance(), Runnable {
             val client = HttpClient.newHttpClient()

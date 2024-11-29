@@ -1,6 +1,6 @@
 package me.hugo.thankmas.listener
 
-import me.hugo.thankmas.markers.registry.MarkerRegistry
+import me.hugo.thankmas.world.AnvilWorldRegistry
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.event.EventHandler
@@ -15,11 +15,11 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent
 public class PlayerSpawnpointOnJoin(private val worldName: String, private val markerName: String) : Listener,
     KoinComponent {
 
-    private val markerRegistry: MarkerRegistry by inject()
+    private val anvilWorldRegistry: AnvilWorldRegistry by inject()
 
     public val spawnpoint: Location by lazy {
         requireNotNull(Bukkit.getWorld(worldName)?.let {
-            markerRegistry.getMarkerForType(markerName, worldName).firstOrNull()
+            anvilWorldRegistry.getMarkerForType(worldName, markerName).firstOrNull()
                 ?.location?.toLocation(it)
         }) { "Tried to spawn player in $markerName marker in $worldName, but couldn't!" }
     }

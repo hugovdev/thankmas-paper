@@ -3,9 +3,9 @@ package me.hugo.thankmas.markers.registry
 import com.google.common.collect.HashMultimap
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.location.MapPoint
+import me.hugo.thankmas.markers.AnvilMarker
 import me.hugo.thankmas.markers.Marker
 import me.hugo.thankmas.markers.SlimeMarker
-import me.hugo.thankmas.markers.AnvilMarker
 import me.hugo.thankmas.world.SlimeWorldRegistry
 import org.bukkit.Bukkit
 import org.jglrxavpok.hephaistos.mca.RegionFile
