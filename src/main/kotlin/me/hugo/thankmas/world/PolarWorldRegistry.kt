@@ -5,6 +5,7 @@ import dev.emortal.paperpolar.PolarWorld
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.markers.SlimeMarker
+import me.hugo.thankmas.markers.VanillaMarker
 import net.minecraft.nbt.NbtAccounter
 import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.Tag
@@ -58,13 +59,13 @@ public class PolarWorldRegistry : WorldRegistry<PolarWorld>() {
 
             // Save the marker and entityData's data!
             saveMarker(
-                key, SlimeMarker(
+                key, VanillaMarker(
                     MapPoint(
-                        markerLocation[0].value,
-                        markerLocation[1].value,
-                        markerLocation[2].value,
-                        markerData.getFloatValue("yaw")?.getOrNull() ?: 0.0f,
-                        markerData.getFloatValue("pitch")?.getOrNull() ?: 0.0f
+                        markerLocation.getDouble(0),
+                        markerLocation.getDouble(1),
+                        markerLocation.getDouble(2),
+                        markerData.getFloat("yaw"),
+                        markerData.getFloat("pitch"),
                     ),
                     key,
                     markerData
