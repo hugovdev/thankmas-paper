@@ -19,6 +19,10 @@ public class AnvilWorldRegistry : WorldRegistry<World>() {
     public fun getOrLoad(key: String): World = requireNotNull(Bukkit.getWorld(key) ?: WorldCreator(key).createWorld())
 
     override fun getOrLoadWithMarkers(key: String): World {
+        return getOrLoad(key).also { loadMarkers(key) }
+    }
+
+    override fun loadMarkers(key: String) {
         val startTime = System.currentTimeMillis()
         val logger = ThankmasPlugin.instance().logger
 
@@ -83,6 +87,5 @@ public class AnvilWorldRegistry : WorldRegistry<World>() {
         }
 
         logger.info("[Markers] [$key] Loaded ${getMarkerCount(key)} markers in ${System.currentTimeMillis() - startTime}ms!")
-        return getOrLoad(key)
     }
 }

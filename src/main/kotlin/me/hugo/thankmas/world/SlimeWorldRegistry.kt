@@ -88,4 +88,9 @@ public class SlimeWorldRegistry : WorldRegistry<SlimeWorld>() {
         return slimeWorld
     }
 
+    // Slime worlds need to be loaded to be able to access markers.
+    override fun loadMarkers(key: String) {
+        getOrLoadWithMarkers(key)
+    }
+
 }

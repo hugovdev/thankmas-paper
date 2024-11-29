@@ -28,4 +28,7 @@ public abstract class WorldRegistry<W> : MapBasedRegistry<String, W>() {
     /** Returns the world if loaded, if not it will load it and load its markers. */
     public abstract fun getOrLoadWithMarkers(key: String): W
 
+    /** Loads markers for world [key]. */
+    public abstract fun loadMarkers(key: String)
+
 }
