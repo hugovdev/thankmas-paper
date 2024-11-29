@@ -11,6 +11,7 @@ import net.minecraft.nbt.Tag
 import org.bukkit.Bukkit
 import org.koin.core.annotation.Single
 import java.io.ByteArrayInputStream
+import java.io.DataInputStream
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
@@ -43,7 +44,7 @@ public class PolarWorldRegistry : WorldRegistry<PolarWorld>() {
         val entities = polarWorld.chunks().flatMap { it.entities }
 
         entities.forEach {
-            val compoundTag = NbtIo.readCompressed(ByteArrayInputStream(it.bytes), NbtAccounter.unlimitedHeap())
+            val compoundTag = NbtIo.read(DataInputStream(ByteArrayInputStream(it.bytes)), NbtAccounter.unlimitedHeap())
 
             // Entities with no type or non-markers are ignored!
             val entityId = compoundTag.getString("id") ?: return@forEach
