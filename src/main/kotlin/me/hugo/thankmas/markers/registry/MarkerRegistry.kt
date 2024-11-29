@@ -5,7 +5,7 @@ import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.markers.Marker
 import me.hugo.thankmas.markers.SlimeMarker
-import me.hugo.thankmas.markers.VanillaMarker
+import me.hugo.thankmas.markers.AnvilMarker
 import me.hugo.thankmas.world.SlimeWorldRegistry
 import org.bukkit.Bukkit
 import org.jglrxavpok.hephaistos.mca.RegionFile
@@ -74,7 +74,7 @@ public class MarkerRegistry : KoinComponent {
                         // Save the marker and entityData's data!
                         loadedMarkers.computeIfAbsent(worldName) { HashMultimap.create() }
                             .put(
-                                markerName, VanillaMarker(
+                                markerName, AnvilMarker(
                                     MapPoint(
                                         markerLocation[0].value,
                                         markerLocation[1].value,
@@ -91,6 +91,53 @@ public class MarkerRegistry : KoinComponent {
             }
 
             regionFile.close()
+        }
+
+        logger.info("[Markers] [$worldName] Loaded ${loadedMarkers.entries.sumOf { it.value.size() }} markers in ${System.currentTimeMillis() - startTime}ms!")
+    }
+
+    /** Loads all the markers in the world with name [worldName]. */
+    public fun loadPolarWorldMarkers(worldName: String = "world") {
+        val startTime = System.currentTimeMillis()
+        val logger = ThankmasPlugin.instance().logger
+
+        logger.info("[Markers] [$worldName] Loading markers for polar world $worldName...")
+
+        val slimeWorldRegistry: SlimeWorldRegistry by inject()
+        val slimeWorld = slimeWorldRegistry.getOrLoad(worldName)
+
+        slimeWorld.chunkStorage.forEach {
+            it.entities.forEach entities@{ entityData ->
+                // Entities with no type or non-markers are ignored!
+                val entityId = entityData.getStringValue("id").getOrNull() ?: return@entities
+                if (entityId != "minecraft:marker") return@entities
+
+                // Empty data compound, we return!
+                val markerData = entityData.getAsCompoundTag("data").getOrNull() ?: return@entities
+
+                // No marker name specified, we return!
+                val markerName = markerData.getStringValue("name").getOrNull() ?: return@entities
+
+                // Marker has no defined location somehow!<
+                val markerLocation = entityData.getAsListTag("Pos").getOrNull()
+                    ?.asDoubleTagList?.getOrNull()?.value ?: return@entities
+
+                // Save the marker and entityData's data!
+                loadedMarkers.computeIfAbsent(worldName) { HashMultimap.create() }
+                    .put(
+                        markerName, SlimeMarker(
+                            MapPoint(
+                                markerLocation[0].value,
+                                markerLocation[1].value,
+                                markerLocation[2].value,
+                                markerData.getFloatValue("yaw")?.getOrNull() ?: 0.0f,
+                                markerData.getFloatValue("pitch")?.getOrNull() ?: 0.0f
+                            ),
+                            worldName,
+                            markerData
+                        )
+                    )
+            }
         }
 
         logger.info("[Markers] [$worldName] Loaded ${loadedMarkers.entries.sumOf { it.value.size() }} markers in ${System.currentTimeMillis() - startTime}ms!")

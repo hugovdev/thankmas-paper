@@ -5,14 +5,17 @@ import com.infernalsuite.aswm.api.world.SlimeWorld
 import com.infernalsuite.aswm.api.world.properties.SlimeProperties
 import com.infernalsuite.aswm.api.world.properties.SlimePropertyMap
 import com.infernalsuite.aswm.loaders.file.FileLoader
-import me.hugo.thankmas.registry.MapBasedRegistry
+import me.hugo.thankmas.ThankmasPlugin
+import me.hugo.thankmas.location.MapPoint
+import me.hugo.thankmas.markers.SlimeMarker
 import org.bukkit.Bukkit
 import org.koin.core.annotation.Single
 import java.io.File
+import kotlin.jvm.optionals.getOrNull
 
 /** Simple registry for slime worlds in memory. */
 @Single
-public class SlimeWorldRegistry : MapBasedRegistry<String, SlimeWorld>() {
+public class SlimeWorldRegistry : WorldRegistry<SlimeWorld>() {
 
     /** Directory where slime worlds are saved. */
     public val slimeWorldContainer: File = Bukkit.getWorldContainer().resolve("slime_worlds")
@@ -39,6 +42,49 @@ public class SlimeWorldRegistry : MapBasedRegistry<String, SlimeWorld>() {
             true,
             properties
         ).also { register(slimeWorldName, it) }
+
+        return slimeWorld
+    }
+
+    override fun getOrLoadWithMarkers(key: String): SlimeWorld {
+        val startTime = System.currentTimeMillis()
+        val logger = ThankmasPlugin.instance().logger
+
+        logger.info("[Markers] [$key] Loading markers for slime world $key...")
+
+        val slimeWorld = getOrLoad(key)
+
+        slimeWorld.chunkStorage.forEach {
+            it.entities.forEach entities@{ entityData ->
+                // Entities with no type or non-markers are ignored!
+                val entityId = entityData.getStringValue("id").getOrNull() ?: return@entities
+                if (entityId != "minecraft:marker") return@entities
+
+                // Empty data compound, we return!
+                val markerData = entityData.getAsCompoundTag("data").getOrNull() ?: return@entities
+
+                // Marker has no defined location somehow!<
+                val markerLocation = entityData.getAsListTag("Pos").getOrNull()
+                    ?.asDoubleTagList?.getOrNull()?.value ?: return@entities
+
+                // Save the marker and entityData's data!
+                saveMarker(
+                    key, SlimeMarker(
+                        MapPoint(
+                            markerLocation[0].value,
+                            markerLocation[1].value,
+                            markerLocation[2].value,
+                            markerData.getFloatValue("yaw")?.getOrNull() ?: 0.0f,
+                            markerData.getFloatValue("pitch")?.getOrNull() ?: 0.0f
+                        ),
+                        key,
+                        markerData
+                    )
+                )
+            }
+        }
+
+        logger.info("[Markers] [$key] Loaded ${getMarkerCount(key)} markers in ${System.currentTimeMillis() - startTime}ms!")
 
         return slimeWorld
     }
