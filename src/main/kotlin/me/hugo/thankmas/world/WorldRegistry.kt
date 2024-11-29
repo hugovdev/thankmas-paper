@@ -11,16 +11,14 @@ public abstract class WorldRegistry<W> : MapBasedRegistry<String, W>() {
     private val loadedMarkers: MutableMap<String, HashMultimap<String, Marker>> = mutableMapOf()
 
     /** Returns every marker for [key]. */
-    public fun getMarkers(key: String): HashMultimap<String, Marker> =
-        loadedMarkers.computeIfAbsent(key) { HashMultimap.create() }
+    public fun getMarkers(key: String): HashMultimap<String, Marker> = loadedMarkers.computeIfAbsent(key)
+    { HashMultimap.create() }
 
     /** Returns every registered marker of [markerId] type for [key]. */
     public fun getMarkerForType(key: String = "world", markerId: String): Set<Marker> = getMarkers(key).get(markerId)
 
     /** Saves marker [marker] on the world [key]. */
-    protected fun saveMarker(key: String, marker: Marker) {
-        getMarkers(key).put(marker.getMarkerId(), marker)
-    }
+    protected fun saveMarker(key: String, marker: Marker): Boolean = getMarkers(key).put(marker.getMarkerId(), marker)
 
     /** Get the amount of loaded markers in [key]. */
     protected fun getMarkerCount(key: String): Int = loadedMarkers[key]?.size() ?: 0
