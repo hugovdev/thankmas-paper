@@ -1,7 +1,7 @@
 package me.hugo.thankmas.world
 
-import dev.emortal.paperpolar.PolarReader
-import dev.emortal.paperpolar.PolarWorld
+import live.minehub.polarpaper.PolarReader
+import live.minehub.polarpaper.PolarWorld
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.markers.VanillaMarker
@@ -27,7 +27,7 @@ public class PolarWorldRegistry : WorldRegistry<PolarWorld>() {
         val polarFile = polarWorldContainer.resolve("$key.polar").toPath()
 
         try {
-            return PolarReader.read(Files.readAllBytes(polarFile))
+            return PolarReader.read(Files.readAllBytes(polarFile)).also { register(key, it) }
         } catch (exception: IOException) {
             throw RuntimeException(exception)
         }

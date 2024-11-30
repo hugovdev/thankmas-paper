@@ -20,7 +20,7 @@ dependencies {
     compileOnly(libs.aswm)
     compileOnly(libs.aswm.loaders)
 
-    compileOnly(files("C:/Users/hugov/IdeaProjects/thankmas/common-paper/libs/PolarPaper-0.0.1.jar"))
+    compileOnly(files("C:/Users/hugov/IdeaProjects/thankmas/common-paper/libs/PaperPolar.jar"))
 
     // Dependency Injection framework.
     ksp(libs.koin.ksp.compiler)

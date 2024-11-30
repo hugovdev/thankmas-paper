@@ -83,13 +83,13 @@ public class S3WorldSynchronizer : KoinComponent {
     }
 
     /** Downloads the latest world in [fileDirectory] to [localPath]. */
-    public fun downloadSlimeFile(fileDirectory: String, localPath: File) {
+    public fun downloadFile(fileDirectory: String, extension: String, localPath: File) {
         // worldDirectory = hub/2024
 
         logger.info("Downloading world $fileDirectory...")
 
         client().use { client ->
-            val request = GetObjectRequest.builder().bucket(bucketName).key("$fileDirectory/world.slime").build()
+            val request = GetObjectRequest.builder().bucket(bucketName).key("$fileDirectory/world.$extension").build()
 
             client.getObjectAsBytes(request)?.let { response ->
                 FileOutputStream(localPath).use { it.write(response.asByteArray()) }
@@ -124,9 +124,9 @@ public class S3WorldSynchronizer : KoinComponent {
                 tempFolder.deleteRecursively()
             }
             // Slime world being uploaded!
-            else if (file.extension == "slime") {
+            else if (file.extension in listOf("slime", "polar")) {
                 client.putObject(
-                    PutObjectRequest.builder().bucket(bucketName).key("$remotePath/world.slime").build(),
+                    PutObjectRequest.builder().bucket(bucketName).key("$remotePath/world.${file.extension}").build(),
                     RequestBody.fromFile(file)
                 )
             } else throw IllegalArgumentException("File ${file.name} can't be uploaded to S3, unsupported file type!")
