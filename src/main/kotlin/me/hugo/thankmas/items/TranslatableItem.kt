@@ -2,17 +2,18 @@ package me.hugo.thankmas.items
 
 import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.tag.TagResolverBuilder
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.DyedItemColor
+import io.papermc.paper.datacomponent.item.ItemAttributeModifiers
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.hugo.thankmas.DefaultTranslations
 import me.hugo.thankmas.config.enumOrNull
 import me.hugo.thankmas.lang.TranslatedComponent
-import net.minecraft.core.component.DataComponents
-import net.minecraft.world.item.component.ItemAttributeModifiers.EMPTY
+import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.FileConfiguration
-import org.bukkit.craftbukkit.inventory.CraftItemStack
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
@@ -83,24 +84,15 @@ public class TranslatableItem(
     )
 
     // Build the base item with every shared attribute!
-    private val baseItem = (if (ItemFlag.HIDE_ATTRIBUTES in flags || color != -1) {
-        // Use NMS components for now as AdvancedSlimePaper is stuck on an old upstream version
-        // of paper 1.21.3
-        CraftItemStack.asBukkitCopy(CraftItemStack.asNMSCopy(ItemStack(material)).apply {
-            if (ItemFlag.HIDE_ATTRIBUTES in flags) set(DataComponents.ATTRIBUTE_MODIFIERS, EMPTY.withTooltip(false))
-            if (color != 1) set(
-                DataComponents.DYED_COLOR,
-                net.minecraft.world.item.component.DyedItemColor(color, false)
-            )
-        })
-    } else ItemStack(material)).apply {
-        /* if (ItemFlag.HIDE_ATTRIBUTES in flags) {
+    private val baseItem = ItemStack(material).apply {
+
+        if (ItemFlag.HIDE_ATTRIBUTES in flags) {
             setData(
                 DataComponentTypes.ATTRIBUTE_MODIFIERS,
                 getData(DataComponentTypes.ATTRIBUTE_MODIFIERS)?.showInTooltip(false)
                     ?: ItemAttributeModifiers.itemAttributes().showInTooltip(false).build()
             )
-        }*/
+        }
 
         // Assign all special ItemMeta!
         editMeta {
@@ -132,11 +124,11 @@ public class TranslatableItem(
         }
 
         // Tint leather armor!
-        /* run tint@{
+        run tint@{
             if (color == -1) return@tint
 
             setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
-        }*/
+        }
 
         this@TranslatableItem.enchantments.forEach { (enchantment, level) ->
             addEnchantment(enchantment, level)
