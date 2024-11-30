@@ -135,43 +135,37 @@ public enum class WorldFormat : KoinComponent {
             }
 
             CompletableFuture.allOf(*futures.toTypedArray()).thenRun {
-                val chunkUpdateFutures: MutableList<CompletableFuture<Void>> = ArrayList()
-
-                for (x in -chunkRadius..<chunkRadius) {
-                    for (z in -chunkRadius..<chunkRadius) {
-                        chunkUpdateFutures += Polar.updateChunkData(
-                            polarWorld,
-                            PolarWorldAccess.DEFAULT,
-                            bukkitWorld.getChunkAt(centerChunk.x + x, centerChunk.z + z),
-                            centerChunk.x + x,
-                            centerChunk.z + z
-                        )
-                    }
-                }
-
-                val polarWorldRegistry: PolarWorldRegistry by ThankmasPlugin.instance().inject()
-
-                CompletableFuture.allOf(*chunkUpdateFutures.toTypedArray()).thenRun {
-                    val polarBytes = PolarWriter.write(polarWorld)
-
-                    val polarFile = polarWorldRegistry.polarWorldContainer.resolve(bukkitWorld.name + ".polar")
-
-                    Bukkit.getScheduler()
-                        .runTaskAsynchronously(ThankmasPlugin.instance(), Runnable writeAndUpload@{
-                            try {
-                                polarWorldRegistry.polarWorldContainer.mkdirs()
-                                Files.write(polarFile.toPath(), polarBytes)
-
-                                // Upload the slime file!
-                                worldSynchronizer.uploadFile(polarFile, scopeDirectory)
-                                onSuccess()
-                            } catch (exception: Exception) {
-                                onFailure()
-                                exception.printStackTrace()
-                                return@writeAndUpload
+                Bukkit.getScheduler().runTaskAsynchronously(ThankmasPlugin.instance(), Runnable writeAndUpload@{
+                    try {
+                        for (x in -chunkRadius..<chunkRadius) {
+                            for (z in -chunkRadius..<chunkRadius) {
+                                Polar.updateChunkData(
+                                    polarWorld,
+                                    PolarWorldAccess.DEFAULT,
+                                    bukkitWorld.getChunkAt(centerChunk.x + x, centerChunk.z + z),
+                                    centerChunk.x + x,
+                                    centerChunk.z + z
+                                )
                             }
-                        })
-                }
+                        }
+
+                        val polarWorldRegistry: PolarWorldRegistry by ThankmasPlugin.instance().inject()
+
+                        val polarBytes = PolarWriter.write(polarWorld)
+                        val polarFile = polarWorldRegistry.polarWorldContainer.resolve(bukkitWorld.name + ".polar")
+
+                        polarWorldRegistry.polarWorldContainer.mkdirs()
+                        Files.write(polarFile.toPath(), polarBytes)
+
+                        // Upload the slime file!
+                        worldSynchronizer.uploadFile(polarFile, scopeDirectory)
+                        onSuccess()
+                    } catch (exception: Exception) {
+                        onFailure()
+                        exception.printStackTrace()
+                        return@writeAndUpload
+                    }
+                })
             }
         }
     };

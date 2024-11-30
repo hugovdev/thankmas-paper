@@ -55,7 +55,7 @@ public class MapPoint(
      * Returns a bukkit location with this
      * MapPoint's coordinates in [world].
      */
-    public fun toLocation(world: World): Location {
+    public fun toLocation(world: World?): Location {
         return Location(world, x, y, z, yaw, pitch)
     }
 
