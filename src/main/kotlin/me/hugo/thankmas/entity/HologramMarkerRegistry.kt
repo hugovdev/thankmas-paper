@@ -3,7 +3,7 @@ package me.hugo.thankmas.entity
 import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.markers.Marker
 import me.hugo.thankmas.registry.MapBasedRegistry
-import me.hugo.thankmas.world.AnvilWorldRegistry
+import me.hugo.thankmas.world.registry.AnvilWorldRegistry
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent

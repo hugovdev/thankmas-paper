@@ -10,7 +10,7 @@ import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.markers.Marker
 import me.hugo.thankmas.player.translate
 import me.hugo.thankmas.registry.MapBasedRegistry
-import me.hugo.thankmas.world.AnvilWorldRegistry
+import me.hugo.thankmas.world.registry.AnvilWorldRegistry
 import net.citizensnpcs.api.CitizensAPI
 import net.citizensnpcs.api.event.NPCLinkToPlayerEvent
 import net.citizensnpcs.api.event.NPCUnlinkFromPlayerEvent

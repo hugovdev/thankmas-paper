@@ -1,8 +1,9 @@
-package me.hugo.thankmas.world
+package me.hugo.thankmas.world.registry
 
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.markers.AnvilMarker
+import me.hugo.thankmas.world.WorldRegistry
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.WorldCreator

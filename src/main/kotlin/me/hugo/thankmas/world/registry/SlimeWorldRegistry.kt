@@ -1,4 +1,4 @@
-package me.hugo.thankmas.world
+package me.hugo.thankmas.world.registry
 
 import com.infernalsuite.aswm.api.AdvancedSlimePaperAPI
 import com.infernalsuite.aswm.api.world.SlimeWorld
@@ -8,6 +8,7 @@ import com.infernalsuite.aswm.loaders.file.FileLoader
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.markers.SlimeMarker
+import me.hugo.thankmas.world.WorldRegistry
 import org.bukkit.Bukkit
 import org.koin.core.annotation.Single
 import java.io.File

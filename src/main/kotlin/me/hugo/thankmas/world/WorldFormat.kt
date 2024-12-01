@@ -8,6 +8,8 @@ import live.minehub.polarpaper.PolarWorld
 import live.minehub.polarpaper.PolarWorldAccess
 import live.minehub.polarpaper.PolarWriter
 import me.hugo.thankmas.ThankmasPlugin
+import me.hugo.thankmas.world.registry.PolarWorldRegistry
+import me.hugo.thankmas.world.registry.SlimeWorldRegistry
 import me.hugo.thankmas.world.s3.S3WorldSynchronizer
 import org.bukkit.Bukkit
 import org.bukkit.Chunk

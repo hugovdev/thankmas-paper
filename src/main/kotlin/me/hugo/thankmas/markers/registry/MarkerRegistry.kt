@@ -6,7 +6,7 @@ import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.markers.AnvilMarker
 import me.hugo.thankmas.markers.Marker
 import me.hugo.thankmas.markers.SlimeMarker
-import me.hugo.thankmas.world.SlimeWorldRegistry
+import me.hugo.thankmas.world.registry.SlimeWorldRegistry
 import org.bukkit.Bukkit
 import org.jglrxavpok.hephaistos.mca.RegionFile
 import org.jglrxavpok.hephaistos.nbt.NBTCompound

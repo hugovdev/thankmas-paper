@@ -1,10 +1,11 @@
-package me.hugo.thankmas.world
+package me.hugo.thankmas.world.registry
 
 import live.minehub.polarpaper.PolarReader
 import live.minehub.polarpaper.PolarWorld
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.markers.VanillaMarker
+import me.hugo.thankmas.world.WorldRegistry
 import net.minecraft.nbt.NbtAccounter
 import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.Tag
