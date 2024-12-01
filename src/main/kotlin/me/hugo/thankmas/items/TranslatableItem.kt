@@ -4,7 +4,9 @@ import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.DyedItemColor
+import io.papermc.paper.datacomponent.item.Equippable
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers
+import io.papermc.paper.datacomponent.item.UseCooldown
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.hugo.thankmas.DefaultTranslations
@@ -33,7 +35,7 @@ public class TranslatableItem(
     private val name: String? = null,
     private val lore: String? = null,
     private val glint: Boolean? = null,
-    private val cooldown: Pair<Double, String?> = Pair(0.0, null),
+    private val cooldown: Pair<Float, String?> = Pair(0.0f, null),
     private val equipabbleSlot: EquipmentSlot? = null,
     private val enchantments: Map<Enchantment, Int> = emptyMap(),
     private val color: Int = -1,
@@ -62,7 +64,7 @@ public class TranslatableItem(
         config.getString("$path.lore"),
         // Only replace enchantment glint when explicitly specified.
         if (config.contains("$path.enchant-glint")) config.getBoolean("$path.enchant-glint") else null,
-        Pair(config.getDouble("$path.cooldown.time"), config.getString("$path.cooldown.group")),
+        Pair(config.getDouble("$path.cooldown.time").toFloat(), config.getString("$path.cooldown.group")),
         config.enumOrNull<EquipmentSlot>("$path.equippable-slot"),
         config.getStringList("enchantments").associate {
             val serializedParts = it.split(", ")
@@ -108,16 +110,15 @@ public class TranslatableItem(
 
             // Cooldown component
             if (cooldown.first > 0.0) {
-                val cooldownComponent = it.useCooldown
-                cooldownComponent.cooldownSeconds = cooldown.first.toFloat()
-                cooldownComponent.cooldownGroup = NamespacedKey("thankmas", cooldown.second!!)
-                it.setUseCooldown(cooldownComponent)
+                setData(
+                    DataComponentTypes.USE_COOLDOWN, UseCooldown.useCooldown(cooldown.first)
+                        .cooldownGroup(NamespacedKey("thankmas", requireNotNull(cooldown.second)))
+                )
             }
 
+            // Makes this item equippable for the selected slot.
             if (equipabbleSlot != null) {
-                val equippable = it.equippable
-                equippable.slot = equipabbleSlot
-                it.setEquippable(equippable)
+                setData(DataComponentTypes.EQUIPPABLE, Equippable.equippable(equipabbleSlot).build())
             }
 
             it.isUnbreakable = unbreakable
