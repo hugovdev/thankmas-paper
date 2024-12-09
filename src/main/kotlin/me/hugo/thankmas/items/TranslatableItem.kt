@@ -3,15 +3,13 @@ package me.hugo.thankmas.items
 import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.DyedItemColor
-import io.papermc.paper.datacomponent.item.Equippable
-import io.papermc.paper.datacomponent.item.ItemAttributeModifiers
-import io.papermc.paper.datacomponent.item.UseCooldown
+import io.papermc.paper.datacomponent.item.*
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.hugo.thankmas.DefaultTranslations
 import me.hugo.thankmas.config.enumOrNull
 import me.hugo.thankmas.lang.TranslatedComponent
+import net.kyori.adventure.key.Key
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -87,6 +85,9 @@ public class TranslatableItem(
 
     // Build the base item with every shared attribute!
     private val baseItem = ItemStack(material).apply {
+        unbreakable(unbreakable)
+
+        if (flags.isNotEmpty()) addItemFlags(*flags.toTypedArray())
 
         if (ItemFlag.HIDE_ATTRIBUTES in flags) {
             setData(
@@ -96,32 +97,29 @@ public class TranslatableItem(
             )
         }
 
-        // Assign all special ItemMeta!
-        editMeta {
-            // Enchant glint overrides!
-            if (glint != null) it.setEnchantmentGlintOverride(glint)
+        if (glint != null) {
+            setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, glint)
+        }
 
-            // Item model overrides!
-            if (model != null) it.itemModel = NamespacedKey.fromString(model)
-            if (customModelData != -1) it.setCustomModelData(customModelData)
+        if (customModelData != null) {
+            setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData(customModelData))
+        }
 
-            // Item Flags!
-            if (flags.isNotEmpty()) it.addItemFlags(*flags.toTypedArray())
+        if (model != null) {
+            setData(DataComponentTypes.ITEM_MODEL, Key.key(model))
+        }
 
-            // Cooldown component
-            if (cooldown.first > 0.0) {
-                setData(
-                    DataComponentTypes.USE_COOLDOWN, UseCooldown.useCooldown(cooldown.first)
-                        .cooldownGroup(NamespacedKey("thankmas", requireNotNull(cooldown.second)))
-                )
-            }
+        // Cooldown component
+        if (cooldown.first > 0.0) {
+            setData(
+                DataComponentTypes.USE_COOLDOWN, UseCooldown.useCooldown(cooldown.first)
+                    .cooldownGroup(NamespacedKey("thankmas", requireNotNull(cooldown.second)))
+            )
+        }
 
-            // Makes this item equippable for the selected slot.
-            if (equipabbleSlot != null) {
-                setData(DataComponentTypes.EQUIPPABLE, Equippable.equippable(equipabbleSlot).build())
-            }
-
-            it.isUnbreakable = unbreakable
+        // Makes this item equippable for the selected slot.
+        if (equipabbleSlot != null) {
+            setData(DataComponentTypes.EQUIPPABLE, Equippable.equippable(equipabbleSlot).build())
         }
 
         // Tint leather armor!
