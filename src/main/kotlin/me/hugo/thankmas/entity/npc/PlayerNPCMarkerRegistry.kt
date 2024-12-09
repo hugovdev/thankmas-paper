@@ -167,6 +167,11 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
 
         val dynamicSkins = anvilWorldRegistry.getMarkerForType(world, "player_npc")
             .filter { it.getStringList("skin")?.size == 1 }
+            .filter {
+                val npcId = it.getString("id")
+
+                npcsConfig.getString("$npcId.skin.textures") == null
+            }
 
         Bukkit.getScheduler().runTaskAsynchronously(ThankmasPlugin.instance(), Runnable {
             val client = HttpClient.newHttpClient()
