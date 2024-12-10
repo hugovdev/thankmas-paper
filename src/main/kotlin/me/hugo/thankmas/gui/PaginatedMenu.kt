@@ -121,50 +121,61 @@ public open class PaginatedMenu(
 
         if (currentIndex > 0) {
             val nextPageValue = currentIndex + 1
+            val nextPageSlot = menuFormat.getSlotForChar('N')
 
-            pages[currentIndex - 1].setIcon(
-                menuFormat.getSlotForChar('N'),
-                Icon({ context, _ ->
-                    val clicker = context.clicker
+            if (nextPageSlot != -1) {
+                pages[currentIndex - 1].setIcon(
+                    nextPageSlot,
+                    Icon({ context, _ ->
+                        val clicker = context.clicker
 
-                    newPage.open(clicker, false)
-                    clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
-                }) {
-                    NEXT_PAGE.buildItem(it.locale()) {
-                        parsed("page", nextPageValue)
-                    }
-                })
+                        newPage.open(clicker, false)
+                        clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
+                    }) {
+                        NEXT_PAGE.buildItem(it.locale()) {
+                            parsed("page", nextPageValue)
+                        }
+                    })
+            }
 
             val lastIndex = currentIndex - 1
 
             val previousPage = currentIndex
-            newPage.setIcon(
-                menuFormat.getSlotForChar('P'),
-                Icon({ context, _ ->
-                    val clicker = context.clicker
+            val previousPageSlot = menuFormat.getSlotForChar('P')
 
-                    pages[lastIndex].open(clicker, false)
-                    clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
-                }) {
-                    PREVIOUS_PAGE.buildItem(it.locale()) {
-                        parsed("page", previousPage)
-                    }
-                })
+            if (previousPageSlot != -1) {
+                newPage.setIcon(
+                    menuFormat.getSlotForChar('P'),
+                    Icon({ context, _ ->
+                        val clicker = context.clicker
+
+                        pages[lastIndex].open(clicker, false)
+                        clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
+                    }) {
+                        PREVIOUS_PAGE.buildItem(it.locale()) {
+                            parsed("page", previousPage)
+                        }
+                    })
+            }
         } else {
-            if (lastMenu == null) {
-                newPage.setIcon(menuFormat.getSlotForChar('P'), Icon({ context, _ ->
-                    val clicker = context.clicker
+            val previousPageSlot = menuFormat.getSlotForChar('P')
 
-                    clicker.closeInventory()
-                    clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
-                }) { EXIT.buildItem(it.locale()) })
-            } else {
-                newPage.setIcon(menuFormat.getSlotForChar('P'), Icon({ context, _ ->
-                    val clicker = context.clicker
+            if (previousPageSlot != -1) {
+                if (lastMenu == null) {
+                    newPage.setIcon(previousPageSlot, Icon({ context, _ ->
+                        val clicker = context.clicker
 
-                    lastMenu.open(clicker)
-                    clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
-                }) { PREVIOUS_MENU.buildItem(it.locale()) })
+                        clicker.closeInventory()
+                        clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
+                    }) { EXIT.buildItem(it.locale()) })
+                } else {
+                    newPage.setIcon(previousPageSlot, Icon({ context, _ ->
+                        val clicker = context.clicker
+
+                        lastMenu.open(clicker)
+                        clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
+                    }) { PREVIOUS_MENU.buildItem(it.locale()) })
+                }
             }
         }
     }

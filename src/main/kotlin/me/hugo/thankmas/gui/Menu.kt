@@ -146,11 +146,15 @@ public open class Menu(
                     + "-XXXXXXX-"
                     + "---PIN---")
         ),
-        TWO_ROWS_TRIMMED(
+        ROD_UPGRADES(
             ("---------"
-                    + "--XXXXX--"
-                    + "--XXXXX--"
-                    + "---PIN---")
+                    + "X-X-X-X-X"
+                    + "---------")
+        ),
+        FISH_TRACKER(
+            ("-XXXXXXX-"
+                    + "-XXXXXXX-"
+                    + "-XXXXXXX-")
         ),
         THREE_ROWS(
             ("---------"
