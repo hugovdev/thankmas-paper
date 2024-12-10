@@ -66,6 +66,13 @@ public class AnvilWorldRegistry : WorldRegistry<World>() {
                         // Marker has no defined location somehow!<
                         val markerLocation = entityData.getList<NBTDouble>("Pos") ?: return@entities
 
+                        val markerName = markerData.getString("name")
+
+                        if(markerName == null) {
+                            logger.warning("Marker without marker id (field \"name\") found in $markerLocation.")
+                            return@entities
+                        }
+
                         // Save the marker and entityData's data!
                         saveMarker(
                             key, AnvilMarker(

@@ -86,6 +86,12 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
         if (worldRegions.remove(worldRegion)) worldRegion.onLeave(onlinePlayer)
     }
 
+    /** Returns the last region entered by player that meets [predicate]. */
+    public fun lastRegion(predicate: (WeakRegion) -> Boolean): WeakRegion? = worldRegions.lastOrNull { predicate(it) }
+
+    /** Returns the first region entered by player that meets [predicate]. */
+    public fun firstRegion(predicate: (WeakRegion) -> Boolean): WeakRegion? = worldRegions.firstOrNull { predicate(it) }
+
     /** Runs whenever the player changes translations. */
     public open fun setLocale(newLocale: Locale) {
         // Update holograms!
