@@ -191,11 +191,11 @@ public fun ItemStack.hasKeyedData(key: String): Boolean =
     hasKeyedData(NamespacedKey("thankmas", key))
 
 /** @returns the data of type [type] in the key [key], can be null. */
-public fun <T: Any, V : Any> ItemStack.getKeyedData(key: String, type: PersistentDataType<T, V>): V? =
+public fun <T : Any, V : Any> ItemStack.getKeyedData(key: String, type: PersistentDataType<T, V>): V? =
     getKeyedData(NamespacedKey("thankmas", key), type)
 
 /** @returns the data of type [type] in the key [key], can be null. */
-public fun <T: Any, V : Any> ItemStack.getKeyedData(key: NamespacedKey, type: PersistentDataType<T, V>): V? =
+public fun <T : Any, V : Any> ItemStack.getKeyedData(key: NamespacedKey, type: PersistentDataType<T, V>): V? =
     if (hasItemMeta()) {
         itemMeta?.persistentDataContainer?.get(key, type)
     } else {
@@ -213,6 +213,18 @@ public fun ItemStack.name(name: Component): ItemStack {
 /** Changes this item's lore to [text]. */
 public fun ItemStack.putLore(text: List<Component>): ItemStack {
     this.lore(text.map { it.applyFallbackStyle(resetStyles) })
+    return this
+}
+
+/** Adds [text] to the existing lore. */
+public fun ItemStack.addToLore(text: List<Component>): ItemStack {
+    this.lore((lore() ?: listOf()).plus(text.map { it.applyFallbackStyle(resetStyles) }))
+    return this
+}
+
+/** Adds [text] to the existing lore. */
+public fun ItemStack.addToLore(text: Component): ItemStack {
+    this.lore((lore() ?: listOf()).plus(text.applyFallbackStyle(resetStyles)))
     return this
 }
 

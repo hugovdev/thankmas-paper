@@ -148,13 +148,13 @@ public open class Menu(
         ),
         ROD_UPGRADES(
             ("---------"
-                    + "X-X-X-X-X"
+                    + "X_X_X_X_X"
                     + "---------")
         ),
         FISH_TRACKER(
-            ("-XXXXXXX-"
-                    + "-XXXXXXX-"
-                    + "-XXXXXXX-")
+            ("PXXXXXXXN"
+                    + "PXXXXXXXN"
+                    + "PXXXXXXXN")
         ),
         THREE_ROWS(
             ("---------"

@@ -121,11 +121,10 @@ public open class PaginatedMenu(
 
         if (currentIndex > 0) {
             val nextPageValue = currentIndex + 1
-            val nextPageSlot = menuFormat.getSlotForChar('N')
 
-            if (nextPageSlot != -1) {
+            menuFormat.getSlotsForChar('N').forEach { slot ->
                 pages[currentIndex - 1].setIcon(
-                    nextPageSlot,
+                    slot,
                     Icon({ context, _ ->
                         val clicker = context.clicker
 
@@ -139,13 +138,11 @@ public open class PaginatedMenu(
             }
 
             val lastIndex = currentIndex - 1
-
             val previousPage = currentIndex
-            val previousPageSlot = menuFormat.getSlotForChar('P')
 
-            if (previousPageSlot != -1) {
+            menuFormat.getSlotsForChar('P').forEach { slot ->
                 newPage.setIcon(
-                    menuFormat.getSlotForChar('P'),
+                    slot,
                     Icon({ context, _ ->
                         val clicker = context.clicker
 
@@ -157,19 +154,18 @@ public open class PaginatedMenu(
                         }
                     })
             }
-        } else {
-            val previousPageSlot = menuFormat.getSlotForChar('P')
 
-            if (previousPageSlot != -1) {
+        } else {
+            menuFormat.getSlotsForChar('P').forEach { slot ->
                 if (lastMenu == null) {
-                    newPage.setIcon(previousPageSlot, Icon({ context, _ ->
+                    newPage.setIcon(slot, Icon({ context, _ ->
                         val clicker = context.clicker
 
                         clicker.closeInventory()
                         clicker.playSound(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON)
                     }) { EXIT.buildItem(it.locale()) })
                 } else {
-                    newPage.setIcon(previousPageSlot, Icon({ context, _ ->
+                    newPage.setIcon(slot, Icon({ context, _ ->
                         val clicker = context.clicker
 
                         lastMenu.open(clicker)
