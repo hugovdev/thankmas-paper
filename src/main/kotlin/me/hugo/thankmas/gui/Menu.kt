@@ -156,6 +156,14 @@ public open class Menu(
                     + "PXXXXXXXN"
                     + "PXXXXXXXN")
         ),
+        STK_SHOP(
+            ("---------"
+                    + "---------"
+                    + "--XXXXX--"
+                    + "--XXXXX--"
+                    + "--XXXXX--"
+                    + "--XXXXX--")
+        ),
         THREE_ROWS(
             ("---------"
                     + "-XXXXXXX-"

@@ -25,6 +25,7 @@ import java.util.*
 /** Item with translatable name and lore. */
 public class TranslatableItem(
     private val material: Material = Material.PHANTOM_MEMBRANE,
+    public val amount: Int = 1,
     private val customModelData: Int = -1,
     private val model: String? = null,
     private val unbreakable: Boolean = false,
@@ -53,6 +54,7 @@ public class TranslatableItem(
         miniPhrase: MiniPhrase = DefaultTranslations.instance.translations
     ) : this(
         config.enumOrNull<Material>("$path.material") ?: Material.PHANTOM_MEMBRANE,
+        config.getInt("$path.amount", 1),
         config.getInt("$path.custom-model-data", -1),
         config.getString("$path.model"),
         config.getBoolean("$path.unbreakable", false),
@@ -84,7 +86,7 @@ public class TranslatableItem(
     )
 
     // Build the base item with every shared attribute!
-    private val baseItem = ItemStack(material).apply {
+    private val baseItem = ItemStack(material, amount).apply {
         unbreakable(unbreakable)
 
         if (flags.isNotEmpty()) addItemFlags(*flags.toTypedArray())
