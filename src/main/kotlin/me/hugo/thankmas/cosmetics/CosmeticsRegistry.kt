@@ -6,6 +6,7 @@ import me.hugo.thankmas.config.ConfigurationProvider
 import me.hugo.thankmas.gui.Icon
 import me.hugo.thankmas.gui.Menu
 import me.hugo.thankmas.gui.PaginatedMenu
+import me.hugo.thankmas.items.name
 import me.hugo.thankmas.items.putLore
 import me.hugo.thankmas.player.cosmetics.CosmeticsPlayerData
 import me.hugo.thankmas.player.playSound
@@ -13,7 +14,9 @@ import me.hugo.thankmas.player.stopSound
 import me.hugo.thankmas.player.translate
 import me.hugo.thankmas.registry.AutoCompletableMapRegistry
 import net.kyori.adventure.sound.Sound
+import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.koin.core.annotation.Single
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -35,6 +38,24 @@ public class CosmeticsRegistry : AutoCompletableMapRegistry<Cosmetic>(Cosmetic::
         val configurationProvider: ConfigurationProvider by inject()
         val config = configurationProvider.getOrLoad("global/cosmetics.yml")
 
+        cosmeticsSelector.addIcon(Icon({ context, _ ->
+            val clicker = context.clicker
+
+            val playerData =
+                ThankmasPlugin.instance().playerDataManager.getPlayerData(clicker.uniqueId) as CosmeticsPlayerData
+
+            if (playerData.selectedCosmetic.value == null) return@Icon
+
+            playerData.selectedCosmetic.value = null
+
+            clicker.stopSound("lobby.cosmetic_selector_open", Sound.Source.AMBIENT)
+            clicker.closeInventory()
+        }) {
+            ItemStack(Material.BARRIER)
+                .name(globalTranslations.translate("cosmetics.remove.name", it.locale()))
+                .putLore(globalTranslations.translateList("cosmetics.remove.lore", it.locale()))
+        })
+
         config.getKeys(false).forEach { cosmeticId ->
             Cosmetic(config, cosmeticId).also { cosmetic ->
                 register(cosmeticId, cosmetic)
@@ -47,18 +68,60 @@ public class CosmeticsRegistry : AutoCompletableMapRegistry<Cosmetic>(Cosmetic::
 
                     if (playerData.selectedCosmetic.value == cosmetic) return@Icon
 
-                    clicker.sendMessage(
-                        globalTranslations.translate(
-                            "cosmetics.cosmetic.equip",
-                            clicker.locale()
-                        ) {
-                            inserting("cosmetic", clicker.translate(cosmetic.nameKey).color(null))
-                        })
+                    // Player owns this cosmetic, so just equip it!
+                    if (playerData.ownsCosmetic(cosmetic)) {
+                        clicker.sendMessage(
+                            globalTranslations.translate(
+                                "cosmetics.cosmetic.equip",
+                                clicker.locale()
+                            ) {
+                                inserting("cosmetic", clicker.translate(cosmetic.nameKey).color(null))
+                            })
 
-                    playerData.selectedCosmetic.value = cosmetic
+                        playerData.selectedCosmetic.value = cosmetic
+                        clicker.playSound("lobby.cosmetic_selector_select")
+                    } else {
+                        if (cosmetic.price == 0) {
+                            clicker.sendMessage(
+                                globalTranslations.translate(
+                                    "cosmetics.cosmetic.quest.${cosmetic.id}",
+                                    clicker.locale()
+                                )
+                            )
+
+                            clicker.stopSound("lobby.cosmetic_selector_open", Sound.Source.AMBIENT)
+                            clicker.closeInventory()
+                            return@Icon
+                        }
+
+                        if (!context.clickType.isShiftClick) return@Icon
+                        if (playerData.inTransaction) return@Icon
+
+                        if (playerData.currency >= cosmetic.price) {
+                            playerData.acquireCosmetic(cosmetic) {
+                                clicker.sendMessage(
+                                    globalTranslations.translate(
+                                        "cosmetics.cosmetic.bought",
+                                        clicker.locale()
+                                    ) {
+                                        inserting("cosmetic", clicker.translate(cosmetic.nameKey).color(null))
+                                    })
+
+                                playerData.selectedCosmetic.value = cosmetic
+                                clicker.playSound("lobby.cosmetic_selector_buy")
+                            }
+                        } else {
+                            clicker.sendMessage(
+                                globalTranslations.translate(
+                                    "cosmetics.cosmetic.broke",
+                                    clicker.locale()
+                                ) {
+                                    inserting("cosmetic", clicker.translate(cosmetic.nameKey).color(null))
+                                })
+                        }
+                    }
 
                     clicker.stopSound("lobby.cosmetic_selector_open", Sound.Source.AMBIENT)
-                    clicker.playSound("lobby.cosmetic_selector_buy")
                     clicker.closeInventory()
                 }) { player ->
                     val slotKey = cosmetic.slot.name.lowercase()

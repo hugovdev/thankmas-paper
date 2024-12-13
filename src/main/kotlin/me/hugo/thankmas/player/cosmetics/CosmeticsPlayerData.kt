@@ -1,15 +1,20 @@
 package me.hugo.thankmas.player.cosmetics
 
+import kotlinx.datetime.Instant
 import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.cosmetics.Cosmetic
 import me.hugo.thankmas.cosmetics.CosmeticsRegistry
 import me.hugo.thankmas.database.CosmeticsOwned
 import me.hugo.thankmas.database.PlayerData
 import me.hugo.thankmas.player.rank.RankedPlayerData
+import me.hugo.thankmas.player.updateBoardTags
 import me.hugo.thankmas.state.StatefulValue
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.core.component.inject
 import java.util.*
 
@@ -21,6 +26,9 @@ public open class CosmeticsPlayerData<P : CosmeticsPlayerData<P>>(
 
     private val cosmeticRegistry: CosmeticsRegistry by inject()
 
+    public var inTransaction: Boolean = false
+        protected set
+
     /** List of cosmetics this player owns. */
     private val cosmeticsOwned: MutableList<Cosmetic> = mutableListOf()
 
@@ -29,12 +37,48 @@ public open class CosmeticsPlayerData<P : CosmeticsPlayerData<P>>(
         private set
 
     public var currency: Int = 0
-        private set
+        set(value) {
+            if (field == value) return
+
+            field = value
+            updateBoardTags("currency")
+        }
 
     override fun setLocale(newLocale: Locale) {
         super.setLocale(newLocale)
 
         giveCosmetic()
+    }
+
+    /** Acquires [cosmetic] for this player. */
+    public fun acquireCosmetic(cosmetic: Cosmetic, onAcquired: () -> Unit = {}) {
+        require(cosmetic !in cosmeticsOwned)
+        require(currency >= cosmetic.price)
+        require(!inTransaction)
+
+        val instance = ThankmasPlugin.instance()
+
+        inTransaction = true
+
+        Bukkit.getScheduler().runTaskAsynchronously(instance, Runnable {
+            transaction {
+                CosmeticsOwned.insert {
+                    it[whoOwns] = playerUUID.toString()
+                    it[cosmeticId] = cosmetic.id
+                    it[time] = Instant.fromEpochMilliseconds(System.currentTimeMillis())
+                }
+            }
+
+
+            Bukkit.getScheduler().runTask(instance, Runnable {
+                cosmeticsOwned += cosmetic
+                currency -= cosmetic.price
+
+                onAcquired()
+
+                inTransaction = false
+            })
+        })
     }
 
     /** @returns whether this player owns [cosmetic]. */
@@ -63,8 +107,10 @@ public open class CosmeticsPlayerData<P : CosmeticsPlayerData<P>>(
             cosmeticsOwned += cosmeticRegistry.get(cosmeticId)
         }
 
+        val selectedDbCosmetic = cosmeticRegistry.getOrNull(row?.get(PlayerData.selectedCosmetic) ?: "")
+
         selectedCosmetic =
-            StatefulValue(cosmeticRegistry.getOrNull(row?.get(PlayerData.selectedCosmetic) ?: "")).apply {
+            StatefulValue(if (selectedDbCosmetic != null && ownsCosmetic(selectedDbCosmetic)) selectedDbCosmetic else null).apply {
                 subscribe { oldCosmetic, newCosmetic, _ ->
                     val bukkitPlayer = onlinePlayerOrNull ?: return@subscribe
 
