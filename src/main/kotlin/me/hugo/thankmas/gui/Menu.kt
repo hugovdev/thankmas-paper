@@ -15,7 +15,7 @@ public open class Menu(
     private val menuFrames: List<Pair<Int, String>>,
     private val size: Int,
     private val icons: MutableMap<Int, Icon> = mutableMapOf(),
-    private val menuFormat: MenuFormat? = null,
+    public val menuFormat: MenuFormat? = null,
     private val miniPhrase: MiniPhrase
 ) : KoinComponent {
 
@@ -145,6 +145,11 @@ public open class Menu(
                     + "-XXXXXXX-"
                     + "-XXXXXXX-"
                     + "---PIN---")
+        ),
+        GAME_SELECTOR(
+            ("SSS---CCC"
+                    + "SSS---CCC"
+                    + "SSS---CCC")
         ),
         ROD_UPGRADES(
             ("---------"

@@ -66,7 +66,7 @@ public class TranslatableItem(
         if (config.contains("$path.enchant-glint")) config.getBoolean("$path.enchant-glint") else null,
         Pair(config.getDouble("$path.cooldown.time").toFloat(), config.getString("$path.cooldown.group")),
         config.enumOrNull<EquipmentSlot>("$path.equippable-slot"),
-        config.getStringList("enchantments").associate {
+        config.getStringList("$path.enchantments").associate {
             val serializedParts = it.split(", ")
 
             require(serializedParts.size == 2)
