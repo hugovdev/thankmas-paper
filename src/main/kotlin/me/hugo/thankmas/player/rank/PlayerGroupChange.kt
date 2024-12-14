@@ -4,8 +4,7 @@ import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.player.PlayerDataManager
 import me.hugo.thankmas.player.player
 import net.luckperms.api.LuckPermsProvider
-import net.luckperms.api.event.node.NodeMutateEvent
-import net.luckperms.api.model.user.User
+import net.luckperms.api.event.user.UserDataRecalculateEvent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
@@ -25,10 +24,9 @@ public class PlayerGroupChange<P : RankedPlayerData<P>>(
         val luckPerms = LuckPermsProvider.get()
 
         // Player rank changes so we update their name tags!
-        luckPerms.eventBus.subscribe(NodeMutateEvent::class.java) { event ->
-            if (!event.isUser) return@subscribe
+        luckPerms.eventBus.subscribe(UserDataRecalculateEvent::class.java) { event ->
 
-            val userId = (event.target as User).uniqueId
+            val userId = event.user.uniqueId
 
             Bukkit.getScheduler().getMainThreadExecutor(ThankmasPlugin.instance()).execute {
                 val onlinePlayer = userId.player() ?: return@execute
