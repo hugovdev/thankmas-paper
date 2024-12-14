@@ -54,11 +54,11 @@ public open class CosmeticsPlayerData<P : CosmeticsPlayerData<P>>(
     public fun acquireCosmetic(cosmetic: Cosmetic, onAcquired: () -> Unit = {}) {
         require(cosmetic !in cosmeticsOwned)
         require(currency >= cosmetic.price)
-        require(!inTransaction)
+        if (cosmetic.price > 0) require(!inTransaction)
 
         val instance = ThankmasPlugin.instance()
 
-        inTransaction = true
+        if (cosmetic.price > 0) inTransaction = true
 
         Bukkit.getScheduler().runTaskAsynchronously(instance, Runnable {
             transaction {
@@ -69,14 +69,13 @@ public open class CosmeticsPlayerData<P : CosmeticsPlayerData<P>>(
                 }
             }
 
-
             Bukkit.getScheduler().runTask(instance, Runnable {
                 cosmeticsOwned += cosmetic
-                currency -= cosmetic.price
+                if (cosmetic.price > 0) currency -= cosmetic.price
 
                 onAcquired()
 
-                inTransaction = false
+                if (cosmetic.price > 0) inTransaction = false
             })
         })
     }

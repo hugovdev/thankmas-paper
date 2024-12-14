@@ -123,6 +123,9 @@ public class CosmeticsRegistry : AutoCompletableMapRegistry<Cosmetic>(Cosmetic::
 
                     clicker.stopSound("lobby.cosmetic_selector_open", Sound.Source.AMBIENT)
                     clicker.closeInventory()
+
+                    // Remove ghost items from shift clicking
+                    clicker.updateInventory()
                 }) { player ->
                     val slotKey = cosmetic.slot.name.lowercase()
 
