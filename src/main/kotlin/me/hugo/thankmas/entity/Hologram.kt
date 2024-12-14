@@ -78,8 +78,8 @@ public class Hologram(
 
     /** Removes this hologram from the [player]'s client. */
     public fun remove(player: Player) {
-        val playerData = playerDataManager.getPlayerData(player.uniqueId)
-        val textDisplay = playerData.getDisplayForHologramOrNull(this) ?: return
+        val playerData = playerDataManager.getPlayerDataOrNull(player.uniqueId)
+        val textDisplay = playerData?.getDisplayForHologramOrNull(this) ?: return
 
         textDisplay.remove()
         playerData.removeHologram(this)

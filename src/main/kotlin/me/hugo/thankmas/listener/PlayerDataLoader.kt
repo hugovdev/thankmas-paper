@@ -66,11 +66,17 @@ public class PlayerDataLoader<T : PaperPlayerData<T>>(
 
     @EventHandler(priority = EventPriority.HIGHEST)
     private fun onPlayerQuit(event: PlayerQuitEvent) {
-        val playerId = event.player.uniqueId
+        val player = event.player
+        val playerId = player.uniqueId
 
         if (removeAccessMessages) event.quitMessage(null)
 
         // Player quit, save their data and forget the player!
-        playerManager.getPlayerData(playerId).saveSafely(event.player) { playerManager.removePlayerData(playerId) }
+        playerManager.getPlayerData(playerId).apply {
+            saveSafely(player) {
+                onQuit(player)
+                playerManager.removePlayerData(playerId)
+            }
+        }
     }
 }

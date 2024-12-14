@@ -40,6 +40,9 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     /** Map of hologram entity ids that this players can see. */
     private val spawnedHolograms: ConcurrentMap<Hologram, TextDisplay> = ConcurrentHashMap()
 
+    /** Last time this profile was saved. */
+    private var lastSave: Long = System.currentTimeMillis()
+
     /** @returns the entity id for this hologram. */
     public fun getDisplayForHologramOrNull(hologram: Hologram): TextDisplay? {
         return spawnedHolograms[hologram]
@@ -100,6 +103,13 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
 
     /** Saves player data safely in databases, asynchronously. */
     public open fun saveSafely(player: Player, onSuccess: () -> Unit) {
+        // If this profile was saved in the last 1.5s, ignore this save request.
+        if (System.currentTimeMillis() - lastSave <= 1500) {
+            onSuccess()
+
+            return
+        }
+
         val instance = ThankmasPlugin.instance()
         val startTime = System.currentTimeMillis()
 
@@ -107,7 +117,8 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
             save()
 
             Bukkit.getScheduler().runTask(instance, Runnable {
-                onSave(player)
+                lastSave = System.currentTimeMillis()
+
                 onSuccess()
                 instance.logger.info("Player info for $playerUUID saved and cleaned in ${System.currentTimeMillis() - startTime}ms.")
             })
@@ -118,7 +129,7 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     protected open fun save() {}
 
     /** Runs after saving player data! */
-    protected open fun onSave(player: Player) {
+    public open fun onQuit(player: Player) {
         removeAllHolograms()
     }
 
@@ -128,6 +139,6 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     /** Forces save without safely switching to an asynchronous thread. */
     public fun forceSave(player: Player) {
         save()
-        onSave(player)
+        onQuit(player)
     }
 }

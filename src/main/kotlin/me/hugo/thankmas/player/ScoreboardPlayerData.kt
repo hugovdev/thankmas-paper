@@ -140,8 +140,8 @@ public open class ScoreboardPlayerData<P : ScoreboardPlayerData<P>>(
         }
     }
 
-    override fun onSave(player: Player) {
-        super.onSave(player)
+    override fun onQuit(player: Player) {
+        super.onQuit(player)
         playerNameTag?.let { Bukkit.getOnlinePlayers().forEach { player -> it.remove(player.scoreboard) } }
     }
 

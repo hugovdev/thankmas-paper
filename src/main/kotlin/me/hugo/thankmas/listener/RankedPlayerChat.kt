@@ -15,7 +15,7 @@ import org.bukkit.event.Listener
  */
 public class RankedPlayerChat<T : RankedPlayerData<T>>(
     private val playerManager: PlayerDataManager<T>,
-    private val shouldSee: (viewer: Player, sender: Player) -> Boolean
+    private val shouldSee: (viewer: Player, sender: Player) -> Boolean = { _, _ -> true }
 ) : Listener, Translated {
 
     private val translations = ThankmasPlugin.instance().globalTranslations
