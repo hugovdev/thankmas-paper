@@ -3,40 +3,32 @@ package me.hugo.thankmas.markers
 import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.region.WeakRegion
 import net.minecraft.nbt.*
+import kotlin.jvm.optionals.getOrNull
 
 public class VanillaMarker(location: MapPoint, worldName: String, public val data: CompoundTag) :
     Marker(location, worldName) {
 
-    override fun getMarkerId(): String = data.getString("name")
+    override fun getMarkerId(): String = data.getString("name").get()
 
-    override fun getKeys(): Collection<String> = data.allKeys
+    override fun getKeys(): Collection<String> = data.keySet()
 
-    override fun getString(key: String): String? =
-        if (data.contains(key, Tag.TAG_STRING.toInt())) data.getString(key) else null
+    override fun getString(key: String): String? = data.getString(key).getOrNull()
 
-    override fun getBoolean(key: String): Boolean? =
-        if (data.contains(key, Tag.TAG_ANY_NUMERIC.toInt())) data.getBoolean(key) else null
+    override fun getBoolean(key: String): Boolean? = data.getBoolean(key).getOrNull()
 
-    override fun getInt(key: String): Int? =
-        if (data.contains(key, Tag.TAG_ANY_NUMERIC.toInt())) data.getInt(key) else null
+    override fun getInt(key: String): Int? = data.getInt(key).getOrNull()
 
-    override fun getDouble(key: String): Double? =
-        if (data.contains(key, Tag.TAG_ANY_NUMERIC.toInt())) data.getDouble(key) else null
+    override fun getDouble(key: String): Double? = data.getDouble(key).getOrNull()
 
-    override fun getFloat(key: String): Float? =
-        if (data.contains(key, Tag.TAG_ANY_NUMERIC.toInt())) data.getFloat(key) else null
+    override fun getFloat(key: String): Float? = data.getFloat(key).getOrNull()
 
-    override fun getStringList(key: String): List<String>? = if (data.contains(key, Tag.TAG_LIST.toInt()))
-        data.getList(key, Tag.TAG_STRING.toInt()).map { (it as StringTag).asString } else null
+    override fun getStringList(key: String): List<String>? = data.getList(key).getOrNull()?.map { it.asString().get() }
 
-    override fun getIntList(key: String): List<Int>? = if (data.contains(key, Tag.TAG_LIST.toInt()))
-        data.getList(key, Tag.TAG_INT.toInt()).map { (it as IntTag).asInt } else null
+    override fun getIntList(key: String): List<Int>? = data.getList(key).getOrNull()?.map { it.asInt().get() }
 
-    override fun getFloatList(key: String): List<Float>? = if (data.contains(key, Tag.TAG_LIST.toInt()))
-        data.getList(key, Tag.TAG_FLOAT.toInt()).map { (it as FloatTag).asFloat } else null
+    override fun getFloatList(key: String): List<Float>? = data.getList(key).getOrNull()?.map { it.asFloat().get() }
 
-    override fun getDoubleList(key: String): List<Double>? = if (data.contains(key, Tag.TAG_LIST.toInt()))
-        data.getList(key, Tag.TAG_DOUBLE.toInt()).map { (it as DoubleTag).asDouble } else null
+    override fun getDoubleList(key: String): List<Double>? = data.getList(key).getOrNull()?.map { it.asDouble().get() }
 
     override fun toRegion(id: String?): WeakRegion =
         WeakRegion(id ?: getMarkerId(), getMapPoint("min"), getMapPoint("max"))

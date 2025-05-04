@@ -28,15 +28,15 @@ public class S3WorldSynchronizer : KoinComponent {
     private val logger = SimpleThankmasPlugin.instance().logger
     private val configProvider: ConfigurationProvider by inject()
 
-    public val s3Config: FileConfiguration
+    private val s3Config: FileConfiguration
         get() = configProvider.getOrLoad("global/s3.yml")
 
     /** Bucket for world download/upload. */
-    public val bucketName: String
+    private val bucketName: String
         get() = s3Config.string("bucket")
 
     /** Returns an S3 client. */
-    public fun client(): S3Client = S3Client.builder()
+    private fun client(): S3Client = S3Client.builder()
         .region(Region.of(s3Config.string("region")))
         .credentialsProvider(
             StaticCredentialsProvider.create(

@@ -16,6 +16,7 @@ import java.io.DataInputStream
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
+import kotlin.jvm.optionals.getOrNull
 
 @Single
 public class PolarWorldRegistry : WorldRegistry<PolarWorld>() {
@@ -42,30 +43,30 @@ public class PolarWorldRegistry : WorldRegistry<PolarWorld>() {
 
         val polarWorld = getOrLoad(key)
 
-        val entities = polarWorld.chunks().flatMap { it.entities }
+        val entities = polarWorld.chunks().flatMap { it.entities ?: emptyList() }
 
         entities.forEach {
             val compoundTag = NbtIo.read(DataInputStream(ByteArrayInputStream(it.bytes)), NbtAccounter.unlimitedHeap())
 
             // Entities with no type or non-markers are ignored!
-            val entityId = compoundTag.getString("id") ?: return@forEach
+            val entityId = compoundTag.getString("id").getOrNull() ?: return@forEach
             if (entityId != "minecraft:marker") return@forEach
 
             // Empty data compound, we return!
-            val markerData = compoundTag.getCompound("data") ?: return@forEach
+            val markerData = compoundTag.getCompound("data").getOrNull() ?: return@forEach
 
             // Marker has no defined location somehow!
-            val markerLocation = compoundTag.getList("Pos", Tag.TAG_DOUBLE.toInt()) ?: return@forEach
+            val markerLocation = compoundTag.getList("Pos").getOrNull() ?: return@forEach
 
             // Save the marker and entityData's data!
             saveMarker(
                 key, VanillaMarker(
                     MapPoint(
-                        markerLocation.getDouble(0),
-                        markerLocation.getDouble(1),
-                        markerLocation.getDouble(2),
-                        markerData.getFloat("yaw"),
-                        markerData.getFloat("pitch"),
+                        markerLocation.getDouble(0).get(),
+                        markerLocation.getDouble(1).get(),
+                        markerLocation.getDouble(2).get(),
+                        markerData.getFloat("yaw").get(),
+                        markerData.getFloat("pitch").get(),
                     ),
                     key,
                     markerData

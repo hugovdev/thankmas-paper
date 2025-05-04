@@ -45,7 +45,7 @@ dependencies {
     api(libs.exposed.jbdc)
 
     // Amazon S3 API for nice world downloading and uploading :)
-    api(platform("software.amazon.awssdk:bom:2.26.25"))
+    api(platform("software.amazon.awssdk:bom:2.31.35"))
     api("software.amazon.awssdk:s3")
     api("software.amazon.awssdk:sso")
     api("software.amazon.awssdk:ssooidc")
