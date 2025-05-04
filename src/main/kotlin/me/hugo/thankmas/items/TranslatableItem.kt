@@ -91,20 +91,8 @@ public class TranslatableItem(
 
         if (flags.isNotEmpty()) addItemFlags(*flags.toTypedArray())
 
-        if (ItemFlag.HIDE_ATTRIBUTES in flags) {
-            setData(
-                DataComponentTypes.ATTRIBUTE_MODIFIERS,
-                getData(DataComponentTypes.ATTRIBUTE_MODIFIERS)?.showInTooltip(false)
-                    ?: ItemAttributeModifiers.itemAttributes().showInTooltip(false).build()
-            )
-        }
-
         if (glint != null) {
             setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, glint)
-        }
-
-        if (customModelData != null) {
-            setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData(customModelData))
         }
 
         if (model != null) {
@@ -128,7 +116,7 @@ public class TranslatableItem(
         run tint@{
             if (color == -1) return@tint
 
-            setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color), false))
+            setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color)))
         }
 
         this@TranslatableItem.enchantments.forEach { (enchantment, level) ->
@@ -136,6 +124,10 @@ public class TranslatableItem(
         }
 
         tags.forEach { setKeyedData(it.lowercase(), PersistentDataType.BOOLEAN, true) }
+
+        if (ItemFlag.HIDE_ATTRIBUTES in flags) {
+            setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay().hiddenComponents(dataTypes).build())
+        }
     }
 
     /** Lets other classes edit details from this translatable item. */
