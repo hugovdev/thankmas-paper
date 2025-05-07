@@ -12,6 +12,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
  * Loads player data and keeps track of it until the player
@@ -40,9 +41,15 @@ public class PlayerDataLoader<T : PaperPlayerData<T>>(
             return
         }
 
-        // Load player data from the database into the login cache!
         try {
-            playerManager.createPlayerData(playerUUID)
+            // Load player data from the database into the login cache!
+            playerManager.createPlayerData(playerUUID).also {
+                transaction {
+                    val startTime = System.currentTimeMillis()
+                    it.onLoading()
+                    instance.logger.info("Loaded player data of $playerUUID in ${System.currentTimeMillis() - startTime}ms.")
+                }
+            }
         } catch (exception: Exception) {
             exception.printStackTrace()
 

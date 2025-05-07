@@ -2,11 +2,14 @@ package me.hugo.thankmas.player
 
 import dev.kezz.miniphrase.MiniPhrase
 import me.hugo.thankmas.ThankmasPlugin
+import me.hugo.thankmas.cosmetics.CosmeticsRegistry
+import me.hugo.thankmas.database.PlayerPropertyManager
 import me.hugo.thankmas.entity.Hologram
 import me.hugo.thankmas.region.WeakRegion
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.entity.TextDisplay
+import org.koin.core.component.inject
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -17,6 +20,8 @@ import java.util.concurrent.ConcurrentMap
  */
 public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDataManager: PlayerDataManager<P>) :
     PlayerData<P>(playerUUID, playerDataManager) {
+
+    protected val playerPropertyManager: PlayerPropertyManager by inject()
 
     protected val globalTranslations: MiniPhrase
         get() = ThankmasPlugin.instance().globalTranslations
@@ -132,6 +137,9 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     public open fun onQuit(player: Player) {
         removeAllHolograms()
     }
+
+    /** Runs when a player is logging into the server and their data needs to be fetched. */
+    public open fun onLoading() {}
 
     /** Runs after the player profile has been loaded. */
     public open fun onPrepared(player: Player) {}

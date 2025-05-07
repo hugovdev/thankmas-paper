@@ -32,12 +32,13 @@ public object CosmeticsOwned : Table("cosmetics_owned") {
  * Creates the main tables for the lobby plugin and
  * provides a data source for connections.
  */
-public class Database(config: FileConfiguration, vararg tables: Table) : ConfigurableDatasource(config) {
+public class Database(config: FileConfiguration) : ConfigurableDatasource(config) {
 
     public val database: Database = Database.connect(dataSource)
+    public val properties: MutableList<PlayerProperty<*>> = mutableListOf()
 
-    init {
-        transaction { SchemaUtils.createMissingTablesAndColumns(*tables) }
+    public fun createTables() {
+        transaction { properties.forEach { it.initializeTable() } }
     }
 
 }
