@@ -21,7 +21,7 @@ public class Hologram(
     private val textSupplier: (viewer: Player, preferredLocale: Locale?) -> Component
 ) {
 
-    private val playerDataManager = ThankmasPlugin.instance().playerDataManager
+    private val playerDataManager = ThankmasPlugin.instance<ThankmasPlugin<*>>().playerDataManager
 
     public companion object {
         context(MiniPhraseContext)
@@ -72,7 +72,7 @@ public class Hologram(
                 propertiesSupplier(player, locale).apply(it)
             } as TextDisplay
 
-        player.showEntity(ThankmasPlugin.instance(), textDisplay)
+        player.showEntity(ThankmasPlugin.instance<ThankmasPlugin<*>>(), textDisplay)
         playerData.addHologram(this, textDisplay)
     }
 

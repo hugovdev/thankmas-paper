@@ -60,7 +60,7 @@ public open class CosmeticsPlayerData<P : CosmeticsPlayerData<P>>(
         val hasPrice = cosmetic.price > 0
         if (hasPrice) require(!inTransaction)
 
-        val instance = ThankmasPlugin.instance()
+        val instance = ThankmasPlugin.instance<ThankmasPlugin<*>>()
 
         if (hasPrice) inTransaction = true
 

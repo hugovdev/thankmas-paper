@@ -69,10 +69,10 @@ public enum class WorldFormat : KoinComponent {
                 parsed("scope", scopeDirectory)
             }
 
-            val slimeWorldRegistry: SlimeWorldRegistry by ThankmasPlugin.instance().inject()
+            val slimeWorldRegistry: SlimeWorldRegistry by ThankmasPlugin.instance<ThankmasPlugin<*>>().inject()
             val slimePaperAPI = AdvancedSlimePaperAPI.instance()
 
-            Bukkit.getScheduler().runTaskAsynchronously(ThankmasPlugin.instance(), Runnable {
+            Bukkit.getScheduler().runTaskAsynchronously(ThankmasPlugin.instance<ThankmasPlugin<*>>(), Runnable {
                 try {
                     // Save SlimeWorld in memory!
                     val slimeWorld = slimePaperAPI.readVanillaWorld(
@@ -90,7 +90,7 @@ public enum class WorldFormat : KoinComponent {
                         scopeDirectory
                     )
 
-                    Bukkit.getScheduler().runTask(ThankmasPlugin.instance(), Runnable {
+                    Bukkit.getScheduler().runTask(ThankmasPlugin.instance<ThankmasPlugin<*>>(), Runnable {
                         val newWorld = Bukkit.createWorld(WorldCreator(bukkitWorld.name))
 
                         // Teleport players back!
@@ -137,7 +137,7 @@ public enum class WorldFormat : KoinComponent {
             }
 
             CompletableFuture.allOf(*futures.toTypedArray()).thenRun {
-                Bukkit.getScheduler().runTaskAsynchronously(ThankmasPlugin.instance(), Runnable writeAndUpload@{
+                Bukkit.getScheduler().runTaskAsynchronously(ThankmasPlugin.instance<ThankmasPlugin<*>>(), Runnable writeAndUpload@{
                     try {
                         for (x in -chunkRadius..<chunkRadius) {
                             for (z in -chunkRadius..<chunkRadius) {
@@ -151,7 +151,7 @@ public enum class WorldFormat : KoinComponent {
                             }
                         }
 
-                        val polarWorldRegistry: PolarWorldRegistry by ThankmasPlugin.instance().inject()
+                        val polarWorldRegistry: PolarWorldRegistry by ThankmasPlugin.instance<ThankmasPlugin<*>>().inject()
 
                         val polarBytes = PolarWriter.write(polarWorld)
                         val polarFile = polarWorldRegistry.polarWorldContainer.resolve(bukkitWorld.name + ".polar")

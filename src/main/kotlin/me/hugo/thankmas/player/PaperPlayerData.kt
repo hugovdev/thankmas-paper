@@ -2,7 +2,6 @@ package me.hugo.thankmas.player
 
 import dev.kezz.miniphrase.MiniPhrase
 import me.hugo.thankmas.ThankmasPlugin
-import me.hugo.thankmas.cosmetics.CosmeticsRegistry
 import me.hugo.thankmas.database.PlayerPropertyManager
 import me.hugo.thankmas.entity.Hologram
 import me.hugo.thankmas.region.WeakRegion
@@ -24,7 +23,7 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
     protected val playerPropertyManager: PlayerPropertyManager by inject()
 
     protected val globalTranslations: MiniPhrase
-        get() = ThankmasPlugin.instance().globalTranslations
+        get() = ThankmasPlugin.instance<ThankmasPlugin<*>>().globalTranslations
 
     /** @returns the player object from the UUID if online, can be null. */
     public val onlinePlayerOrNull: Player?
@@ -115,7 +114,7 @@ public open class PaperPlayerData<P : PlayerData<P>>(playerUUID: UUID, playerDat
             return
         }
 
-        val instance = ThankmasPlugin.instance()
+        val instance = ThankmasPlugin.instance<ThankmasPlugin<*>>()
         val startTime = System.currentTimeMillis()
 
         Bukkit.getScheduler().runTaskAsynchronously(instance, Runnable {

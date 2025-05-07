@@ -49,7 +49,7 @@ public open class PaginatedMenu(
         /** Gets the icon with [id] from the menu icons configuration using global translations. */
         private fun globalIcon(id: String): TranslatableItem = TranslatableItem(
             configProvider.getOrLoad("global/menu_icons.yml"), id,
-            ThankmasPlugin.instance().globalTranslations
+            ThankmasPlugin.instance<ThankmasPlugin<*>>().globalTranslations
         )
 
         public val EXIT: TranslatableItem = globalIcon("exit")

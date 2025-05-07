@@ -66,7 +66,7 @@ public open class RankedPlayerData<P : RankedPlayerData<P>>(
 
     /** @returns the decorated rank name of this player. */
     public fun getDecoratedRankName(locale: Locale = onlinePlayer.locale()): Component {
-        val globalTranslations = ThankmasPlugin.instance().globalTranslations
+        val globalTranslations = ThankmasPlugin.instance<ThankmasPlugin<*>>().globalTranslations
         val group = getPrimaryGroupName()
 
         return globalTranslations.translate("rank.$group.name", locale)

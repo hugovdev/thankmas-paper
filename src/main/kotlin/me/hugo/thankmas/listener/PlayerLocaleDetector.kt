@@ -13,7 +13,7 @@ public class PlayerLocaleDetector<T : PaperPlayerData<T>>(
     private val playerManager: PlayerDataManager<T>
 ) : Listener, TranslatedComponent {
 
-    private val translations = ThankmasPlugin.instance().globalTranslations
+    private val translations = ThankmasPlugin.instance<ThankmasPlugin<*>>().globalTranslations
 
     @EventHandler
     private fun onLocaleChange(event: PlayerLocaleChangeEvent) {

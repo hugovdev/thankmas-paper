@@ -91,7 +91,7 @@ public open class MusicManager : BukkitRunnable(), TranslatedComponent {
     /** Sends a "Now Playing" notification to [player] with the current track name and author. */
     private fun sendPlayingNotification(player: Player) {
         val track = musicPlayers[player.uniqueId]?.track ?: return
-        val globalTranslations = ThankmasPlugin.instance().globalTranslations
+        val globalTranslations = ThankmasPlugin.instance<ThankmasPlugin<*>>().globalTranslations
 
         player.sendActionBar(
             globalTranslations.translate("global.sound.music.now_playing", player.locale()) {

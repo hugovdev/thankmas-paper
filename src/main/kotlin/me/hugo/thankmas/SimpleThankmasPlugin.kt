@@ -19,6 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.context.startKoin
+import org.koin.core.module.Module
+import org.koin.core.module.plus
 import org.koin.ksp.generated.module
 import java.io.File
 import java.util.*
@@ -33,13 +35,16 @@ public abstract class SimpleThankmasPlugin(
     public val localTranslationDirectory: String =
         if (configScopes.isNotEmpty()) "${configScopes.first()}/lang"
         else "local",
-    private val downloadGlobalScope: Boolean = true
+    private val koinModuleProvider: () -> List<Module>
 ) : JavaPlugin(), KoinComponent {
 
     private val gitHubHelper: GitHubHelper by inject()
 
     protected val configProvider: ConfigurationProvider by inject()
     protected val s3WorldSynchronizer: S3WorldSynchronizer by inject()
+
+    /** Whether to download the global scope of configuration files! */
+    protected open val downloadGlobalScope: Boolean = true
 
     /** Global minimessage instance with all custom tags and styling. */
     public lateinit var miniMessage: MiniMessage.Builder
@@ -51,19 +56,22 @@ public abstract class SimpleThankmasPlugin(
     public lateinit var globalTranslations: MiniPhrase
 
     public companion object {
-        private var instance: SimpleThankmasPlugin? = null
+        private var simpleInstance: SimpleThankmasPlugin? = null
 
         public fun instance(): SimpleThankmasPlugin {
-            return requireNotNull(instance)
+            return requireNotNull(simpleInstance)
             { "Tried to fetch a ThankmasPlugin instance while it's null!" }
         }
     }
 
     override fun onLoad() {
-        instance = this
+        simpleInstance = this
 
         // Register the dependency injection modules.
-        startKoin { modules(ThankmasModules().module) }
+        startKoin {
+            modules(koinModuleProvider().plus(ThankmasModules().module))
+        }
+
         downloadConfigFiles()
     }
 

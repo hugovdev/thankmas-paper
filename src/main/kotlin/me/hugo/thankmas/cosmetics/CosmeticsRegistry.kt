@@ -42,7 +42,7 @@ public class CosmeticsRegistry : AutoCompletableMapRegistry<Cosmetic>(Cosmetic::
             val clicker = context.clicker
 
             val playerData =
-                ThankmasPlugin.instance().playerDataManager.getPlayerData(clicker.uniqueId) as CosmeticsPlayerData
+                ThankmasPlugin.instance<ThankmasPlugin<*>>().playerDataManager.getPlayerData(clicker.uniqueId) as CosmeticsPlayerData
 
             if (playerData.selectedCosmetic.value == null) return@Icon
 
@@ -64,7 +64,7 @@ public class CosmeticsRegistry : AutoCompletableMapRegistry<Cosmetic>(Cosmetic::
                     val clicker = context.clicker
 
                     val playerData =
-                        ThankmasPlugin.instance().playerDataManager.getPlayerData(clicker.uniqueId) as CosmeticsPlayerData
+                        ThankmasPlugin.instance<ThankmasPlugin<*>>().playerDataManager.getPlayerData(clicker.uniqueId) as CosmeticsPlayerData
 
                     if (playerData.selectedCosmetic.value == cosmetic) return@Icon
 
@@ -130,7 +130,7 @@ public class CosmeticsRegistry : AutoCompletableMapRegistry<Cosmetic>(Cosmetic::
                     val slotKey = cosmetic.slot.name.lowercase()
 
                     val playerData =
-                        ThankmasPlugin.instance().playerDataManager.getPlayerData(player.uniqueId) as CosmeticsPlayerData
+                        ThankmasPlugin.instance<ThankmasPlugin<*>>().playerDataManager.getPlayerData(player.uniqueId) as CosmeticsPlayerData
 
                     val selected = playerData.selectedCosmetic.value == cosmetic
 
@@ -146,7 +146,7 @@ public class CosmeticsRegistry : AutoCompletableMapRegistry<Cosmetic>(Cosmetic::
                                 parsed("price", cosmetic.price)
                             }
                         ).also { if (selected) it.editMeta { it.setEnchantmentGlintOverride(true) } }
-                }.listen { (ThankmasPlugin.instance().playerDataManager.getPlayerData(it.uniqueId) as CosmeticsPlayerData).selectedCosmetic })
+                }.listen { (ThankmasPlugin.instance<ThankmasPlugin<*>>().playerDataManager.getPlayerData(it.uniqueId) as CosmeticsPlayerData).selectedCosmetic })
             }
         }
     }

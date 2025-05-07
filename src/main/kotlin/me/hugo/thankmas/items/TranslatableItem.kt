@@ -3,7 +3,10 @@ package me.hugo.thankmas.items
 import dev.kezz.miniphrase.MiniPhrase
 import dev.kezz.miniphrase.tag.TagResolverBuilder
 import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.*
+import io.papermc.paper.datacomponent.item.DyedItemColor
+import io.papermc.paper.datacomponent.item.Equippable
+import io.papermc.paper.datacomponent.item.TooltipDisplay
+import io.papermc.paper.datacomponent.item.UseCooldown
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.hugo.thankmas.DefaultTranslations

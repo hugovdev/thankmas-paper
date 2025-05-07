@@ -9,7 +9,7 @@ public fun Long.formatToTime(viewer: Player): Component {
     val minutes = ((this / (1000 * 60)) % 60).toInt()
     val hours = ((this / (1000 * 60 * 60)) % 24).toInt()
 
-    return ThankmasPlugin.instance().globalTranslations.translate(
+    return ThankmasPlugin.instance<ThankmasPlugin<*>>().globalTranslations.translate(
         if (hours > 0) "general.time.hours"
         else if (minutes > 0) "general.time.minutes"
         else "general.time.seconds",

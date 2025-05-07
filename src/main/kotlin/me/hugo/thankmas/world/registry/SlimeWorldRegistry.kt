@@ -48,7 +48,7 @@ public class SlimeWorldRegistry : WorldRegistry<SlimeWorld>() {
 
     override fun getOrLoadWithMarkers(key: String): SlimeWorld {
         val startTime = System.currentTimeMillis()
-        val logger = ThankmasPlugin.instance().logger
+        val logger = ThankmasPlugin.instance<ThankmasPlugin<*>>().logger
 
         logger.info("[Markers] [$key] Loading markers for slime world $key...")
 

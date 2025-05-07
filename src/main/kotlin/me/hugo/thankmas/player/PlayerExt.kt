@@ -59,14 +59,14 @@ public fun Player.showTitle(key: String, times: Title.Times, tags: (TagResolverB
 public fun playersWithBoard(): List<Player> {
     return Bukkit.getOnlinePlayers()
         .filter {
-            ThankmasPlugin.instance().playerDataManager.getPlayerDataOrNull(it.uniqueId)?.getBoardOrNull() != null
+            ThankmasPlugin.instance<ThankmasPlugin<*>>().playerDataManager.getPlayerDataOrNull(it.uniqueId)?.getBoardOrNull() != null
         }
 }
 
 /** Updates this player's board lines that contains [tags]. */
 public fun Player.updateBoardTags(vararg tags: String) {
-    val scoreboardManager = ThankmasPlugin.instance().scoreboardTemplateManager
-    val playerData = ThankmasPlugin.instance().playerDataManager.getPlayerData(uniqueId)
+    val scoreboardManager = ThankmasPlugin.instance<ThankmasPlugin<*>>().scoreboardTemplateManager
+    val playerData = ThankmasPlugin.instance<ThankmasPlugin<*>>().playerDataManager.getPlayerData(uniqueId)
 
     playerData.getBoardOrNull() ?: return
 

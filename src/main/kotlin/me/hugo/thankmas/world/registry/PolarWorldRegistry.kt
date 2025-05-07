@@ -8,7 +8,6 @@ import me.hugo.thankmas.markers.VanillaMarker
 import me.hugo.thankmas.world.WorldRegistry
 import net.minecraft.nbt.NbtAccounter
 import net.minecraft.nbt.NbtIo
-import net.minecraft.nbt.Tag
 import org.bukkit.Bukkit
 import org.koin.core.annotation.Single
 import java.io.ByteArrayInputStream
@@ -37,7 +36,7 @@ public class PolarWorldRegistry : WorldRegistry<PolarWorld>() {
 
     override fun getOrLoadWithMarkers(key: String): PolarWorld {
         val startTime = System.currentTimeMillis()
-        val logger = ThankmasPlugin.instance().logger
+        val logger = ThankmasPlugin.instance<ThankmasPlugin<*>>().logger
 
         logger.info("[Markers] [$key] Loading markers for polar world $key...")
 

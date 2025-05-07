@@ -14,7 +14,7 @@ import org.koin.core.component.KoinComponent
 public class RegionRegistry : MapBasedRegistry<String, WorldRegion>(), KoinComponent {
 
     init {
-        val instance = ThankmasPlugin.instance()
+        val instance = ThankmasPlugin.instance<ThankmasPlugin<*>>()
         val playerDataManager = instance.playerDataManager
 
         Bukkit.getScheduler().runTaskTimer(instance, Runnable {

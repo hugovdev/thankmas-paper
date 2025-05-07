@@ -21,7 +21,7 @@ public class CosmeticsCommand : KoinComponent {
         val cosmeticsRegistry: CosmeticsRegistry by inject()
 
         val playerData =
-            ThankmasPlugin.instance().playerDataManager.getPlayerData(sender.uniqueId) as? CosmeticsPlayerData ?: return
+            ThankmasPlugin.instance<ThankmasPlugin<*>>().playerDataManager.getPlayerData(sender.uniqueId) as? CosmeticsPlayerData ?: return
 
         if (!playerData.doesUpdateCosmetic(sender)) return
 

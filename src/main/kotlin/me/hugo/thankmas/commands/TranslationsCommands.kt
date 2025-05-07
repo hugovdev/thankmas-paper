@@ -26,7 +26,7 @@ public class TranslationsCommands<P : PaperPlayerData<P>>(
         GLOBAL, LOCAL
     }
 
-    private val instance = ThankmasPlugin.instance()
+    private val instance = ThankmasPlugin.instance<ThankmasPlugin<*>>()
     private val configProvider: ConfigurationProvider by inject()
     private val gitHubHelper: GitHubHelper by inject()
 
@@ -69,7 +69,7 @@ public class TranslationsCommands<P : PaperPlayerData<P>>(
         key: String,
         @Optional type: TranslationType = TranslationType.LOCAL
     ) {
-        val instance = ThankmasPlugin.instance()
+        val instance = ThankmasPlugin.instance<ThankmasPlugin<*>>()
 
         when (type) {
             TranslationType.LOCAL -> sender.sendMessage(
@@ -85,7 +85,7 @@ public class TranslationsCommands<P : PaperPlayerData<P>>(
 
     @Command("reloadstyles")
     private fun reloadStyles(sender: Player) {
-        val instance = ThankmasPlugin.instance()
+        val instance = ThankmasPlugin.instance<ThankmasPlugin<*>>()
 
         instance.miniMessage = instance.miniMessage.editTags { tagResolver ->
             val stylesConfig = configProvider.reload("global/custom_styles.yml")

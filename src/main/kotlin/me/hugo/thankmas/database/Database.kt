@@ -4,10 +4,8 @@ import kotlinx.datetime.Instant
 import org.bukkit.configuration.file.FileConfiguration
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
-import org.jetbrains.exposed.sql.transactions.transaction
 
 /** SQL Table that saves the selected rod, hat and settings. */
 public object PlayerData : Table("player_data") {
@@ -35,10 +33,5 @@ public object CosmeticsOwned : Table("cosmetics_owned") {
 public class Database(config: FileConfiguration) : ConfigurableDatasource(config) {
 
     public val database: Database = Database.connect(dataSource)
-    public val properties: MutableList<PlayerProperty<*>> = mutableListOf()
-
-    public fun createTables() {
-        transaction { properties.forEach { it.initializeTable() } }
-    }
 
 }

@@ -18,7 +18,7 @@ public class RankedPlayerChat<T : RankedPlayerData<T>>(
     private val shouldSee: (viewer: Player, sender: Player) -> Boolean = { _, _ -> true }
 ) : Listener, Translated {
 
-    private val translations = ThankmasPlugin.instance().globalTranslations
+    private val translations = ThankmasPlugin.instance<ThankmasPlugin<*>>().globalTranslations
 
     @EventHandler
     private fun onPlayerChat(event: AsyncChatEvent) {

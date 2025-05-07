@@ -1,5 +1,6 @@
 package me.hugo.thankmas.entity
 
+import me.hugo.thankmas.ThankmasPlugin
 import me.hugo.thankmas.lang.TranslatedComponent
 import me.hugo.thankmas.registry.MapBasedRegistry
 import me.hugo.thankmas.world.registry.AnvilWorldRegistry
@@ -15,7 +16,7 @@ import java.util.*
 
 /** Registers interaction entities in [world] and activates listeners for different callbacks with ids. */
 public class InteractionEntityRegistry(
-    world: String,
+    instance: ThankmasPlugin<*>,
     private val interactionCallbacks: Map<String, (clicker: Player) -> Unit> = mapOf()
 ) : MapBasedRegistry<UUID, String>(), Listener,
     TranslatedComponent {
@@ -23,7 +24,7 @@ public class InteractionEntityRegistry(
     private val anvilWorldRegistry: AnvilWorldRegistry by inject()
 
     init {
-        anvilWorldRegistry.getMarkerForType(world, "interaction_entity").forEach {
+        anvilWorldRegistry.getMarkerForType(instance.worldName, "interaction_entity").forEach {
             val id = it.getString("id") ?: return@forEach
 
             val width = it.getFloat("width") ?: 1.0f

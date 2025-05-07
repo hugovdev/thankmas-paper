@@ -75,7 +75,7 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
 
         val npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "")
         val npcsConfig =
-            configProvider.getOrLoadOrNull("${ThankmasPlugin.instance().configScopes.firstOrNull() ?: "global"}/npcs.yml")
+            configProvider.getOrLoadOrNull("${ThankmasPlugin.instance<ThankmasPlugin<*>>().configScopes.firstOrNull() ?: "global"}/npcs.yml")
 
         // If the skin list has two values then its value (0) and signature (1).
         npc.getOrAddTrait(SkinTrait::class.java)?.apply {
@@ -132,7 +132,7 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
 
 
         if (getOrNull(npcId) != null) {
-            ThankmasPlugin.instance().logger.warning("Key $npcId is duplicated!")
+            ThankmasPlugin.instance<ThankmasPlugin<*>>().logger.warning("Key $npcId is duplicated!")
             return
         }
 
@@ -143,7 +143,7 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
     @EventHandler
     private fun onNpcSpawn(event: NPCLinkToPlayerEvent) {
         getOrNull(event.npc.data().get("id"))?.hologram?.let {
-            Bukkit.getScheduler().getMainThreadExecutor(ThankmasPlugin.instance()).execute {
+            Bukkit.getScheduler().getMainThreadExecutor(ThankmasPlugin.instance<ThankmasPlugin<*>>()).execute {
                 it.spawnOrUpdate(event.player)
             }
         }
@@ -154,7 +154,7 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
         if (!event.player.isOnline) return
 
         getOrNull(event.npc.data().get("id"))?.hologram?.let {
-            Bukkit.getScheduler().getMainThreadExecutor(ThankmasPlugin.instance()).execute {
+            Bukkit.getScheduler().getMainThreadExecutor(ThankmasPlugin.instance<ThankmasPlugin<*>>()).execute {
                 it.remove(event.player)
             }
         }
@@ -162,7 +162,7 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
 
     public fun generateSkins() {
         val npcsConfig =
-            configProvider.getOrLoadOrNull("${ThankmasPlugin.instance().configScopes.firstOrNull() ?: "global"}/npcs.yml")
+            configProvider.getOrLoadOrNull("${ThankmasPlugin.instance<ThankmasPlugin<*>>().configScopes.firstOrNull() ?: "global"}/npcs.yml")
                 ?: return
 
         val dynamicSkins = anvilWorldRegistry.getMarkerForType(world, "player_npc")
@@ -173,7 +173,7 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
                 npcsConfig.getString("$npcId.skin.textures") == null
             }
 
-        Bukkit.getScheduler().runTaskAsynchronously(ThankmasPlugin.instance(), Runnable {
+        Bukkit.getScheduler().runTaskAsynchronously(ThankmasPlugin.instance<ThankmasPlugin<*>>(), Runnable {
             val client = HttpClient.newHttpClient()
 
             val request = HttpRequest.newBuilder()
@@ -226,7 +226,7 @@ public class PlayerNPCMarkerRegistry(private val world: String) : MapBasedRegist
                     }
             }
 
-            val configPath = (ThankmasPlugin.instance().configScopes.firstOrNull() ?: "global") + "/npcs.yml"
+            val configPath = (ThankmasPlugin.instance<ThankmasPlugin<*>>().configScopes.firstOrNull() ?: "global") + "/npcs.yml"
 
             npcsConfig.save(Bukkit.getPluginsFolder().resolve(configPath))
         })

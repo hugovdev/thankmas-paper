@@ -25,7 +25,7 @@ public class AnvilWorldRegistry : WorldRegistry<World>() {
 
     override fun loadMarkers(key: String) {
         val startTime = System.currentTimeMillis()
-        val logger = ThankmasPlugin.instance().logger
+        val logger = ThankmasPlugin.instance<ThankmasPlugin<*>>().logger
 
         logger.info("[Markers] [$key] Loading markers for anvil world $key...")
 

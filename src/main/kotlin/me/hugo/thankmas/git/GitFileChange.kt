@@ -11,7 +11,7 @@ public data class GitFileChange(
     val newValue: String? = null, // Required when updating or creating a file
     val logFile: Boolean = true
 ) {
-    private val logger = ThankmasPlugin.instance().logger
+    private val logger = ThankmasPlugin.instance<ThankmasPlugin<*>>().logger
 
     init {
         if (logFile) logger.info("[$action] to file $filePath")

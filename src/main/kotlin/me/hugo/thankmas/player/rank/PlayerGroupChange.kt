@@ -28,7 +28,7 @@ public class PlayerGroupChange<P : RankedPlayerData<P>>(
 
             val userId = event.user.uniqueId
 
-            Bukkit.getScheduler().getMainThreadExecutor(ThankmasPlugin.instance()).execute {
+            Bukkit.getScheduler().getMainThreadExecutor(ThankmasPlugin.instance<ThankmasPlugin<*>>()).execute {
                 val onlinePlayer = userId.player() ?: return@execute
 
                 if (!shouldUpdate(onlinePlayer)) return@execute

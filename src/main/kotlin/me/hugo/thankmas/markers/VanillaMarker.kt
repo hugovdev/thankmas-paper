@@ -2,7 +2,7 @@ package me.hugo.thankmas.markers
 
 import me.hugo.thankmas.location.MapPoint
 import me.hugo.thankmas.region.WeakRegion
-import net.minecraft.nbt.*
+import net.minecraft.nbt.CompoundTag
 import kotlin.jvm.optionals.getOrNull
 
 public class VanillaMarker(location: MapPoint, worldName: String, public val data: CompoundTag) :
