@@ -24,7 +24,7 @@ public class Hologram(
     private val playerDataManager = ThankmasPlugin.instance<ThankmasPlugin<*>>().playerDataManager
 
     public companion object {
-        context(MiniPhraseContext)
+        context(_: MiniPhraseContext)
         public fun fromMarker(
             marker: Marker
         ): Hologram {

@@ -19,20 +19,20 @@ import java.util.*
 
 public fun UUID?.player(): Player? = this?.let { Bukkit.getPlayer(it)?.takeIf { it.isOnline } }
 
-context(MiniPhraseContext)
+context(context: MiniPhraseContext)
 public fun Player.translate(
     key: String,
     locale: Locale? = null,
     tags: (TagResolverBuilder.() -> Unit)? = null
 ): Component =
-    miniPhrase.translate(key, locale ?: this.locale(), tags)
+    context.miniPhrase.translate(key, locale ?: this.locale(), tags)
 
-context(MiniPhraseContext)
+context(context: MiniPhraseContext)
 public fun Player.translateList(
     key: String,
     locale: Locale? = null, tags: (TagResolverBuilder.() -> Unit)? = null
 ): List<Component> =
-    miniPhrase.translateList(key, locale ?: this.locale(), tags)
+    context.miniPhrase.translateList(key, locale ?: this.locale(), tags)
 
 public fun Inventory.firstIf(predicate: (ItemStack) -> Boolean): Pair<Int, ItemStack>? {
     for (slot in 0 until size) {
@@ -43,9 +43,9 @@ public fun Inventory.firstIf(predicate: (ItemStack) -> Boolean): Pair<Int, ItemS
     return null
 }
 
-context(MiniPhraseContext)
+context(context: MiniPhraseContext)
 public fun Player.showTitle(key: String, times: Title.Times, tags: (TagResolverBuilder.() -> Unit)? = null) {
-    val titles = miniPhrase.translateList(key, this.locale(), tags)
+    val titles = context.miniPhrase.translateList(key, this.locale(), tags)
 
     if (titles.size > 1) {
         val title = titles.first()

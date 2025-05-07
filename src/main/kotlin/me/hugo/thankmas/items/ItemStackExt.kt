@@ -34,14 +34,14 @@ public fun ItemStack.amount(amount: Int): ItemStack {
  * Sets the name to the translation [key] in
  * language [locale] and uses TagResolvers in [tags].
  */
-context(MiniPhraseContext)
+context(context: MiniPhraseContext)
 public fun ItemStack.nameTranslatable(
     key: String,
     locale: Locale,
     tags: (TagResolverBuilder.() -> Unit)? = null
 ): ItemStack {
     val meta = itemMeta
-    meta.displayName(miniPhrase.translate(key, locale, tags).applyFallbackStyle(resetStyles))
+    meta.displayName(context.miniPhrase.translate(key, locale, tags).applyFallbackStyle(resetStyles))
     itemMeta = meta
     return this
 }
@@ -50,13 +50,13 @@ public fun ItemStack.nameTranslatable(
  * Sets the lore to the translation [key] in
  * language [locale] and uses TagResolvers in [tags].
  */
-context(MiniPhraseContext)
+context(context: MiniPhraseContext)
 public fun ItemStack.loreTranslatable(
     key: String,
     locale: Locale,
     tags: (TagResolverBuilder.() -> Unit)? = null
 ): ItemStack {
-    lore(miniPhrase.translateList(key, locale, tags).map { it.applyFallbackStyle(resetStyles) })
+    lore(context.miniPhrase.translateList(key, locale, tags).map { it.applyFallbackStyle(resetStyles) })
     return this
 }
 
@@ -64,7 +64,7 @@ public fun ItemStack.loreTranslatable(
  * Adds the translation [key] in language [locale]
  * to the current lore and uses TagResolvers in [tags].
  */
-context(MiniPhraseContext)
+context(context: MiniPhraseContext)
 public fun ItemStack.addLoreTranslatable(
     key: String,
     locale: Locale,
@@ -72,7 +72,7 @@ public fun ItemStack.addLoreTranslatable(
 ): ItemStack {
     lore(
         (lore() ?: mutableListOf()).plus(
-            miniPhrase.translateList(key, locale, tags).map { it.applyFallbackStyle(resetStyles) })
+            context.miniPhrase.translateList(key, locale, tags).map { it.applyFallbackStyle(resetStyles) })
     )
     return this
 }
@@ -81,7 +81,7 @@ public fun ItemStack.addLoreTranslatable(
  * Adds the translation [key] in language [locale]
  * to the current lore and uses TagResolvers in [tags].
  */
-context(MiniPhraseContext)
+context(context: MiniPhraseContext)
 public fun ItemStack.addLoreTranslatableIf(
     key: String,
     locale: Locale,
@@ -92,7 +92,7 @@ public fun ItemStack.addLoreTranslatableIf(
 
     lore(
         (lore() ?: mutableListOf()).plus(
-            miniPhrase.translateList(key, locale, tags).map { it.applyFallbackStyle(resetStyles) })
+            context.miniPhrase.translateList(key, locale, tags).map { it.applyFallbackStyle(resetStyles) })
     )
     return this
 }

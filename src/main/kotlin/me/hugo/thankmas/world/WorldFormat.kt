@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture
 public enum class WorldFormat : KoinComponent {
 
     ANVIL {
-        context(MiniPhraseContext) override fun pushWorld(
+        context(_: MiniPhraseContext) override fun pushWorld(
             pusher: Player,
             bukkitWorld: World,
             scopeDirectory: String,
@@ -48,7 +48,7 @@ public enum class WorldFormat : KoinComponent {
         }
     },
     SLIME {
-        context(MiniPhraseContext) override fun pushWorld(
+        context(_: MiniPhraseContext) override fun pushWorld(
             pusher: Player,
             bukkitWorld: World,
             scopeDirectory: String,
@@ -109,7 +109,7 @@ public enum class WorldFormat : KoinComponent {
         }
     },
     POLAR {
-        context(MiniPhraseContext) override fun pushWorld(
+        context(_: MiniPhraseContext) override fun pushWorld(
             pusher: Player,
             bukkitWorld: World,
             scopeDirectory: String,
@@ -172,7 +172,7 @@ public enum class WorldFormat : KoinComponent {
         }
     };
 
-    context(MiniPhraseContext)
+    context(_: MiniPhraseContext)
     public abstract fun pushWorld(
         pusher: Player,
         bukkitWorld: World,

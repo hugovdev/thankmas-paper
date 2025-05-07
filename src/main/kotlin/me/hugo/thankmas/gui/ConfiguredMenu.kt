@@ -7,7 +7,7 @@ import me.hugo.thankmas.player.translate
 import org.bukkit.configuration.file.FileConfiguration
 
 /** Creates a new [ChestInterface] using a [ChestInterfaceBuilder]. */
-context(MiniPhraseContext)
+context(_: MiniPhraseContext)
 public inline fun buildConfiguredChestInterface(
     config: FileConfiguration,
     path: String,
