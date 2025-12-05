@@ -49,7 +49,7 @@ public class PlayerDataLoader<T : PaperPlayerData<T>>(
             // Something went wrong!
             event.disallow(
                 AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
-                Component.text("Your data could not be loaded!", NamedTextColor.RED)
+                Component.text("Your data could not be loaded! (001)", NamedTextColor.RED)
             )
         }
     }
@@ -61,7 +61,12 @@ public class PlayerDataLoader<T : PaperPlayerData<T>>(
         if (removeAccessMessages) event.joinMessage(null)
 
         // Player successfully logged in, register the data!
-        playerManager.registerPlayerData(player.uniqueId).onPrepared(player)
+        try {
+            playerManager.registerPlayerData(player.uniqueId).onPrepared(player)
+        } catch (exception: IllegalArgumentException) {
+            exception.printStackTrace()
+            player.kick(Component.text("Your data could not be loaded correctly. (002)", NamedTextColor.RED))
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
